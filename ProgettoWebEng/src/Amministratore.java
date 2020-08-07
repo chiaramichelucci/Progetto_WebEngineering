@@ -2,21 +2,21 @@
 
 public class Amministratore {
 	 
-	private String id;
+	private int id;
 	private String email;
 	private String password;
 	
-	public Amministratore(String id, String email, String password) {
+	public Amministratore(int id, String email, String password) {
 		this.setId(id);
 		this.setEmail(email);
 		this.setPassword(password);
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
