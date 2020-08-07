@@ -1,5 +1,6 @@
 //test
 
 public class Amministratore {
+	 
 
 }
