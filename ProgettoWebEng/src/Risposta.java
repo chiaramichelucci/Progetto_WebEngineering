@@ -1,15 +1,15 @@
 //struttura di ogni risposta
 public class Risposta {
 	private int id;
-	private int campi;
 	private Sondaggio sondaggio;
 	private Utente utente;
+	private Risposta [] risposte = new Risposta[20];
 	
-	public Risposta (int id, int campi, Sondaggio sondaggio, Utente utente) {
+	public Risposta (int id, Sondaggio sondaggio, Utente utente, Risposta [] rd) {
 		setId(id);
-		setCampi(campi);
 		setSondaggio(sondaggio);
 		setUtente(utente);
+		setRisposte(rd);
 	}
 	
 	public int getId() {
@@ -18,14 +18,6 @@ public class Risposta {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-	
-	public void setCampi(int campi) {
-		this.campi = campi;
-	}
-	
-	public int getCampi() {
-		return campi;
 	}
 
 	public Sondaggio getSondaggio() {
@@ -42,6 +34,24 @@ public class Risposta {
 
 	public void setUtente(Utente utente) {
 		this.utente = utente;
+	}	
+	
+	public Risposta [] getRisposte() {
+		return risposte;
+	}
+	
+	public Risposta getRisposta(int index) {
+		return risposte[index];
+	}
+
+	public void setRisposte(Risposta [] rd) {
+		for (int i=0; i<20; i++) {
+			this.risposte[i] = rd[i];
+		}
+	}
+	
+	public void setRisposta(Risposta rd, int index) {
+		this.risposte[index] = rd;
 	}	
 
 }
