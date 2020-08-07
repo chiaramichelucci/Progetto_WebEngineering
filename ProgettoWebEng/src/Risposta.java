@@ -3,9 +3,9 @@ public class Risposta {
 	private int id;
 	private Sondaggio sondaggio;
 	private Utente utente;
-	private Risposta [] risposte = new Risposta[20];
+	private String [] risposte = new Risposta[20];
 	
-	public Risposta (int id, Sondaggio sondaggio, Utente utente, Risposta [] rd) {
+	public Risposta (int id, Sondaggio sondaggio, Utente utente, String [] rd) {
 		setId(id);
 		setSondaggio(sondaggio);
 		setUtente(utente);
@@ -36,21 +36,21 @@ public class Risposta {
 		this.utente = utente;
 	}	
 	
-	public Risposta [] getRisposte() {
+	public String [] getRisposte() {
 		return risposte;
 	}
 	
-	public Risposta getRisposta(int index) {
+	public String getRisposta(int index) {
 		return risposte[index];
 	}
 
-	public void setRisposte(Risposta [] rd) {
+	public void setRisposte(String [] rd) {
 		for (int i=0; i<20; i++) {
 			this.risposte[i] = rd[i];
 		}
 	}
 	
-	public void setRisposta(Risposta rd, int index) {
+	public void setRisposta(String rd, int index) {
 		this.risposte[index] = rd;
 	}	
 
