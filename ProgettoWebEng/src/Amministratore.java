@@ -2,7 +2,7 @@
 
 public class Amministratore {
 	 
-	private String id;
+	private int id;
 	private String email;
 	private String password;
 	
@@ -12,11 +12,11 @@ public class Amministratore {
 		this.setPassword(password);
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
