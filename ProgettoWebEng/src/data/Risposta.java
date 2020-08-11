@@ -1,3 +1,4 @@
+package data;
 //struttura di ogni risposta
 public class Risposta {
 	private int id;

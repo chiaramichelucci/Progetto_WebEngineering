@@ -1,3 +1,4 @@
+package data;
 //struttura di un Utente registrato.
 public class Utente {
 	private int id;

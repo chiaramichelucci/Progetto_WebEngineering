@@ -1,3 +1,4 @@
+package data;
 //definizone delle opzioni di scelta per le domande a risposta multipla
 
 public class Opzione {
