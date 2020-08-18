@@ -10,4 +10,9 @@ public class DataLayer implements AutoCloseable {
 
 	}
 
+	public Connection getConnection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
