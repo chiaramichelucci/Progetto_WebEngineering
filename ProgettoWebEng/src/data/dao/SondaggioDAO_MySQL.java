@@ -148,7 +148,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
                 }
 
             if (sondaggio instanceof DataItemProxy) {
-                ((DataItemProxy) sondaggioe).setModified(false);
+                ((DataItemProxy) sondaggio).setModified(false);
             }
         } catch (SQLException | OptimisticLockException ex) {
             throw new DataException("Unable to store Sondaggio", ex);
