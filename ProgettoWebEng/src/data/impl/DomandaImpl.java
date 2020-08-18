@@ -1,15 +1,18 @@
-package data;
+package data.impl;
+
+import data.model.Domanda;
+
 //struttura di ogni domanda
 
-public class Domanda {
+public class DomandaImpl implements Domanda{
 
 	private String codice;
 	private String testo;
 	private String nota;
 	private boolean obbligatoria;
-	private Sondaggio sondaggio;
+	private SondaggioImpl sondaggio;
 	
-	public Domanda (String codice, String testo, String nota, boolean obbligattoria, Sondaggio sondaggio) {
+	public DomandaImpl (String codice, String testo, String nota, boolean obbligattoria, SondaggioImpl sondaggio) {
 		setCodice(codice);
 		setTesto(testo);
 		setNota(nota);
@@ -49,11 +52,11 @@ public class Domanda {
 		this.obbligatoria = obbligatoria;
 	}
 
-	public Sondaggio getSondaggio() {
+	public SondaggioImpl getSondaggio() {
 		return sondaggio;
 	}
 
-	public void setSondaggio(Sondaggio sondaggio) {
+	public void setSondaggio(SondaggioImpl sondaggio) {
 		this.sondaggio = sondaggio;
 	}
 }

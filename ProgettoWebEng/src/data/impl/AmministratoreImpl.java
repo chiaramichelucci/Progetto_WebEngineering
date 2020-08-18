@@ -1,13 +1,14 @@
-package data;
+package data.impl;
 
+import data.model.Amministratore;
 
-public class Amministratore {
+public class AmministratoreImpl implements Amministratore{
 	 
 	private int id;
 	private String email;
 	private String password;
 	
-	public Amministratore(int id, String email, String password) {
+	public AmministratoreImpl(int id, String email, String password) {
 		this.setId(id);
 		this.setEmail(email);
 		this.setPassword(password);

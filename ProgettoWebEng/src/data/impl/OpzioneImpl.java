@@ -1,20 +1,23 @@
-package data;
+package data.impl;
+
+import data.model.Opzione;
+
 //definizone delle opzioni di scelta per le domande a risposta multipla
 
-public class Opzione {
+public class OpzioneImpl implements Opzione{
 
-	private Domanda domanda;
+	private DomandaImpl domanda;
 	private String [] opzioni = new String[8];
 	
-	public Opzione(Domanda domanda, String [] opzioni) {
+	public OpzioneImpl(DomandaImpl domanda, String [] opzioni) {
 		setDomanda(domanda);
 		setOpzioni(opzioni);
 	}
 	
-	public Domanda getDomanda() {
+	public DomandaImpl getDomanda() {
 		return domanda;
 	}
-	public void setDomanda(Domanda domanda) {
+	public void setDomanda(DomandaImpl domanda) {
 		this.domanda = domanda;
 	}
 	

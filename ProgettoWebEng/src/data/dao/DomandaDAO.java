@@ -1,6 +1,6 @@
-package dao;
+package data.dao;
 
-public interface domandaDAO<D> {
+public interface DomandaDAO {
 	
 	Object get(String codice);
 	void save(D d);	

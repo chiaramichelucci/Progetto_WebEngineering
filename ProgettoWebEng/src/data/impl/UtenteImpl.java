@@ -1,6 +1,9 @@
-package data;
+package data.impl;
+
+import data.model.Utente;
+
 //struttura di un Utente registrato.
-public class Utente {
+public class UtenteImpl implements Utente {
 	private int id;
 	private String nome;
 	private String cognome;
@@ -8,7 +11,7 @@ public class Utente {
 	private String password;
 	private String tipo;
 	// costruttore
-	public Utente(int id, String nome, String cognome, String email, String password, String tipo) {;
+	public UtenteImpl(int id, String nome, String cognome, String email, String password, String tipo) {;
 	setId(id);
 	setNome(nome);
 	setCognome(cognome);

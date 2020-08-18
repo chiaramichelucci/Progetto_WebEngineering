@@ -1,15 +1,17 @@
-package data;
+package data.impl;
 
-public class Sondaggio {
+import data.model.Sondaggio;
+
+public class SondaggioImpl implements Sondaggio{
 
 	private int id;
 	private String titolo;
 	private boolean disponibile;
 	private String modalita;
 	private int n_domande;
-	private Domanda [] domande = new Domanda[20];
+	private DomandaImpl [] domande = new DomandaImpl[20];
 	
-	public Sondaggio(int id, String titolo, boolean disponibile, String modalita, int n_domande, Domanda [] d) {
+	public SondaggioImpl(int id, String titolo, boolean disponibile, String modalita, int n_domande, DomandaImpl [] d) {
 		setId(id);
 		setTitolo(titolo);
 		setDisponibile(disponibile);
@@ -58,21 +60,21 @@ public class Sondaggio {
 		this.n_domande = n_domande;
 	}
 
-	public Domanda [] getDomande() {
+	public DomandaImpl [] getDomande() {
 		return domande;
 	}
 	
-	public Domanda getDomanda(int index) {
+	public DomandaImpl getDomanda(int index) {
 		return domande[index];
 	}
 
-	public void setDomande(Domanda [] d) {
+	public void setDomande(DomandaImpl [] d) {
 		for (int i=0; i<20; i++) {
 			this.domande[i] = d[i];
 		}
 	}
 	
-	public void setDomanda(Domanda d, int index) {
+	public void setDomanda(DomandaImpl d, int index) {
 		this.domande[index] = d;
 	}
 
