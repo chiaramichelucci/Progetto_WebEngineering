@@ -1,8 +1,11 @@
 package data.impl;
 
-import data.model.Domanda;
+import java.util.List;
 
-//struttura di ogni domanda
+import data.model.Domanda;
+import data.model.Opzione;
+import data.model.Sondaggio;
+
 
 public class DomandaImpl implements Domanda{
 
@@ -10,14 +13,15 @@ public class DomandaImpl implements Domanda{
 	private String testo;
 	private String nota;
 	private boolean obbligatoria;
-	private SondaggioImpl sondaggio;
+	private Sondaggio sondaggio;
 	
-	public DomandaImpl (String codice, String testo, String nota, boolean obbligattoria, SondaggioImpl sondaggio) {
-		setCodice(codice);
-		setTesto(testo);
-		setNota(nota);
-		setObbligatoria(obbligatoria);
-		setSondaggio(sondaggio);
+	public DomandaImpl () {
+		super();
+		setCodice("");
+		setTesto("");
+		setNota("");
+		setObbligatoria(false);
+		setSondaggio(null);
 	}
 
 	public String getCodice() {
@@ -44,19 +48,35 @@ public class DomandaImpl implements Domanda{
 		this.nota = nota;
 	}
 
-	public boolean isObbligatoria() {
-		return obbligatoria;
+	public Sondaggio getSondaggio() {
+		return sondaggio;
 	}
 
+	public void setSondaggio(Sondaggio sondaggio) {
+		this.sondaggio = sondaggio;
+	}
+
+	public List<Opzione> getOpzioni() {
+		return null;
+	}
+
+	public void setOpzioni(List<Opzione> opzioni) {
+
+	}
+
+	@Override
+	public void addOpzione(Opzione opzione) {
+		
+	}
+
+	@Override
 	public void setObbligatoria(boolean obbligatoria) {
 		this.obbligatoria = obbligatoria;
 	}
 
-	public SondaggioImpl getSondaggio() {
-		return sondaggio;
+	@Override
+	public boolean getObbligatoria() {
+		return obbligatoria;
 	}
 
-	public void setSondaggio(SondaggioImpl sondaggio) {
-		this.sondaggio = sondaggio;
-	}
 }
