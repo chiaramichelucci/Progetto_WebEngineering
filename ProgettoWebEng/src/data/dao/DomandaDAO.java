@@ -1,9 +1,20 @@
 package data.dao;
 
+import data.model.Domanda;
+import data.model.Sondaggio;
+
+import java.util.List;
+
+import data.DataException;
+
 public interface DomandaDAO {
 	
-	Object get(String codice);
-	void save(D d);	
-	void update(D d); 	
-	void delete(D d);
+	Domanda creaDomanda();
+	Domanda getDomanda(String domanda_key) throws DataException;
+	List<Domanda> getDomande(Sondaggio sondaggio) throws DataException;
+	List<Domanda> getDomande() throws DataException;
+	void storeDomanda(Domanda domanda) throws DataException;
+	void save(Domanda domanda);	
+	void update(Domanda ddomanda); 	
+	void delete(Domanda domanda);
 }
