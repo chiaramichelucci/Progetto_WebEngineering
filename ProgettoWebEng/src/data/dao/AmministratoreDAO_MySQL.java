@@ -1,6 +1,17 @@
 package data.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import data.DAO;
+import data.DataItemProxy;
+import data.proxy.AmministratoreProxy;
+import data.DataException;
+import data.DataLayer;
+import data.dao.AmministratoreDAO;
+import data.model.Amministratore;
 
 public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
     private PreparedStatement sAmministratoreByID;
@@ -93,11 +104,11 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
     }
 
     @Override
-    public List<Amministratore> getAmministratore(Issue issue) throws DataException {
+    public List<Amministratore> getAmministratore(Amministratore amministratore) throws DataException {
         List<Amministratore> result = new ArrayList();
 
         try {
-            sAmministratoreByIssue.setInt(1, issue.getKey());            
+            sAmministratoreByIssue.setInt(1, amministratore.getKey());            
             try (ResultSet rs = sAmministratoresByIssue.executeQuery()) {
                 while (rs.next()) {
                     result.add((Amministratore) getAmministratore(rs.getInt("amministratoreID")));
@@ -148,9 +159,5 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
             if (amministratore instanceof DataItemProxy) {
                 ((DataItemProxy) amministratore).setModified(false);
             }
-        } catch (SQLException | OptimisticLockException ex) {
-            throw new DataException("Unable to store amministratore", ex);
+        } 
         }
-    }
-
-}

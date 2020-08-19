@@ -1,6 +1,16 @@
 package data.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import data.DAO;
+import data.DataItemProxy;
+import data.proxy.UtenteProxy;
+import data.DataException;
+import data.DataLayer;
+import data.dao.UtenteDAO;
+import data.model.Utente;
 
 public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
     private PreparedStatement sUtenteByID;
@@ -95,7 +105,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
     }
 
     @Override
-    public List<Utente> getUtente(Issue issue) throws DataException {
+    public List<Utente> getUtente(Utente utente) throws DataException {
         List<Utente> result = new ArrayList();
 
         try {
