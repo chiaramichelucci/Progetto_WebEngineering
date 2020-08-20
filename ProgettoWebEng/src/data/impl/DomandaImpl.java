@@ -1,13 +1,11 @@
 package data.impl;
 
-import java.util.List;
-
+import data.DataItemImpl;
 import data.model.Domanda;
-import data.model.Opzione;
 import data.model.Sondaggio;
 
 
-public class DomandaImpl implements Domanda{
+public class DomandaImpl extends DataItemImpl<String> implements Domanda{
 
 	private String codice;
 	private String testo;
@@ -54,19 +52,6 @@ public class DomandaImpl implements Domanda{
 
 	public void setSondaggio(Sondaggio sondaggio) {
 		this.sondaggio = sondaggio;
-	}
-
-	public List<Opzione> getOpzioni() {
-		return null;
-	}
-
-	public void setOpzioni(List<Opzione> opzioni) {
-
-	}
-
-	@Override
-	public void addOpzione(Opzione opzione) {
-		
 	}
 
 	@Override

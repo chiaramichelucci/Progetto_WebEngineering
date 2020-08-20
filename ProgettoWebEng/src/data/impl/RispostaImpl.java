@@ -1,61 +1,43 @@
 package data.impl;
 
+import data.DataItemImpl;
+import data.model.Domanda;
 import data.model.Risposta;
+import data.model.Utente;
 
-//struttura di ogni risposta
-public class RispostaImpl implements Risposta{
-	private int id;
-	private SondaggioImpl sondaggio;
-	private UtenteImpl utente;
-	private RispostaImpl[] risposte = new RispostaImpl[20];
+public class RispostaImpl extends DataItemImpl<String> implements Risposta{
 	
-	public RispostaImpl (int id, SondaggioImpl sondaggio, UtenteImpl utente, String [] rd) {
-		setId(id);
-		setSondaggio(sondaggio);
-		setUtente(utente);
-		setRisposte(rd);
-	}
+	private Domanda domanda;
+	private Utente utente;
+	private String risposta;
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public SondaggioImpl getSondaggio() {
-		return sondaggio;
-	}
-
-	public void setSondaggio(SondaggioImpl sondaggio) {
-		this.sondaggio = sondaggio;
+	public RispostaImpl () {
+		super();
+		domanda = null;
+		utente = null;
 	}
 	
-	public UtenteImpl getUtente() {
+	public Domanda getDomanda() {
+		return domanda;
+	}
+
+	public void setDomanda(Domanda domanda) {
+		this.domanda = domanda;
+	}
+	
+	public Utente getUtente() {
 		return utente;
 	}
 
-	public void setUtente(UtenteImpl utente) {
+	public void setUtente(Utente utente) {
 		this.utente = utente;
 	}	
 	
-	public RispostaImpl[] getRisposte() {
-		return risposte;
+	public void setRisposta(String rd) {
+		this.risposta = rd;
 	}
-	
-	public RispostaImpl getRisposta(int index) {
-		return risposte[index];
+	public String getRisposta() {
+		return risposta;
 	}
-
-	public void setRisposte(String[] rd) {
-		for (int i=0; i<20; i++) {
-			this.risposte[i] = rd[i];
-		}
-	}
-	
-	public void setRisposta(RispostaImpl rd, int index) {
-		this.risposte[index] = rd;
-	}	
 
 }

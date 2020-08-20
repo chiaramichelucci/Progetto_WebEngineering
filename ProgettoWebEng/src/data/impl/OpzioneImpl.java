@@ -1,42 +1,39 @@
 package data.impl;
 
+import data.DataItemImpl;
+import data.model.Domanda;
 import data.model.Opzione;
 
 //definizone delle opzioni di scelta per le domande a risposta multipla
 
-public class OpzioneImpl implements Opzione{
+public class OpzioneImpl extends DataItemImpl<String> implements Opzione{
 
 	private DomandaImpl domanda;
-	private String [] opzioni = new String[8];
+	private String testoOpzione;
 	
-	public OpzioneImpl(DomandaImpl domanda, String [] opzioni) {
+	public OpzioneImpl() {
 		setDomanda(domanda);
-		setOpzioni(opzioni);
+		setOpzione(testoOpzione);
 	}
 	
 	public DomandaImpl getDomanda() {
 		return domanda;
 	}
-	public void setDomanda(DomandaImpl domanda) {
-		this.domanda = domanda;
+	public void setDomanda(String string) {
+		this.domanda = string;
 	}
 	
-	public String [] getOpzioni() {
-		return opzioni;
-	}
-	
-	public String getOpzione(int index) {
-		return opzioni[index];
+	public String getOpzione() {
+		return this.testoOpzione;
 	}
 
-	public void setOpzioni(String [] o) {
-		for (int i=0; i<8; i++) {
-			this.opzioni[i] = o[i];
-		}
+	public void setOpzione(String o) {
+			this.testoOpzione= o;
 	}
-	
-	public void setopzione(String o, int index) {
-		this.opzioni[index] = o;
+
+	@Override
+	public void setDomanda(Domanda domanda) {
+		
 	}
 		
 }

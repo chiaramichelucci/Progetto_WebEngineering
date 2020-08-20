@@ -1,6 +1,16 @@
 package data.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import data.DAO;
+import data.DataItemProxy;
+import data.proxy.SondaggioProxy;
+import data.DataException;
+import data.DataLayer;
+import data.dao.SondaggioDAO;
+import data.model.Sondaggio;
 
 public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     private PreparedStatement sSondaggioByID;
@@ -95,11 +105,11 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     }
 
     @Override
-    public List<Sondaggio> getSondaggio(Issue issue) throws DataException {
+    public List<Sondaggio> getSondaggio(Sondaggio sondaggio) throws DataException {
         List<Sondaggio> result = new ArrayList();
 
         try {
-            sSondaggioByIssue.setInt(1, issue.getKey());            
+            sSondaggioByIssue.setInt(1, sondaggio.getKey());            
             try (ResultSet rs = sSondaggioByIssue.executeQuery()) {
                 while (rs.next()) {
                     result.add((Sondaggio) getSondaggio(rs.getInt("sondaggioID")));

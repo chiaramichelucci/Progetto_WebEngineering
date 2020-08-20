@@ -2,6 +2,8 @@ package data;
 
 import java.sql.Connection;
 
+import data.proxy.DomandaProxy;
+
 public class DAO {
 	protected final DataLayer dataLayer;
     protected final Connection connection;
@@ -26,4 +28,5 @@ public class DAO {
     public void destroy() throws DataException {
 
     }
+
 }

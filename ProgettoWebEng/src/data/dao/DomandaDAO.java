@@ -14,7 +14,7 @@ public interface DomandaDAO {
 	List<Domanda> getDomande(Sondaggio sondaggio) throws DataException;
 	List<Domanda> getDomande() throws DataException;
 	void storeDomanda(Domanda domanda) throws DataException;
-	void save(Domanda domanda);	
-	void update(Domanda ddomanda); 	
+	//void update(Domanda ddomanda); 	
 	void delete(Domanda domanda);
+	Sondaggio getSondagio(int idSondaggio) throws DataException;
 }
