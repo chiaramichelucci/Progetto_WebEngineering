@@ -1,6 +1,8 @@
 package data.model;
 
-public interface Domanda {
+import data.DataItem;
+
+public interface Domanda extends DataItem<String>{
 	
 	void setCodice(String codice);
 	

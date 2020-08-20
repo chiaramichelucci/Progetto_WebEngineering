@@ -45,8 +45,6 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 	
 	@Override
     public void destroy() throws DataException {
-        //anche chiudere i PreparedStamenent � una buona pratica...
-        //also closing PreparedStamenents is a good practice...
         try {
 
             dOpzioni.close();

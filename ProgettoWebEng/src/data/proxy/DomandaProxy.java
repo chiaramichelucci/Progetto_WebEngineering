@@ -66,18 +66,6 @@ public class DomandaProxy extends DomandaImpl implements DataItemProxy {
 	 }
 	 
 	 @Override
-	public void setOpzioni(List<Opzione> opzioni) {
-		 super.setOpzioni(opzioni);
-		 this.modified = true;
-	 } 
-	 
-	 @Override
-	public void addOpzione(Opzione opzione) {
-		 super.addOpzione(opzione);
-		 this.modified = true;
-	 }
-	 
-	 @Override
 	public void setObbligatoria(boolean obbligatoria) {
 		 super.setObbligatoria(obbligatoria);
 		 this.modified = true;

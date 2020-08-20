@@ -1,5 +1,7 @@
 package data.model;
 
-public interface Risposta {
+import data.DataItem;
+
+public interface Risposta extends DataItem<String>{
 
 }

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import data.DataItemProxy;
 import data.impl.RispostaImpl;
 import data.model.Domanda;
+import data.model.Utente;
 import data.DataException;
 import data.DataLayer;
 import data.dao.DomandaDAO;
@@ -43,6 +44,21 @@ public class RispostaProxy extends RispostaImpl implements DataItemProxy {
         }
         return super.getDomanda();
     }
+	
+	public void setDomanda(Domanda codice) {
+		super.setDomanda(codice);
+    	this.modified = true;
+	}
+	
+	public void setUtente(Utente id) {
+		super.setUtente(id);
+    	this.modified = true;
+	}
+
+	public void setRisposta(String testo) {
+		super.setRisposta(testo);
+    	this.modified = true;
+	}
 	
 	@Override
 	public boolean isModified() {

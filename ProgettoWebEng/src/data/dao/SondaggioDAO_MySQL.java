@@ -1,5 +1,6 @@
 package data.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             sUnassignedSondaggio = connection.prepareStatement("SELECT ID AS sondaggioID FROM sondaggio WHERE issueID IS NULL");
 
 
-            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (ID, titolo,disponibile, modalità, URL, n_domande) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET ID=?,titolo=?,disponibile=?, modalità=?, URL=?, n_domande=? WHERE ID=? and titolo=?");
+            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (ID, titolo,disponibile, modalitï¿½, URL, n_domande) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET ID=?,titolo=?,disponibile=?, modalitï¿½=?, URL=?, n_domande=? WHERE ID=? and titolo=?");
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
 
         } catch (SQLException ex) {
@@ -75,7 +76,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             s.setDisponibile(rs.getBoolean("disponibile"));
             s.setNDomande(rs.getInt("n_domande"));
             s.setURL(rs.getString("URL"));
-            s.setModalita(rs.getString("modalità"));
+            s.setModalita(rs.getString("modalitï¿½"));
         } catch (SQLException ex) {
             throw new DataException("Unable to create sondaggio object form ResultSet", ex);
         }

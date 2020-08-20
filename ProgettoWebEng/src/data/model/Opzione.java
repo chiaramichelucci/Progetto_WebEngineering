@@ -4,6 +4,6 @@ import data.DataItem;
 
 public interface Opzione extends DataItem<String>{
 
-	public void setDomanda(Domanda domanda);
+	public void setDomanda(String domanda);
 	
 }
