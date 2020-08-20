@@ -8,7 +8,7 @@ import data.model.Opzione;
 
 public class OpzioneImpl extends DataItemImpl<String> implements Opzione{
 
-	private DomandaImpl domanda;
+	private String domanda;
 	private String testoOpzione;
 	
 	public OpzioneImpl() {
@@ -16,7 +16,7 @@ public class OpzioneImpl extends DataItemImpl<String> implements Opzione{
 		setOpzione(testoOpzione);
 	}
 	
-	public DomandaImpl getDomanda() {
+	public String getDomanda() {
 		return domanda;
 	}
 	public void setDomanda(String string) {
