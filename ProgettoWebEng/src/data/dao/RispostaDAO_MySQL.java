@@ -65,8 +65,8 @@ public class RispostaDAO_MySQL extends DAO implements RispostaDAO {
     private RispostaProxy creaRisposta(ResultSet rs) throws DataException {
         RispostaProxy a = creaRisposta();
         try {
-            a.setDomanda(rs.getString("codice_domanda"));
-            a.setUtente(rs.getString("id_utente"));
+            a.setDomandaKey(rs.getString("codice_domanda"));
+            a.setUtenteKey(rs.getInt("id_utente"));
             a.setRisposta(rs.getString("testo"));
         } catch (SQLException ex) {
             throw new DataException("Unable to create article object form ResultSet", ex);

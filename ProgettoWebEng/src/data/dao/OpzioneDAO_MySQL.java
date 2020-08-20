@@ -104,7 +104,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
         List<Opzione> result = new ArrayList();
 
         try {
-            testiOp.setInt(1, domanda.getCodice());            
+            testiOp.setString(1, domanda.getCodice());            
             try (ResultSet rs = testiOp.executeQuery()) {
                 while (rs.next()) {
                     result.add((Opzione) getOpzione(rs.getString("codiceDomanda")));

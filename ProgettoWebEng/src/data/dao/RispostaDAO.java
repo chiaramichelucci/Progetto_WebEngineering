@@ -1,9 +1,10 @@
 package data.dao;
 
 import data.model.Opzione;
+import data.model.Risposta;
 
 public interface RispostaDAO {
 
-	Opzione creaRisposta();
+	Risposta creaRisposta();
 
 }

@@ -50,10 +50,21 @@ public class RispostaProxy extends RispostaImpl implements DataItemProxy {
     	this.modified = true;
 	}
 	
+	public void setDomandaKey(String codice) {
+		this.codiceDomanda = codice;
+    	this.modified = true;
+	}
+	
 	public void setUtente(Utente id) {
 		super.setUtente(id);
     	this.modified = true;
 	}
+	
+	public void setUtenteKey(int id) {
+		this.idUtente = id;
+    	this.modified = true;
+	}
+
 
 	public void setRisposta(String testo) {
 		super.setRisposta(testo);

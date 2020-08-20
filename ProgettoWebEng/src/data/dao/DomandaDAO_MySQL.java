@@ -83,13 +83,13 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     }
     
     @Override
-    public Sondaggio getSondagio(int idSondaggio) throws DataException {
+    public Domanda getDomanda(String codice) throws DataException {
         Domanda a = null;
-        if (dataLayer.getCache().has(Sondaggio.class, idSondaggio)) {
-            a = dataLayer.getCache().get(Sondaggio.class, idSondaggio);
+        if (dataLayer.getCache().has(Domanda.class, codice)) {
+            a = dataLayer.getCache().get(Domanda.class, codice);
         } else {
             try {
-                cDomandaBySondaggio.setInt(1, idSondaggio);
+                cDomandaBySondaggio.setString(1, codice);
                 try (ResultSet rs = cDomandaBySondaggio.executeQuery()) {
                     if (rs.next()) {
                         a = creaDomanda(rs);
@@ -137,9 +137,9 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 	}
 
 	@Override
-	public Domanda getDomanda(String domanda_key) throws DataException {
-		// TODO Auto-generated method stub
+	public Sondaggio getSondagio(int idSondaggio) throws DataException {
 		return null;
+		
 	}
     
     
