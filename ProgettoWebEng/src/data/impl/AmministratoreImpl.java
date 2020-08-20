@@ -37,6 +37,12 @@ public class AmministratoreImpl implements Amministratore{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public int getKey() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 }

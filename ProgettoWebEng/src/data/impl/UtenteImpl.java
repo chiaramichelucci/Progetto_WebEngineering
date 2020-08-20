@@ -66,5 +66,11 @@ public class UtenteImpl implements Utente {
 		
 	public void setTipo(String tipo) {
 		this.tipo=tipo;
+	}
+
+	@Override
+	public int getKey() {
+		// TODO Auto-generated method stub
+		return 0;
 	}	
 }
