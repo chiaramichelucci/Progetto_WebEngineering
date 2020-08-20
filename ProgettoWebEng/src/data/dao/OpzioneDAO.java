@@ -1,7 +1,21 @@
 package data.dao;
 
-public interface OpzioneDAO {
+import java.util.List;
 
+import data.DataException;
+import data.model.Domanda;
+import data.model.Opzione;
+
+public interface OpzioneDAO {
 	
+	Opzione creaOpzione();
+	
+	//Domanda getDomanda();
+	
+	void storeOpzione();
+
+	Opzione getOpzione(String codice_domanda) throws DataException;
+
+	List<Opzione> getOpzioni(Domanda domanda) throws DataException;
 	
 }

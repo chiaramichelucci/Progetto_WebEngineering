@@ -1,5 +1,9 @@
 package data.model;
 
-public interface Opzione {
+import data.DataItem;
 
+public interface Opzione extends DataItem<String>{
+
+	public void setDomanda(Domanda domanda);
+	
 }
