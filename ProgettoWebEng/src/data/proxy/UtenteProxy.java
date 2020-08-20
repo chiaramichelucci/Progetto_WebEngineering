@@ -1,6 +1,7 @@
 package data.proxy;
 
 import data.DataItemProxy;
+import data.DataLayer;
 import data.impl.UtenteImpl;
 
 public class UtenteProxy extends UtenteImpl implements DataItemProxy {
@@ -10,6 +11,14 @@ public class UtenteProxy extends UtenteImpl implements DataItemProxy {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	protected DataLayer dataLayer;
+	
+	public UtenteProxy(DataLayer d) {
+		super(id, nome, cognome, email, password, tipo);
+		this.dataLayer = d;
+	}
+	
 	@Override
 	public boolean isModified() {
 		// TODO Auto-generated method stub

@@ -4,9 +4,9 @@ import data.model.Amministratore;
 
 public class AmministratoreImpl implements Amministratore{
 	 
-	private int id;
-	private String email;
-	private String password;
+	public static int id;
+	protected static String email;
+	protected static String password;
 	
 	public AmministratoreImpl(int id, String email, String password) {
 		this.setId(id);
@@ -22,7 +22,7 @@ public class AmministratoreImpl implements Amministratore{
 		this.id = id;
 	}
 
-	public String getEmail() {
+	public static String getEmail() {
 		return email;
 	}
 
@@ -30,7 +30,7 @@ public class AmministratoreImpl implements Amministratore{
 		this.email = email;
 	}
 	
-	public String getPassword() {
+	public static String getPassword() {
 		return password;
 	}
 

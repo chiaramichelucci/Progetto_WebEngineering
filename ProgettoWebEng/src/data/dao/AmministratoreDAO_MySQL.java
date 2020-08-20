@@ -14,6 +14,8 @@ import data.DataException;
 import data.DataLayer;
 import data.dao.AmministratoreDAO;
 import data.model.Amministratore;
+import data.model.Domanda;
+import data.model.Sondaggio;
 
 public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
     private PreparedStatement sAmministratoreByID;
@@ -30,11 +32,8 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
             super.init();
 
             sAmministratoreByID = connection.prepareStatement("SELECT * FROM amministratore WHERE ID=?");
-            sAmministratoreByIssue = connection.prepareStatement("SELECT ID AS amministratoreID FROM amministratore WHERE issueID=?");
+           
             sAmministratore = connection.prepareStatement("SELECT ID AS amministratoreID FROM amministratore");
-            sUnassignedAmministratore = connection.prepareStatement("SELECT ID AS amministratoreID FROM amministratore WHERE issueID IS NULL");
-
-
             iAmministratore = connection.prepareStatement("INSERT INTO amministratore (ID, email, password) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uAmministratore = connection.prepareStatement("UPDATE amministratore SET ID=?,email=?,password=? WHERE ID=? ");
             dAmministratore = connection.prepareStatement("DELETE FROM amministratore WHERE ID=?");
@@ -50,11 +49,7 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
         try {
 
             sAmministratoreByID.close();
-
-            sAmministratoreByIssue.close();
             sAmministratore.close();
-            sUnassignedAmministratore.close();
-
             iAmministratore.close();
             uAmministratore.close();
             dAmministratore.close();
@@ -84,14 +79,14 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
     }
 
     @Override
-    public Amministratore getAmministratore(int amministratore_key) throws DataException {
+    public Amministratore getAmministratore(int id_amministratore) throws DataException {
         Amministratore a = null;
 
-        if (dataLayer.getCache().has(Amministratore.class, amministratore_key)) {
-            a = dataLayer.getCache().get(Amministratore.class, amministratore_key);
+        if (dataLayer.getCache().has(Amministratore.class, id_amministratore)) {
+            a = dataLayer.getCache().get(Amministratore.class, id_amministratore);
         } else {
             try {
-                sAmministratoreByID.setInt(1, amministratore_key);
+                sAmministratoreByID.setInt(1, id_amministratore);
                 try (ResultSet rs = sAmministratoreByID.executeQuery()) {
                     if (rs.next()) {
                         a = createAmministratore(rs);
@@ -104,66 +99,28 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
         }
         return a;
     }
-
-    @Override
-    public List<Amministratore> getAmministratore(Amministratore amministratore) throws DataException {
-        List<Amministratore> result = new ArrayList();
-
-        try {
-            sAmministratoreByIssue.setInt(1, amministratore.getKey());            
-            try (ResultSet rs = sAmministratoresByIssue.executeQuery()) {
-                while (rs.next()) {
-                    result.add((Amministratore) getAmministratore(rs.getInt("amministratoreID")));
-                }
-            }
-        } catch (SQLException ex) {
-            throw new DataException("Unable to load amministratore by issue", ex);
-        }
-        return result;
+    
+    public void delete1 (Amministratore amministratore) {
+    	
     }
 
-    @Override
-    public List<Amministratore> getAmministratore() throws DataException {
-        List<Amministratore> result = new ArrayList();
+	@Override
+	public List<Amministratore> getAmministratore(Amministratore amministratore) throws DataException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-        try (ResultSet rs = sAmministratore.executeQuery()) {
-            while (rs.next()) {
-                result.add((Amministratore) getAmministratore(rs.getInt("amministratoreID")));
-            }
-        } catch (SQLException ex) {
-            throw new DataException("Unable to load amministratore", ex);
-        }
-        return result;
-    }
+	@Override
+	public List<Amministratore> getAmministratore() throws DataException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-
-    public List<Amministratore> getUnassignedAmministratore() throws DataException {
-        List<Amministratore> result = new ArrayList();
-
-        try (ResultSet rs = sUnassignedAmministratore.executeQuery()) {
-            while (rs.next()) {
-                result.add((Amministratore) getAmministratore(rs.getInt("amministratoreID")));
-            }
-        } catch (SQLException ex) {
-            throw new DataException("Unable to load unassigned amministratore", ex);
-        }
-        return result;
-    }
-
-    @Override
-    public void storeAmministratore(Amministratore amministratore) throws DataException {
-        try {
-            if (amministratore.getKey() != null && amministratore.getKey() > 0) { 
-                if (amministratore instanceof DataItemProxy && !((DataItemProxy) amministratore).isModified()) {
-                    return;
-                }
-
-            if (amministratore instanceof DataItemProxy) {
-                ((DataItemProxy) amministratore).setModified(false);
-            }
-        } 
-        }
-
+	@Override
+	public void storeAmministratore(Amministratore amministratore) throws DataException {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void save(Amministratore amministratore) {
@@ -182,3 +139,7 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
 		// TODO Auto-generated method stub
 		
 	}
+    
+    
+    
+}

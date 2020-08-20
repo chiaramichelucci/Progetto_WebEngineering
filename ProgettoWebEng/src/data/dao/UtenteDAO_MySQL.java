@@ -12,6 +12,7 @@ import data.proxy.UtenteProxy;
 import data.DataException;
 import data.DataLayer;
 import data.dao.UtenteDAO;
+import data.model.Amministratore;
 import data.model.Utente;
 
 public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
@@ -29,11 +30,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
             super.init();
 
             sUtenteByID = connection.prepareStatement("SELECT * FROM utente WHERE ID=?");
-            sUtenteByIssue = connection.prepareStatement("SELECT ID AS utenteID FROM utente WHERE issueID=?");
             sUtente = connection.prepareStatement("SELECT ID AS utenteID FROM utente");
-            sUnassignedUtente = connection.prepareStatement("SELECT ID AS utenteID FROM utente WHERE issueID IS NULL");
-
-
             iUtente = connection.prepareStatement("INSERT INTO utente (ID,nome, cognome, email, password, tipo) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uUtente = connection.prepareStatement("UPDATE utente SET ID=?,nome=?,cognome=?, email=?, password=?, tipo=? WHERE ID=? and email=?");
             dUtente = connection.prepareStatement("DELETE FROM utente WHERE ID=?");
@@ -49,11 +46,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
         try {
 
             sUtenteByID.close();
-
-            sUtenteByIssue.close();
             sUtente.close();
-            sUnassignedUtente.close();
-
             iUtente.close();
             uUtente.close();
             dUtente.close();
@@ -106,69 +99,33 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
         return u;
     }
 
-    @Override
-    public List<Utente> getUtente(Utente utente) throws DataException {
-        List<Utente> result = new ArrayList();
-
-        try {
-            sUtenteByIssue.setInt(1, utente.getKey());            
-            try (ResultSet rs = sUtenteByIssue.executeQuery()) {
-                while (rs.next()) {
-                    result.add((Utente) getUtente(rs.getInt("utenteID")));
-                }
-            }
-        } catch (SQLException ex) {
-            throw new DataException("Unable to load Utente by issue", ex);
-        }
-        return result;
+    public void delete1 (Utente utente) {
+    	
     }
 
-    @Override
-    public List<Utente> getUtente() throws DataException {
-        List<Utente> result = new ArrayList();
+	@Override
+	public List<Utente> getUtente(Utente utente) throws DataException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-        try (ResultSet rs = sUtente.executeQuery()) {
-            while (rs.next()) {
-                result.add((Utente) getUtente(rs.getInt("utenteID")));
-            }
-        } catch (SQLException ex) {
-            throw new DataException("Unable to load Utente", ex);
-        }
-        return result;
-    }
+	@Override
+	public List<Utente> getUtente() throws DataException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public List<Utente> getUnassignedUtente() throws DataException {
-        List<Utente> result = new ArrayList();
+	@Override
+	public List<Utente> getUnassignedUtente() throws DataException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-        try (ResultSet rs = sUnassignedUtente.executeQuery()) {
-            while (rs.next()) {
-                result.add((Utente) getUtente(rs.getInt("utenteID")));
-            }
-        } catch (SQLException ex) {
-            throw new DataException("Unable to load unassigned Utente", ex);
-        }
-        return result;
-    }
-
-    @Override
-    public void storeUtente(Utente utente) throws DataException {
-        try {
-            if (utente.getKey() != null && utente.getKey() > 0) { 
-                if (utente instanceof DataItemProxy && !((DataItemProxy) utente).isModified()) {
-                    return;
-                }
-
-            if (utente instanceof DataItemProxy) {
-                ((DataItemProxy) utente).setModified(false);
-            }
-        } catch (SQLException | OptimisticLockException ex) {
-            throw new DataException("Unable to store Utente", ex);
-        }
-    }
-
-
-}
+	@Override
+	public void storeUtente(Utente utente) throws DataException {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void save(Utente utente) {
@@ -187,3 +144,5 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 		// TODO Auto-generated method stub
 		
 	}
+	
+}
