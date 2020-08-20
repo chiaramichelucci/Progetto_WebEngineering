@@ -1,7 +1,9 @@
 package data.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,7 +136,7 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
         return result;
     }
 
-    @Override
+
     public List<Amministratore> getUnassignedAmministratore() throws DataException {
         List<Amministratore> result = new ArrayList();
 
@@ -161,3 +163,22 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
             }
         } 
         }
+
+
+	@Override
+	public void save(Amministratore amministratore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Amministratore amministratore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Amministratore amministratore) {
+		// TODO Auto-generated method stub
+		
+	}

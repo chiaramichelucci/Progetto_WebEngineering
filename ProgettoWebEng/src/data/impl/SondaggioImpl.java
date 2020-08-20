@@ -78,5 +78,17 @@ public class SondaggioImpl implements Sondaggio{
 		this.domande[index] = d;
 	}
 
+	@Override
+	public int getID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getKey() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	
 }

@@ -1,7 +1,9 @@
 package data.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import data.DAO;
@@ -87,7 +89,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
     	Utente u = null;
 
         if (dataLayer.getCache().has(Utente.class, utente_key)) {
-            s = dataLayer.getCache().get(Utente.class, utente_key);
+           u = dataLayer.getCache().get(Utente.class, utente_key);
         } else {
             try {
                 sUtenteByID.setInt(1, utente_key);
@@ -109,7 +111,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
         List<Utente> result = new ArrayList();
 
         try {
-            sUtenteByIssue.setInt(1, issue.getKey());            
+            sUtenteByIssue.setInt(1, utente.getKey());            
             try (ResultSet rs = sUtenteByIssue.executeQuery()) {
                 while (rs.next()) {
                     result.add((Utente) getUtente(rs.getInt("utenteID")));
@@ -167,3 +169,21 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 
 
 }
+
+	@Override
+	public void save(Utente utente) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Utente utente) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Utente utente) {
+		// TODO Auto-generated method stub
+		
+	}

@@ -1,7 +1,9 @@
 package data.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import data.DAO;
@@ -166,3 +168,21 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     }
 
 }
+
+	@Override
+	public void save(Sondaggio sondaggio) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Sondaggio sondaggio) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Sondaggio sondaggio) {
+		// TODO Auto-generated method stub
+		
+	}
