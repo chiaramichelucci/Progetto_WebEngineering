@@ -4,12 +4,12 @@ import data.model.Utente;
 
 //struttura di un Utente registrato.
 public class UtenteImpl implements Utente {
-	private int id;
-	private String nome;
-	private String cognome;
-	private String email;
-	private String password;
-	private String tipo;
+	protected static int id;
+	protected static String nome;
+	protected static String cognome;
+	protected static String email;
+	protected static String password;
+	protected static String tipo;
 	// costruttore
 	public UtenteImpl(int id, String nome, String cognome, String email, String password, String tipo) {;
 	setId(id);

@@ -4,12 +4,12 @@ import data.model.Sondaggio;
 
 public class SondaggioImpl implements Sondaggio{
 
-	private int id;
-	private String titolo;
-	private boolean disponibile;
-	private String modalita;
-	private int n_domande;
-	private DomandaImpl [] domande = new DomandaImpl[20];
+	protected static int id;
+	protected static String titolo;
+	protected static boolean disponibile;
+	protected static String modalita;
+	protected static int n_domande;
+	protected static DomandaImpl [] domande = new DomandaImpl[20];
 	
 	public SondaggioImpl(int id, String titolo, boolean disponibile, String modalita, int n_domande, DomandaImpl [] d) {
 		setId(id);
