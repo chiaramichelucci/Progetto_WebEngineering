@@ -2,12 +2,12 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
   
   <servlet>
-    <servlet-name>valori</servlet-name>
-    <servlet-class>controller.Valori</servlet-class>
+    <servlet-name>CreazioneSondaggio</servlet-name>
+    <servlet-class>controller.CreazioneSondaggio</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>valori</servlet-name>
+    <servlet-name>CreazioneSondaggio</servlet-name>
     <url-pattern>/valori</url-pattern>
   </servlet-mapping>
   
