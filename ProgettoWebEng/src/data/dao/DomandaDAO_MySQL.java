@@ -129,7 +129,8 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 		List<Domanda> result = new ArrayList();
 
         try {
-            domandeBySondaggio.setInt(1, sondaggio.getID());            
+            Sondaggio sondaggio = null;
+			domandeBySondaggio.setInt(1, sondaggio.getID());            
             try (ResultSet rs = domandeBySondaggio.executeQuery()) {
                 while (rs.next()) {
                     result.add((Domanda) getDomanda(rs.getString("codice")));
