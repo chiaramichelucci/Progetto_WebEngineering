@@ -1,9 +1,11 @@
 package data.model;
 
-public interface Sondaggio {
+import data.DataItem;
+
+public interface Sondaggio extends DataItem<Integer>{
 
 	int getID();
 
-	int getKey();
+	Integer getKey();
 
 }

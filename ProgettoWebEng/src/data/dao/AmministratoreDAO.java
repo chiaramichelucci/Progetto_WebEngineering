@@ -2,6 +2,7 @@ package data.dao;
 
 import java.util.List;
 import data.DataException;
+import data.DataItem;
 import data.model.Amministratore;
 
 public interface AmministratoreDAO {

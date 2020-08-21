@@ -1,8 +1,9 @@
 package data.impl;
 
+import data.DataItemImpl;
 import data.model.Sondaggio;
 
-public class SondaggioImpl implements Sondaggio{
+public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 
 	protected static int id;
 	protected static String titolo;
@@ -85,7 +86,7 @@ public class SondaggioImpl implements Sondaggio{
 	}
 
 	@Override
-	public int getKey() {
+	public Integer getKey() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

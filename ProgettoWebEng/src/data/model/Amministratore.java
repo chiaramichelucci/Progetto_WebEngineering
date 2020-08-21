@@ -1,7 +1,9 @@
 package data.model;
 
-public interface Amministratore {
+import data.DataItem;
 
-	int getKey();
+public interface Amministratore extends DataItem<Integer> {
+
+	Integer getKey();
 
 }

@@ -1,8 +1,9 @@
 package data.impl;
 
+import data.DataItemImpl;
 import data.model.Amministratore;
 
-public class AmministratoreImpl implements Amministratore{
+public class AmministratoreImpl extends DataItemImpl<Integer> implements Amministratore{
 	 
 	public static int id;
 	protected static String email;
@@ -39,7 +40,7 @@ public class AmministratoreImpl implements Amministratore{
 	}
 
 	@Override
-	public int getKey() {
+	public Integer getKey() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

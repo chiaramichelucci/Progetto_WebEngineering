@@ -126,8 +126,19 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 
 	@Override
 	public List<Domanda> getDomande() throws DataException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Domanda> result = new ArrayList();
+
+        try {
+            domandeBySondaggio.setInt(1, sondaggio.getID());            
+            try (ResultSet rs = domandeBySondaggio.executeQuery()) {
+                while (rs.next()) {
+                    result.add((Domanda) getDomanda(rs.getString("codice")));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataException("Unable to load articles by issue", ex);
+        }
+        return result;
 	}
 
 	@Override

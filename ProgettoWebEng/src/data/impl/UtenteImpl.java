@@ -1,9 +1,10 @@
 package data.impl;
 
+import data.DataItemImpl;
 import data.model.Utente;
 
 //struttura di un Utente registrato.
-public class UtenteImpl implements Utente {
+public class UtenteImpl extends DataItemImpl<Integer> implements Utente {
 	protected static int id;
 	protected static String nome;
 	protected static String cognome;
@@ -69,7 +70,7 @@ public class UtenteImpl implements Utente {
 	}
 
 	@Override
-	public int getKey() {
+	public Integer getKey() {
 		// TODO Auto-generated method stub
 		return 0;
 	}	
