@@ -1,8 +1,9 @@
 package data.model;
 
+import data.DataItem;
 
-public interface Utente {
+public interface Utente extends DataItem<Integer>{
 
-	int getKey();
+	Integer getKey();
 
 }
