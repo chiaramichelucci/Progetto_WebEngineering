@@ -15,5 +15,9 @@ public interface UtenteDAO {
     void save(Utente utente);	
     void update(Utente utente); 	
     void delete(Utente utente);
+	static boolean validate(String n, String p) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

@@ -17,7 +17,7 @@ import data.model.Utente;
 
 public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
     private PreparedStatement sUtenteByID;
-    private PreparedStatement sUtente, sUtenteByIssue, sUnassignedUtente;
+    private PreparedStatement sUtente;
     private PreparedStatement iUtente, uUtente, dUtente;
 
     public UtenteDAO_MySQL(DataLayer d) {

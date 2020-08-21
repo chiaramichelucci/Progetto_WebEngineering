@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import data.DataItem;
+import data.model.Amministratore;
+import data.model.Sondaggio;
+import data.model.Utente;
 
 public class DataCache {
 	public Map<Class, Map<Object, Object>> cache;
@@ -50,4 +53,24 @@ public class DataCache {
             cache.get(c).remove(key);
         }
     }
+
+	public Amministratore get(Class<Amministratore> class1, int id_amministratore) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void add(Class<Amministratore> class1, Amministratore a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void add(Class<Sondaggio> class1, Sondaggio s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void add(Class<Utente> class1, Utente u) {
+		// TODO Auto-generated method stub
+		
+	}
 }

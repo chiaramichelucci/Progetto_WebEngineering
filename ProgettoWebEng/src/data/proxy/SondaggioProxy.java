@@ -45,5 +45,9 @@ public class SondaggioProxy extends SondaggioImpl implements DataItemProxy {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void getSondaggio (int id_sondaggio) {
+		
+	}
 
 }

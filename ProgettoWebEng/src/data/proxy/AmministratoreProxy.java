@@ -34,5 +34,9 @@ public class AmministratoreProxy extends AmministratoreImpl implements DataItemP
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void setAmministratore(int id_amministratore) {
+		
+	}
 
 }
