@@ -8,4 +8,12 @@ public interface Sondaggio extends DataItem<Integer>{
 
 	Integer getKey();
 
+	String getTitolo();
+
+	boolean getDisponibile();
+
+	String getModalita();
+
+	String getUrl();
+
 }

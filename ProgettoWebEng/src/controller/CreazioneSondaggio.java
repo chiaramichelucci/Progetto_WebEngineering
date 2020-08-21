@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import data.DataException;
 import data.dao.SondaggioDataLayer;
 import data.model.Domanda;
+import data.model.Sondaggio;
 import security.SecurityLayer;
 
 @WebServlet("/creazione")
@@ -32,16 +33,19 @@ public class CreazioneSondaggio extends HttpServlet {
 	
 	}*/
 	
-	private void action_write(HttpServletRequest request, HttpServletResponse response, int article_key) throws IOException, ServletException {
-        try {
-        	List<Domanda> domande = ((SondaggioDataLayer) request.getAttribute("datalayer")).getDomandaDAO().getDomande();
-            request.setAttribute("domande", domande);
-        } catch (DataException ex) {}
+	private void action_write(HttpServletRequest request, HttpServletResponse response, int sondaggio_id) throws IOException, ServletException, DataException {
+        //Sondaggio sondaggio = ((SondaggioDataLayer)request.getAttribute("datalayer")).getSondaggioDAO().createSondaggio();
+		
+		Sondaggio sondaggio;
+		if(sondaggio_id > 0) {
+			sondaggio = ((SondaggioDataLayer)request.getAttribute("datalayer")).getSondaggioDAO().getSondaggio(sondaggio_id);
+		} else {
+			sondaggio = ((SondaggioDataLayer)request.getAttribute("datalayer")).getSondaggioDAO().createSondaggio();
+		}
+		
     }
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-
 		
-       
     }
 }

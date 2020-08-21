@@ -10,6 +10,7 @@ import data.DAO;
 import data.DataItemProxy;
 import data.proxy.SondaggioProxy;
 import data.DataException;
+import data.OptimisticLockException;
 import data.DataLayer;
 import data.dao.SondaggioDAO;
 import data.model.Amministratore;
@@ -32,8 +33,8 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             sSondaggioByID = connection.prepareStatement("SELECT * FROM sondaggio WHERE ID=?");
             
             sSondaggio = connection.prepareStatement("SELECT ID AS sondaggioID FROM sondaggio");
-            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (ID, titolo,disponibile, modalit�, URL, n_domande) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET ID=?,titolo=?,disponibile=?, modalit�=?, URL=?, n_domande=? WHERE ID=? and titolo=?");
+            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo,disponibile, modalit�, URL) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?,disponibile=?, modalit�=?, URL=? WHERE ID=?");
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
 
         } catch (SQLException ex) {
@@ -132,8 +133,39 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 
 	@Override
 	public void storeSondaggio(Sondaggio sondaggio) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			if(sondaggio.getKey() != null && sondaggio.getID() > 0) {//update
+				if(sondaggio instanceof DataItemProxy && ! ((DataItemProxy) sondaggio).isModified()) {
+					return;
+				}
+				uSondaggio.setString(1, sondaggio.getTitolo());
+				uSondaggio.setBoolean(2, sondaggio.getDisponibile());
+				uSondaggio.setString(3, sondaggio.getModalita());
+				uSondaggio.setString(4, sondaggio.getUrl());
+				uSondaggio.setInt(5, sondaggio.getID());
+			} else { //insert
+				iSondaggio.setString(1, sondaggio.getTitolo());
+				iSondaggio.setBoolean(2, sondaggio.getDisponibile());
+				iSondaggio.setString(3, sondaggio.getModalita());
+				iSondaggio.setString(4, sondaggio.getUrl());
+				if(iSondaggio.executeUpdate() == 1) {
+					try (ResultSet keys = iSondaggio.getGeneratedKeys()) {
+						if (keys.next()) {
+							int key = keys.getInt(1);
+							sondaggio.setKey(key);
+							dataLayer.getCache().add(Sondaggio.class, sondaggio);
+						}
+					}
+				}
+			}
+			
+			if (sondaggio instanceof DataItemProxy) {
+				((DataItemProxy) sondaggio).setModified(false);
+			}
 		
+		} catch (SQLException ex) {
+            throw new DataException("Non e possibile inserire il sondaggio", ex);
+         
+		}
 	}
-	
 }

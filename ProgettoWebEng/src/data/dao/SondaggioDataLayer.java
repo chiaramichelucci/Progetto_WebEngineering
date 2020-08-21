@@ -9,8 +9,11 @@ import data.dao.DomandaDAO;
 import data.dao.DomandaDAO_MySQL;
 import data.dao.OpzioneDAO;
 import data.dao.OpzioneDAO_MySQL;
+import data.dao.SondaggioDAO;
+import data.dao.SondaggioDAO_MySQL;
 import data.model.Domanda;
 import data.model.Opzione;
+import data.model.Sondaggio;
 import data.DataException;
 
 public class SondaggioDataLayer extends DataLayer {
@@ -21,6 +24,7 @@ public class SondaggioDataLayer extends DataLayer {
 
     @Override
     public void init() throws DataException {
+    	registerDAO(Sondaggio.class, new SondaggioDAO_MySQL(this));
         registerDAO(Domanda.class, new DomandaDAO_MySQL(this));
         registerDAO(Opzione.class, new OpzioneDAO_MySQL(this));
     }
@@ -33,5 +37,9 @@ public class SondaggioDataLayer extends DataLayer {
     public OpzioneDAO getOpzioneDAO() {
         return (OpzioneDAO) getDAO(Opzione.class);
     }
-	
+    
+    public SondaggioDAO getSondaggioDAO() {
+        return (SondaggioDAO) getDAO(Sondaggio.class);
+    }
+    	
 }
