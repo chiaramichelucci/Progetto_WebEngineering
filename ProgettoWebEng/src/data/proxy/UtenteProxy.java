@@ -35,5 +35,9 @@ public class UtenteProxy extends UtenteImpl implements DataItemProxy {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void getUtente (int id_utente) {
+		
+	}
 
 }
