@@ -6,16 +6,13 @@ import data.impl.DomandaImpl;
 import data.impl.SondaggioImpl;
 
 public class SondaggioProxy extends SondaggioImpl implements DataItemProxy {
-
-	public SondaggioProxy(int id, String titolo, boolean disponibile, String modalita, int n_domande, DomandaImpl[] d) {
-		super(id, titolo, disponibile, modalita, n_domande, d);
-		// TODO Auto-generated constructor stub
-	}
+	
+	protected boolean modified;
 
 	protected DataLayer dataLayer;
 	
 	public SondaggioProxy(DataLayer a) {
-		super(id, titolo, disponibile, modalita, n_domande, domande);
+		super();
 		this.dataLayer = a;
 	}
 

@@ -12,7 +12,7 @@ public interface OpzioneDAO {
 	
 	//Domanda getDomanda();
 	
-	void storeOpzione(Opzione opzione, Domanda domanda);
+	void storeOpzione(Opzione opzione, Domanda domanda) throws DataException;
 
 	Opzione getOpzione(String codice_domanda) throws DataException;
 

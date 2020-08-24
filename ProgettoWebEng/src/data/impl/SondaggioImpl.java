@@ -11,11 +11,11 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 	private String modalita;
 	private String url;
 	
-	public SondaggioImpl(String titolo, boolean disponibile, String modalita, String url) {
-		setTitolo(titolo);
-		setDisponibile(disponibile);
-		setModalita(modalita);
-		setUrl(url);
+	public SondaggioImpl() {
+		setTitolo("");
+		setDisponibile(false);
+		setModalita("");
+		setUrl("");
 	}
 
 	public int getId() {

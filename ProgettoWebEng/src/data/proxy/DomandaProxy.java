@@ -31,8 +31,8 @@ public class DomandaProxy extends DomandaImpl implements DataItemProxy {
 	}
 	
 	@Override
-    public void setCodice(String codice) {
-        super.setCodice(codice);
+    public void setID(int id) {
+        super.setID(id);
         this.modified = true;
     }
 	

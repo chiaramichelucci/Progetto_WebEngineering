@@ -11,7 +11,7 @@ import data.DataLayer;
 public class OpzioneProxy extends OpzioneImpl implements DataItemProxy {
 
 	protected boolean modified;
-    protected String codiceDomanda = "";
+    protected int codiceDomanda = 0;
     
     protected DataLayer dataLayer;
     
@@ -20,18 +20,18 @@ public class OpzioneProxy extends OpzioneImpl implements DataItemProxy {
         //dependency injection
         this.dataLayer = d;
         this.modified = false;
-        this.codiceDomanda = "";
+        this.codiceDomanda = 0;
     }
     
     //funzione mancante
     
-    public void setDomanda(String string) {
-        super.setDomanda(string);
+    public void setID(int id) {
+        super.setID(id);
         this.modified = true;
     }
     
-    public void setOpzione(String testo) {
-    	super.setOpzione(testo);
+    public void setTesto(String testo) {
+    	super.setTesto(testo);
     	this.modified = true;
     }
     

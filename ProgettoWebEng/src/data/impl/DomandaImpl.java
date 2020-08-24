@@ -5,9 +5,9 @@ import data.model.Domanda;
 import data.model.Sondaggio;
 
 
-public class DomandaImpl extends DataItemImpl<String> implements Domanda{
+public class DomandaImpl extends DataItemImpl<Integer> implements Domanda{
 
-	private String codice;
+	private int id;
 	private String testo;
 	private String nota;
 	private String tipo;
@@ -16,19 +16,18 @@ public class DomandaImpl extends DataItemImpl<String> implements Domanda{
 	
 	public DomandaImpl () {
 		super();
-		setCodice("");
 		setTesto("");
 		setNota("");
 		setObbligatoria(false);
 		setSondaggio(null);
 	}
 
-	public String getCodice() {
-		return codice;
+	public int getID() {
+		return id;
 	}
 
-	public void setCodice(String codice) {
-		this.codice = codice;
+	public void setID(int id) {
+		this.id = id;
 	}
 
 	public String getTesto() {

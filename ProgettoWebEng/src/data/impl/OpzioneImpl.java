@@ -8,27 +8,29 @@ import data.model.Opzione;
 
 public class OpzioneImpl extends DataItemImpl<String> implements Opzione{
 
-	private String domanda;
+	private int domanda;
 	private String testoOpzione;
 	
 	public OpzioneImpl() {
-		setDomanda(domanda);
-		setOpzione(testoOpzione);
+		setID(domanda);
+		setTesto(testoOpzione);
 	}
 	
-	public String getDomanda() {
-		return domanda;
+	public int getID() {
+		return this.domanda;
 	}
-	public void setDomanda(String stringa) {
-		this.domanda = stringa;
+	public void setID(int id_domanda) {
+		this.domanda = id_domanda;
 	}
-	
-	public String getOpzione() {
+
+	@Override
+	public void setTesto(String testo) {
+		this.testoOpzione = testo;
+	}
+
+	@Override
+	public String getTesto() {
 		return this.testoOpzione;
 	}
 
-	public void setOpzione(String o) {
-			this.testoOpzione= o;
-	}
-		
 }
