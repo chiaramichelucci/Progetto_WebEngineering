@@ -4,15 +4,21 @@
   <servlet>
     <servlet-name>creaSondaggioServlet</servlet-name>
     <servlet-class>controller.CreazioneSondaggio</servlet-class>
-    <servlet-name>Login</servlet-name>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>Login</servlet-name>
     <servlet-class>controller.Login</servlet-class>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>creaSondaggioServlet</servlet-name>
     <url-pattern>/valori</url-pattern>
-    <servlet-name>Login</servlet-name>
-    <url-pattern>/valori</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Login</servlet-name>
+    <url-pattern>/logon</url-pattern>
   </servlet-mapping>
   
 </web-app>
