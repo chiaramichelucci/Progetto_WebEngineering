@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import data.DAO;
 import data.DataLayer;
@@ -15,6 +13,7 @@ import data.model.Domanda;
 import data.model.Opzione;
 import data.proxy.OpzioneProxy;
 import data.DataException;
+import data.DataItemProxy;
 
 public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 
@@ -70,8 +69,8 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     private OpzioneProxy creaOpzione(ResultSet rs) throws DataException {
         OpzioneProxy a = creaOpzione();
         try {
-            a.setDomanda(rs.getString("codice_domanda"));
-            a.setOpzione(rs.getString("testo"));
+            a.setID(rs.getInt("id_domanda"));
+            a.setTesto(rs.getString("testo"));
         } catch (SQLException ex) {
             throw new DataException("Unable to create article object form ResultSet", ex);
         }
@@ -104,7 +103,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
         List<Opzione> result = new ArrayList();
 
         try {
-            testiOp.setString(1, domanda.getCodice());            
+            testiOp.setInt(1, domanda.getID());            
             try (ResultSet rs = testiOp.executeQuery()) {
                 while (rs.next()) {
                     result.add((Opzione) getOpzione(rs.getString("codiceDomanda")));
@@ -115,12 +114,34 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
         }
         return result;
     }
- 
-    // funzione store
 
 	@Override
-	public void storeOpzione(Opzione opzione, Domanda domanda) {
+	public void storeOpzione(Opzione opzione, Domanda domanda) throws DataException {
+		try {
+			if(opzione.getKey() != null && opzione.getID() > 0) {
+				if(opzione instanceof DataItemProxy && ! ((DataItemProxy) opzione).isModified()) {
+					return;
+				} //update
+				uOpzione.setString(1, opzione.getTesto());
+				uOpzione.setString(2, domanda.getTesto());
+			} else { //insert
+				iOpzione.setInt(1, domanda.getID());
+				iOpzione.setNString(2, opzione.getTesto());
+				if (iOpzione.executeUpdate() == 1) {
+					try (ResultSet keys = iOpzione.getGeneratedKeys()) {
+						if (keys.next()) {
+							String key = keys.getString("");
+							domanda.setKey(0);
+							dataLayer.getCache().add(Opzione.class, opzione);
+						}
+					}
+				}
+			}
+		} catch (SQLException ex) {
+			throw new DataException("Non e possibilie inserire la opzione", ex);
 		
+		}
+	
 	}
 	
 }

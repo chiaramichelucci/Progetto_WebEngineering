@@ -72,7 +72,7 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     private DomandaProxy creaDomanda(ResultSet rs) throws DataException {
         DomandaProxy a = creaDomanda();
         try {
-            a.setCodice(rs.getString("codice"));
+            a.setID(rs.getInt("id"));
             a.setTesto(rs.getString("testo"));
             a.setNota(rs.getString("nota"));
             a.setObbligatoria(rs.getBoolean("obbligatorio"));
@@ -145,19 +145,19 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 	@Override
 	public void storeDomanda(Domanda domanda, Sondaggio sondaggio) throws DataException {
 		try {
-			if(domanda.getKey() != null && domanda.getCodice() == "") {
+			if(domanda.getKey() != null && domanda.getID() > 0) {
 				if(domanda instanceof DataItemProxy && ! ((DataItemProxy) domanda).isModified()) {
 					return;
 				} //update
-				uDomanda.setString(1, domanda.getCodice());
+				uDomanda.setInt(1, domanda.getID());
 				uDomanda.setString(2, domanda.getTesto());
 				uDomanda.setString(3, domanda.getNota());
 				uDomanda.setString(4, domanda.getTipo());
 				uDomanda.setBoolean(5, domanda.getObbligatoria());
 				uDomanda.setInt(6, sondaggio.getID());
-				uDomanda.setString(7, domanda.getCodice());
+				uDomanda.setInt(7, domanda.getID());
 			} else { //insert
-				iDomanda.setString(1, domanda.getCodice());
+				iDomanda.setInt(1, domanda.getID());
 				iDomanda.setString(2, domanda.getTesto());
 				iDomanda.setString(3, domanda.getNota());
 				iDomanda.setString(4, domanda.getTipo());
@@ -167,7 +167,7 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 					try (ResultSet keys = iDomanda.getGeneratedKeys()) {
 						if (keys.next()) {
 							String key = keys.getString("");
-							domanda.setKey("");
+							domanda.setKey(0);
 							dataLayer.getCache().add(Domanda.class, domanda);
 						}
 					}

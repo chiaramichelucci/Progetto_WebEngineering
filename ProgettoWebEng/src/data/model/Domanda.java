@@ -2,11 +2,11 @@ package data.model;
 
 import data.DataItem;
 
-public interface Domanda extends DataItem<String>{
+public interface Domanda extends DataItem<Integer>{
 	
-	void setCodice(String codice);
+	void setID(int id);
 	
-	String getCodice();
+	int getID();
 	
 	Sondaggio getSondaggio();
 
