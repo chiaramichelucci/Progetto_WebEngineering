@@ -22,6 +22,7 @@ function addChoiceQuestion(d, s, l, o){
     input.name = 'domanda';
     input.id = d;
     input.className = 'textField';
+    input.placeholder = 'Domanda';
     var buttone = document.createElement('input');
     buttone.value = 'Aggiungi opzione';
     buttone.id = 'addChoice';
@@ -29,7 +30,9 @@ function addChoiceQuestion(d, s, l, o){
     var nota = document.createElement('input');
     nota.id = l;
     nota.name = 'nota';
+    nota.className = 'textField';
     nota.type = 'text'; 
+    nota.placeholder = 'Nota';
     container.appendChild(testo);
     container.appendChild(selectList);
     container.appendChild(buttone);
@@ -55,6 +58,7 @@ function addChoiceQuestion(d, s, l, o){
             option.id = id + '1';
             option.name = o + 'opzione';
             option.className = 'choiceField';
+            option.placeholder = 'Opzione';
             container.appendChild(document.createElement('br'));
             container.appendChild(option);
         } else {
@@ -71,7 +75,7 @@ function addChoiceQuestion(d, s, l, o){
             option.id = idem;
             option.name = o + 'opzione';
             option.className = 'choiceField';
-            //return option;
+            option.placeholder = 'Opzione';
             container.appendChild(document.createElement('br'));
             container.appendChild(option);
         }

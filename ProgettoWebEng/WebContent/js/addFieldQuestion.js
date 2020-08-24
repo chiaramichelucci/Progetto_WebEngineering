@@ -28,11 +28,14 @@ function addTextQuestion(n, s, l){
     input.type = 'text';
     input.name = 'domanda';
     input.id = n;
+    input.placeholder = 'Domanda';
     input.className = 'textField';
     var nota = document.createElement('input');
     nota.id = l;
     nota.name = 'nota';
     nota.type = 'text'; 
+    nota.placeholder = 'Nota';
+    nota.className = 'textField';
     container.appendChild(testo);
     container.appendChild(selectList);
     for (var i = 0; i < tipo.length; i++) {

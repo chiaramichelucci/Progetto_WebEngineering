@@ -10,6 +10,7 @@ public class DomandaImpl extends DataItemImpl<String> implements Domanda{
 	private String codice;
 	private String testo;
 	private String nota;
+	private String tipo;
 	private boolean obbligatoria;
 	private Sondaggio sondaggio;
 	
@@ -62,6 +63,11 @@ public class DomandaImpl extends DataItemImpl<String> implements Domanda{
 	@Override
 	public boolean getObbligatoria() {
 		return obbligatoria;
+	}
+
+	@Override
+	public String getTipo() {
+		return this.tipo;
 	}
 
 }

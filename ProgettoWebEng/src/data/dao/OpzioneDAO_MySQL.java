@@ -119,8 +119,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     // funzione store
 
 	@Override
-	public void storeOpzione() {
-		// TODO Auto-generated method stub
+	public void storeOpzione(Opzione opzione, Domanda domanda) {
 		
 	}
 	

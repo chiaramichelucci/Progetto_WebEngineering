@@ -35,8 +35,8 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
             cDomandaBySondaggio = connection.prepareStatement("SELECT codice AS codiceDomanda FROM domanda WHERE sondaggio=?");
             cDomande = connection.prepareStatement("SELECT codice AS codiceDomanda FROM domanda");
 
-            iDomanda = connection.prepareStatement("INSERT INTO domanda (codice,text,nota,obbligatorio,sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uDomanda = connection.prepareStatement("UPDATE domanda SET codice=?,text=?,nota=?,obbligatorio=?, sondaggio=? WHERE codice=? and version=?");
+            iDomanda = connection.prepareStatement("INSERT INTO domanda (codice,text,nota,tipo,obbligatorio,sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uDomanda = connection.prepareStatement("UPDATE domanda SET codice=?,testo=?,nota=?,tipo=?,obbligatoria=?, sondaggio=? WHERE codice=?");
             dDomanda = connection.prepareStatement("DELETE FROM domanda WHERE codice=?");
 
         } catch (SQLException ex) {
@@ -143,8 +143,39 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 	}
 
 	@Override
-	public void storeDomanda(Domanda domanda) throws DataException {
-		// TODO Auto-generated method stub
+	public void storeDomanda(Domanda domanda, Sondaggio sondaggio) throws DataException {
+		try {
+			if(domanda.getKey() != null && domanda.getCodice() == "") {
+				if(domanda instanceof DataItemProxy && ! ((DataItemProxy) domanda).isModified()) {
+					return;
+				} //update
+				uDomanda.setString(1, domanda.getCodice());
+				uDomanda.setString(2, domanda.getTesto());
+				uDomanda.setString(3, domanda.getNota());
+				uDomanda.setString(4, domanda.getTipo());
+				uDomanda.setBoolean(5, domanda.getObbligatoria());
+				uDomanda.setInt(6, sondaggio.getID());
+				uDomanda.setString(7, domanda.getCodice());
+			} else { //insert
+				iDomanda.setString(1, domanda.getCodice());
+				iDomanda.setString(2, domanda.getTesto());
+				iDomanda.setString(3, domanda.getNota());
+				iDomanda.setString(4, domanda.getTipo());
+				iDomanda.setBoolean(5, domanda.getObbligatoria());
+				iDomanda.setInt(6, sondaggio.getID());
+				if (iDomanda.executeUpdate() == 1) {
+					try (ResultSet keys = iDomanda.getGeneratedKeys()) {
+						if (keys.next()) {
+							String key = keys.getString("");
+							domanda.setKey("");
+							dataLayer.getCache().add(Domanda.class, domanda);
+						}
+					}
+				}
+			}
+		} catch (SQLException ex) {
+			throw new DataException("Non e possibilie inserire la domanda", ex);
+		}
 		
 	}
 

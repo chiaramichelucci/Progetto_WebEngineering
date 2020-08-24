@@ -13,7 +13,7 @@ public interface DomandaDAO {
 	Domanda getDomanda(String domanda_key) throws DataException;
 	List<Domanda> getDomande(Sondaggio sondaggio) throws DataException;
 	List<Domanda> getDomande() throws DataException;
-	void storeDomanda(Domanda domanda) throws DataException;
+	void storeDomanda(Domanda domanda, Sondaggio sondaggio) throws DataException;
 	//void update(Domanda ddomanda); 	
 	void delete(Domanda domanda);
 	Sondaggio getSondagio(int idSondaggio) throws DataException;
