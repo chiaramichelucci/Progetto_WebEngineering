@@ -22,7 +22,6 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 		String [] domande = req.getParameterValues("domanda");
 		String [] tipiDomande = req.getParameterValues("tipo");
 		String [] noteDomande = req.getParameterValues("nota");
-		String [] obbligatorie = req.getParameterValues("obbligatoria");
 		
 					
 		Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().createSondaggio();
@@ -32,15 +31,16 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 			 ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().storeSondaggio(sondaggio);
 			 for (int i = 0; i<domande.length; i++) {
 				 Domanda domanda = ((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().createDomanda();
-				 if(domanda != null && domande[i] != null && tipiDomande[i] != null && noteDomande[i] != null && obbligatorie[i] != null) {
+				 if(domanda != null && domande[i] != null && tipiDomande[i] != null && noteDomande[i] != null) {
 					 domanda.setTesto(domande[i]);
 					 domanda.setTipo(tipiDomande[i]);
 					 domanda.setNota(noteDomande[i]);
-					 if(obbligatorie[i] == "Obbligatoria") {
-						 domanda.setObbligatoria(true);
-					 } else {
-						 domanda.setObbligatoria(false);
-					 }
+						 String obbligatorie = req.getParameter("domanda-"+i+"obb");
+						 if(obbligatorie == "Obbligatoria") {
+							 domanda.setObbligatoria(true);
+						 } else {
+							 domanda.setObbligatoria(false);
+						 }
 					 ((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().storeDomanda(domanda, sondaggio);
 				 } if(tipiDomande[i] == "radio" || tipiDomande[i] == "checkbox") {
 					 	String [] opzioni = req.getParameterValues(i+"opzione");

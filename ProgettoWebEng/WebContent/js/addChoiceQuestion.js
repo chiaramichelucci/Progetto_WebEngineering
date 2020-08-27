@@ -20,7 +20,7 @@ function addChoiceQuestion(d, s, l, o){
     var obb = document.createElement('input');
     obb.type = 'radio';
     obb.id = d.concat('obb');
-    obb.name = 'obbligatoria';
+    obb.name = d.concat('obb');
     obb.value = 'Si';
     var obbLabel = document.createElement('label');
     obbLabel.htmlFor = d.concat('obb');
@@ -28,7 +28,7 @@ function addChoiceQuestion(d, s, l, o){
     var obbNo = document.createElement('input');
     obbNo.type = 'radio';
     obbNo.id = d.concat('obbNo');
-    obbNo.name = 'obbligatoria';
+    obbNo.name = d.concat('obb');
     obbNo.value = 'No';
     var obbLabelNo = document.createElement('label');
     obbLabelNo.htmlFor = d.concat('obbNo');

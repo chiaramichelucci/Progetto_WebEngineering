@@ -26,7 +26,7 @@ function addTextQuestion(n, s, l){
     var obb = document.createElement('input');
     obb.type = 'radio';
     obb.id = n.concat('obb');
-    obb.name = 'obbligatoria';
+    obb.name = n.concat('obb');
     obb.value = 'Si';
     var obbLabel = document.createElement('label');
     obbLabel.htmlFor = n.concat('obb');
@@ -34,7 +34,7 @@ function addTextQuestion(n, s, l){
     var obbNo = document.createElement('input');
     obbNo.type = 'radio';
     obbNo.id = n.concat('obbNo');
-    obbNo.name = 'obbligatoria';
+    obbNo.name = n.concat('obb');
     obbNo.value = 'No';
     var obbLabelNo = document.createElement('label');
     obbLabelNo.htmlFor = n.concat('obbNo');

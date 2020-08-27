@@ -10,7 +10,7 @@
 
     <div class="sidenav">
       <img src="img/Logo2.png" />
-      <a href="crea.html">Crea Sondaggio</a>
+      <a href="crea.jsp">Crea Sondaggio</a>
       <a href="#">Partecipa ad un Sondaggio</a>
       <a href="#">Sondaggi disponibili</a>
       <a href="#">I miei Sondaggi</a>
