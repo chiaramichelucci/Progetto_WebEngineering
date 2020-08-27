@@ -16,7 +16,7 @@ public interface AmministratoreDAO {
     void update(Amministratore amministratore); 	
     void delete(Amministratore amministratore);
 	static boolean validate(String n, String p) {
-		// TODO Auto-generated method stub
 		return false;
 	}
+	
 }

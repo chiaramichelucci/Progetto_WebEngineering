@@ -9,7 +9,7 @@ import data.DataException;
 
 public interface DomandaDAO {
 	
-	Domanda creaDomanda();
+	Domanda createDomanda();
 	Domanda getDomanda(String domanda_key) throws DataException;
 	List<Domanda> getDomande(Sondaggio sondaggio) throws DataException;
 	List<Domanda> getDomande() throws DataException;

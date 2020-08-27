@@ -23,6 +23,22 @@ function addTextQuestion(n, s, l){
     container.id = 'domandaDiv';
     container.className = 'domandaDiv';
     var testo = document.createElement('h4');
+    var obb = document.createElement('input');
+    obb.type = 'radio';
+    obb.id = n.concat('obb');
+    obb.name = 'obbligatoria';
+    obb.value = 'Si';
+    var obbLabel = document.createElement('label');
+    obbLabel.htmlFor = n.concat('obb');
+    obbLabel.innerHTML = "Obbligatoria";
+    var obbNo = document.createElement('input');
+    obbNo.type = 'radio';
+    obbNo.id = n.concat('obbNo');
+    obbNo.name = 'obbligatoria';
+    obbNo.value = 'No';
+    var obbLabelNo = document.createElement('label');
+    obbLabelNo.htmlFor = n.concat('obbNo');
+    obbLabelNo.innerHTML = "Opzionale";
     testo.innerHTML = 'Inserisci qui la domanda:';
     var input = document.createElement('input');
     input.type = 'text';
@@ -37,6 +53,10 @@ function addTextQuestion(n, s, l){
     nota.placeholder = 'Nota';
     nota.className = 'textField';
     container.appendChild(testo);
+    container.appendChild(obb);
+    container.appendChild(obbLabel);
+    container.appendChild(obbNo);
+    container.appendChild(obbLabelNo);
     container.appendChild(selectList);
     for (var i = 0; i < tipo.length; i++) {
         var option = document.createElement("option");

@@ -33,8 +33,8 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             sSondaggioByID = connection.prepareStatement("SELECT * FROM sondaggio WHERE ID=?");
             
             sSondaggio = connection.prepareStatement("SELECT ID AS sondaggioID FROM sondaggio");
-            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo,disponibile, modalit�, URL) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?,disponibile=?, modalit�=?, URL=? WHERE ID=?");
+            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo,disponibile, modalita, URL) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?,disponibile=?, modalit�=? WHERE ID=?");
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
 
         } catch (SQLException ex) {
@@ -133,6 +133,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 
 	@Override
 	public void storeSondaggio(Sondaggio sondaggio) throws DataException {
+		System.out.print("Sono arrivato qui 2");
 		try {
 			if(sondaggio.getKey() != null && sondaggio.getID() > 0) {//update
 				if(sondaggio instanceof DataItemProxy && ! ((DataItemProxy) sondaggio).isModified()) {
@@ -141,13 +142,13 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 				uSondaggio.setString(1, sondaggio.getTitolo());
 				uSondaggio.setBoolean(2, sondaggio.getDisponibile());
 				uSondaggio.setString(3, sondaggio.getModalita());
-				uSondaggio.setString(4, sondaggio.getUrl());
-				uSondaggio.setInt(5, sondaggio.getID());
+				//uSondaggio.setString(4, sondaggio.getUrl());
+				uSondaggio.setInt(4, sondaggio.getID());
 			} else { //insert
 				iSondaggio.setString(1, sondaggio.getTitolo());
 				iSondaggio.setBoolean(2, sondaggio.getDisponibile());
 				iSondaggio.setString(3, sondaggio.getModalita());
-				iSondaggio.setString(4, sondaggio.getUrl());
+				iSondaggio.setString(4, "");
 				if(iSondaggio.executeUpdate() == 1) {
 					try (ResultSet keys = iSondaggio.getGeneratedKeys()) {
 						if (keys.next()) {

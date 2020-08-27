@@ -8,7 +8,7 @@ import data.model.Opzione;
 
 public interface OpzioneDAO {
 	
-	Opzione creaOpzione();
+	Opzione createOpzione();
 	
 	//Domanda getDomanda();
 	

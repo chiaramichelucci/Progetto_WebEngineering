@@ -3,8 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      
-<sql:query var="utenti" dataSource="jdbc/pollweb">
-    select nome, cognome, email, password from utente;
+<sql:query var="sondaggi" dataSource="jdbc/pollweb">
+    select id, titolo, disponibile, modalita from sondaggio;
 </sql:query>
 
 <!DOCTYPE html>
@@ -16,19 +16,19 @@
 <body>
 
  <table border="1" cellpadding="5">
-            <caption><h2>List of utenti</h2></caption>
+            <caption><h2>List of sondaggi</h2></caption>
             <tr>
-                <th>Name</th>
-                <th>Cognome</th>
-                <th>Email</th>
-                <th>Password</th>
+                <th>id</th>
+                <th>titolo</th>
+                <th>modalita</th>
+                <th>disponibile</th>
             </tr>
-            <c:forEach var="user" items="${utenti.rows}">
+            <c:forEach var="sondaggio" items="${sondaggi.rows}">
                 <tr>
-                    <td><c:out value="${user.nome}" /></td>
-                    <td><c:out value="${user.cognome}" /></td>
-                    <td><c:out value="${user.email}" /></td>
-                    <td><c:out value="${user.password}" /></td>
+                    <td><c:out value="${sondaggio.id}" /></td>
+                    <td><c:out value="${sondaggio.titolo}" /></td>
+                    <td><c:out value="${sondaggio.disponibile}" /></td>
+                    <td><c:out value="${sondaggio.modalita}" /></td>
                 </tr>
             </c:forEach>
         </table>

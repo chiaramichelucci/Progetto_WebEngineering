@@ -9,14 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import data.DataException;
 import data.dao.SondaggioDataLayer;
 
 public abstract class SondaggioBaseController extends HttpServlet {
 
-	 @Resource(name = "")
+	 @Resource(name = "jdbc/pollweb")
 	    private DataSource ds;
 	    
-	    protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException;
+	    protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, DataException;
 
 	    private void processBaseRequest(HttpServletRequest request, HttpServletResponse response) {
 	        //WARNING: never declare DB-related objects including references to Connection and Statement (as our data layer)
@@ -31,7 +32,7 @@ public abstract class SondaggioBaseController extends HttpServlet {
 	        } catch (Exception ex) {
 	            ex.printStackTrace(); //for debugging only
 	            //(new FailureResult(getServletContext())).activate(
-	                   // (ex.getMessage() != null || ex.getCause() == null) ? ex.getMessage() : ex.getCause().getMessage(), request, response);
+	                    //(ex.getMessage() != null || ex.getCause() == null) ? ex.getMessage() : ex.getCause().getMessage(), request, response);
 	        }
 	    }
 

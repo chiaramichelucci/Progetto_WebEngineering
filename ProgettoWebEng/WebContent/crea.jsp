@@ -26,11 +26,11 @@
       <font face="Verdana" size="3" color="#11a69c">
         <p align=”center” >
           <div class="formAdd">
-            <form name="domande" value="domande" action="" id="formDomande">
+            <form name="domande" value="domande" action="CreazioneSondaggio" method="POST" id="formDomande">
               <div class="buttonAdd">
                 <input type="button" name="addText" value="Add Text Question" id="addText" onclick="addFieldQuestion()" class="addButtons" />
                 <input type="button" name="addChoice" value="Add Checkbox Question" id="addChoice" onclick="addMultiQuestion()" class="addButtons" /><br />
-                <input type="submit" id="submitButton" class="submitButton" name="submit" value="Crea Sondaggio" />
+                <!--<input type="submit" id="submitButton" class="submitButton" name="submit" value="Crea Sondaggio" />-->
               </div>
               <div class="sondaggioInfo">
                 <h3>Inserisci qui le informazioni del sondaggio</h3>
@@ -40,6 +40,7 @@
                 <input type="radio" id="modalitaS" name="modalitaS" value="Aperto" />
                 <label for="modalitaS">Aperto</label>
               </div>
+              <input type="submit" id="submitButton" class="submitButton" name="submit" value="Crea Sondaggio" />
             </form>
           </div>
        </p>

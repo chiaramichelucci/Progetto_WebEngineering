@@ -33,7 +33,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
             testoOp = connection.prepareStatement("SELECT codice_Domanda AS codiceDomanda FROM opzione WHERE codice_domanda=?");
             testiOp = connection.prepareStatement("SELECT codice_domanda AS codiceDomanda FROM opzione WHERE codice_domanda=?");
             
-            iOpzione = connection.prepareStatement("INSERT INTO opzione (codice_domanda,testo) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
+            iOpzione = connection.prepareStatement("INSERT INTO opzione (id_domanda,testo) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
             uOpzione = connection.prepareStatement("UPDATE opzione SET testo=? WHERE codice_domanda=?");
             dOpzione = connection.prepareStatement("DELETE FROM opzione WHERE codice_domanda=?");
 
@@ -61,13 +61,13 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     }
 	
 	@Override
-    public OpzioneProxy creaOpzione() {
+    public OpzioneProxy createOpzione() {
         return new OpzioneProxy(getDataLayer());
     }
 
     //helper
-    private OpzioneProxy creaOpzione(ResultSet rs) throws DataException {
-        OpzioneProxy a = creaOpzione();
+    private OpzioneProxy createOpzione(ResultSet rs) throws DataException {
+        OpzioneProxy a = createOpzione();
         try {
             a.setID(rs.getInt("id_domanda"));
             a.setTesto(rs.getString("testo"));
@@ -87,7 +87,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
                 //dOpzioni.setInt(1, codice_domanda);
                 try (ResultSet rs = dOpzioni.executeQuery()) {
                     if (rs.next()) {
-                        a = creaOpzione(rs);
+                        a = createOpzione(rs);
                         dataLayer.getCache().add(Opzione.class, a);
                     }
                 }
@@ -117,13 +117,14 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 
 	@Override
 	public void storeOpzione(Opzione opzione, Domanda domanda) throws DataException {
+		System.out.print("Sono arrivato qui 4");
 		try {
 			if(opzione.getKey() != null && opzione.getID() > 0) {
 				if(opzione instanceof DataItemProxy && ! ((DataItemProxy) opzione).isModified()) {
 					return;
 				} //update
 				uOpzione.setString(1, opzione.getTesto());
-				uOpzione.setString(2, domanda.getTesto());
+				uOpzione.setInt(2, domanda.getID());
 			} else { //insert
 				iOpzione.setInt(1, domanda.getID());
 				iOpzione.setNString(2, opzione.getTesto());

@@ -35,9 +35,9 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
             cDomandaBySondaggio = connection.prepareStatement("SELECT codice AS codiceDomanda FROM domanda WHERE sondaggio=?");
             cDomande = connection.prepareStatement("SELECT codice AS codiceDomanda FROM domanda");
 
-            iDomanda = connection.prepareStatement("INSERT INTO domanda (codice,text,nota,tipo,obbligatorio,sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uDomanda = connection.prepareStatement("UPDATE domanda SET codice=?,testo=?,nota=?,tipo=?,obbligatoria=?, sondaggio=? WHERE codice=?");
-            dDomanda = connection.prepareStatement("DELETE FROM domanda WHERE codice=?");
+            iDomanda = connection.prepareStatement("INSERT INTO domanda (text,nota,tipo,obbligatorio,sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uDomanda = connection.prepareStatement("UPDATE domanda SET testo=?,nota=?,tipo=?,obbligatoria=?, sondaggio=? WHERE id=?");
+            dDomanda = connection.prepareStatement("DELETE FROM domanda WHERE id=?");
 
         } catch (SQLException ex) {
             throw new DataException("Error initializing newspaper data layer", ex);
@@ -65,12 +65,12 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     }
     
     @Override
-    public DomandaProxy creaDomanda() {
+    public DomandaProxy createDomanda() {
         return new DomandaProxy(getDataLayer());
     }
 
-    private DomandaProxy creaDomanda(ResultSet rs) throws DataException {
-        DomandaProxy a = creaDomanda();
+    private DomandaProxy createDomanda(ResultSet rs) throws DataException {
+        DomandaProxy a = createDomanda();
         try {
             a.setID(rs.getInt("id"));
             a.setTesto(rs.getString("testo"));
@@ -92,7 +92,7 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
                 cDomandaBySondaggio.setString(1, codice);
                 try (ResultSet rs = cDomandaBySondaggio.executeQuery()) {
                     if (rs.next()) {
-                        a = creaDomanda(rs);
+                        a = createDomanda(rs);
                         dataLayer.getCache().add(Domanda.class, a);
                     }
                 }
@@ -144,25 +144,24 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 
 	@Override
 	public void storeDomanda(Domanda domanda, Sondaggio sondaggio) throws DataException {
+		System.out.print("Sono arrivato qui 3");
 		try {
 			if(domanda.getKey() != null && domanda.getID() > 0) {
 				if(domanda instanceof DataItemProxy && ! ((DataItemProxy) domanda).isModified()) {
 					return;
 				} //update
-				uDomanda.setInt(1, domanda.getID());
-				uDomanda.setString(2, domanda.getTesto());
-				uDomanda.setString(3, domanda.getNota());
-				uDomanda.setString(4, domanda.getTipo());
-				uDomanda.setBoolean(5, domanda.getObbligatoria());
-				uDomanda.setInt(6, sondaggio.getID());
-				uDomanda.setInt(7, domanda.getID());
+				uDomanda.setString(1, domanda.getTesto());
+				uDomanda.setString(2, domanda.getNota());
+				uDomanda.setString(3, domanda.getTipo());
+				uDomanda.setBoolean(4, domanda.getObbligatoria());
+				uDomanda.setInt(5, sondaggio.getID());
+				uDomanda.setInt(6, domanda.getID());
 			} else { //insert
-				iDomanda.setInt(1, domanda.getID());
-				iDomanda.setString(2, domanda.getTesto());
-				iDomanda.setString(3, domanda.getNota());
-				iDomanda.setString(4, domanda.getTipo());
-				iDomanda.setBoolean(5, domanda.getObbligatoria());
-				iDomanda.setInt(6, sondaggio.getID());
+				iDomanda.setString(1, domanda.getTesto());
+				iDomanda.setString(2, domanda.getNota());
+				iDomanda.setString(3, domanda.getTipo());
+				iDomanda.setBoolean(4, domanda.getObbligatoria());
+				iDomanda.setInt(5, sondaggio.getID());
 				if (iDomanda.executeUpdate() == 1) {
 					try (ResultSet keys = iDomanda.getGeneratedKeys()) {
 						if (keys.next()) {

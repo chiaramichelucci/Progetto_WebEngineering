@@ -6,10 +6,11 @@
     <res-ref-name>jdbc/pollweb</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
 </resource-ref>
   
   <servlet>
-    <servlet-name>creaSondaggioServlet</servlet-name>
+    <servlet-name>CreazioneSondaggio</servlet-name>
     <servlet-class>controller.CreazioneSondaggio</servlet-class>
   </servlet>
   
@@ -19,8 +20,8 @@
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>creaSondaggioServlet</servlet-name>
-    <url-pattern>/valori</url-pattern>
+    <servlet-name>CreazioneSondaggio</servlet-name>
+    <url-pattern>/CreazioneSondaggio</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

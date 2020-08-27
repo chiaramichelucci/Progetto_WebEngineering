@@ -25,5 +25,7 @@ public interface Domanda extends DataItem<Integer>{
     boolean getObbligatoria();
 
 	String getTipo();
+
+	void setTipo(String tipo);
     
 }

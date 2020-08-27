@@ -45,6 +45,14 @@ public class DomandaImpl extends DataItemImpl<Integer> implements Domanda{
 	public void setNota(String nota) {
 		this.nota = nota;
 	}
+	
+	public String getTipo() {
+		return this.tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 
 	public Sondaggio getSondaggio() {
 		return sondaggio;
@@ -62,11 +70,6 @@ public class DomandaImpl extends DataItemImpl<Integer> implements Domanda{
 	@Override
 	public boolean getObbligatoria() {
 		return obbligatoria;
-	}
-
-	@Override
-	public String getTipo() {
-		return this.tipo;
 	}
 
 }
