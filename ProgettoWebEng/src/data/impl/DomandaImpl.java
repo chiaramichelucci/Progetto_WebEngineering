@@ -16,10 +16,11 @@ public class DomandaImpl extends DataItemImpl<Integer> implements Domanda{
 	
 	public DomandaImpl () {
 		super();
-		setTesto("");
-		setNota("");
-		setObbligatoria(false);
-		setSondaggio(null);
+		testo = "";
+		nota = "";
+		tipo = "";
+		obbligatoria = false;
+		sondaggio = null;
 	}
 
 	public int getID() {

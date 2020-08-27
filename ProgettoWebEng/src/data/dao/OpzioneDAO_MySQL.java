@@ -29,7 +29,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
         try {
             super.init();
 
-            dOpzioni = connection.prepareStatement("SELECT * FROM opzione WHERE codce_domanda=?");
+            dOpzioni = connection.prepareStatement("SELECT * FROM opzione WHERE id_domanda=?");
             testoOp = connection.prepareStatement("SELECT codice_Domanda AS codiceDomanda FROM opzione WHERE codice_domanda=?");
             testiOp = connection.prepareStatement("SELECT codice_domanda AS codiceDomanda FROM opzione WHERE codice_domanda=?");
             
@@ -69,7 +69,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     private OpzioneProxy createOpzione(ResultSet rs) throws DataException {
         OpzioneProxy a = createOpzione();
         try {
-            a.setID(rs.getInt("id_domanda"));
+            a.setIDomanda(rs.getInt("id_domanda"));
             a.setTesto(rs.getString("testo"));
         } catch (SQLException ex) {
             throw new DataException("Unable to create article object form ResultSet", ex);
@@ -119,7 +119,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 	public void storeOpzione(Opzione opzione, Domanda domanda) throws DataException {
 		System.out.print("Sono arrivato qui 4");
 		try {
-			if(opzione.getKey() != null && opzione.getID() > 0) {
+			if(opzione.getKey() != null && opzione.getDomanda() != null) {
 				if(opzione instanceof DataItemProxy && ! ((DataItemProxy) opzione).isModified()) {
 					return;
 				} //update

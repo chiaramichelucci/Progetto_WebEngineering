@@ -12,13 +12,14 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 	private String url;
 	
 	public SondaggioImpl() {
+		setID(0);
 		setTitolo("");
 		setDisponibile(false);
 		setModalita("");
 		setUrl("");
 	}
 
-	public int getId() {
+	public int getID() {
 		return id;
 	}
 
@@ -47,12 +48,6 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 	}
 
 	@Override
-	public int getID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public Integer getKey() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -66,6 +61,11 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 	
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	@Override
+	public void setID(int id) {
+		this.id = id;
 	}
 
 	

@@ -6,21 +6,22 @@ import data.model.Opzione;
 
 //definizone delle opzioni di scelta per le domande a risposta multipla
 
-public class OpzioneImpl extends DataItemImpl<String> implements Opzione{
+public class OpzioneImpl extends DataItemImpl<Integer> implements Opzione{
 
-	private int domanda;
+	private Domanda domanda;
 	private String testoOpzione;
+	private boolean modified;
 	
 	public OpzioneImpl() {
-		setID(domanda);
+		setDomanda(domanda);
 		setTesto(testoOpzione);
 	}
 	
-	public int getID() {
+	public Domanda getDomanda() {
 		return this.domanda;
 	}
-	public void setID(int id_domanda) {
-		this.domanda = id_domanda;
+	public void setDomanda(Domanda domanda) {
+		this.domanda = domanda;
 	}
 
 	@Override

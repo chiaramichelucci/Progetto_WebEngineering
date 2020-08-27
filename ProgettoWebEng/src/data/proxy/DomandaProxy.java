@@ -30,6 +30,11 @@ public class DomandaProxy extends DomandaImpl implements DataItemProxy {
 		this.sondaggio_id = 0;
 	}
 	
+	public void setKey(Integer key) {
+        super.setKey(key);
+        this.modified = true;
+    }
+	
 	@Override
     public void setID(int id) {
         super.setID(id);

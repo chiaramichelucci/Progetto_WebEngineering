@@ -154,6 +154,8 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 						if (keys.next()) {
 							int key = keys.getInt(1);
 							sondaggio.setKey(key);
+							sondaggio.setID(key);
+							System.out.print("chiave generata" + key);
 							dataLayer.getCache().add(Sondaggio.class, sondaggio);
 						}
 					}

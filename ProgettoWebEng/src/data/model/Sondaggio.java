@@ -5,6 +5,8 @@ import data.DataItem;
 public interface Sondaggio extends DataItem<Integer>{
 
 	int getID();
+	
+	void setID(int id);
 
 	Integer getKey();
 

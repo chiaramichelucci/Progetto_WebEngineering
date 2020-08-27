@@ -35,8 +35,8 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
             cDomandaBySondaggio = connection.prepareStatement("SELECT codice AS codiceDomanda FROM domanda WHERE sondaggio=?");
             cDomande = connection.prepareStatement("SELECT codice AS codiceDomanda FROM domanda");
 
-            iDomanda = connection.prepareStatement("INSERT INTO domanda (text,nota,tipo,obbligatorio,sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uDomanda = connection.prepareStatement("UPDATE domanda SET testo=?,nota=?,tipo=?,obbligatoria=?, sondaggio=? WHERE id=?");
+            iDomanda = connection.prepareStatement("INSERT INTO domanda (testo,nota,tipo,obbligatoria,id_sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uDomanda = connection.prepareStatement("UPDATE domanda SET testo=?,nota=?,tipo=?,obbligatoria=?, id_sondaggio=? WHERE id=?");
             dDomanda = connection.prepareStatement("DELETE FROM domanda WHERE id=?");
 
         } catch (SQLException ex) {
@@ -165,8 +165,9 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 				if (iDomanda.executeUpdate() == 1) {
 					try (ResultSet keys = iDomanda.getGeneratedKeys()) {
 						if (keys.next()) {
-							String key = keys.getString("");
-							domanda.setKey(0);
+							int key = keys.getInt(1);
+							domanda.setKey(key);
+							domanda.setID(key);
 							dataLayer.getCache().add(Domanda.class, domanda);
 						}
 					}

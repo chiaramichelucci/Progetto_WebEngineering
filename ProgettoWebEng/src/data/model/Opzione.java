@@ -2,11 +2,11 @@ package data.model;
 
 import data.DataItem;
 
-public interface Opzione extends DataItem<String>{
+public interface Opzione extends DataItem<Integer>{
 
-	public void setID(int id);
+	public void setDomanda(Domanda domanda);
 	
-	public int getID();
+	public Domanda getDomanda();
 	
 	public void setTesto(String testo);
 	

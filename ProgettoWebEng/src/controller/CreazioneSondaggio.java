@@ -23,7 +23,9 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 		String [] tipiDomande = req.getParameterValues("tipo");
 		String [] noteDomande = req.getParameterValues("nota");
 		
-					
+		
+		//campo obbligatoria da vedere non lo inserice bene
+		
 		Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().createSondaggio();
 		if (sondaggio != null && req.getParameter("titoloS") != null && req.getParameter("modalitaS") != null) {
 			 sondaggio.setTitolo(req.getParameter("titoloS"));
@@ -42,9 +44,13 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 							 domanda.setObbligatoria(false);
 						 }
 					 ((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().storeDomanda(domanda, sondaggio);
-				 } if(tipiDomande[i] == "radio" || tipiDomande[i] == "checkbox") {
+				 } 
+				 if(tipiDomande[i].equalsIgnoreCase("radio") || tipiDomande[i].equalsIgnoreCase("checkbox")) {
+					 	System.out.print(" dentro la if delle opzioni ");
+					 	i=i+1;
+					 	System.out.print(i);
 					 	String [] opzioni = req.getParameterValues(i+"opzione");
-					 	for(int j = 0; j < opzioni.length; j++) {
+					 	for(int j = 0; j<opzioni.length; j++) {
 					 		Opzione opzione = ((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().createOpzione();
 					 		if(opzioni[j] != null) {
 					 			opzione.setTesto(opzioni[j]);

@@ -28,10 +28,10 @@ public class SondaggioProxy extends SondaggioImpl implements DataItemProxy {
 
 	}
 
-	public void setKey(int int1) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setKey(Integer key) {
+        super.setKey(key);
+        this.modified = true;
+    }
 
 	public void setNDomande(int int1) {
 		// TODO Auto-generated method stub
