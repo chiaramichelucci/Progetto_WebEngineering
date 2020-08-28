@@ -1,3 +1,12 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<sql:query var="sondaggi,utente" dataSource="jdbc/pollweb">
+    select id, titolo, disponibile, modalita from sondaggio where utente=id_utente;
+</sql:query>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,7 +46,10 @@
         <tr>
             <c:forEach var="sondaggio" items="${sondaggi.rows}">
                 <tr>
-                    
+                    <td><c:out value="${sondaggio.id}" /></td>
+                    <td><c:out value="${sondaggio.titolo}" /></td>
+                    <td><c:out value="${sondaggio.disponibile}" /></td>
+                    <td><c:out value="${sondaggio.modalita}" /></td>
             <td><input type="button" value="Risposte"></button></td>
             <td><input type="button" value="Modifica"></button></td>
             <td><input type="button" id="pulsante" value="Chiudi" onclick="chiudi()"></td>
