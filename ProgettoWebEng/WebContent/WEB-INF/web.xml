@@ -8,6 +8,41 @@
     <res-auth>Container</res-auth>
     <res-sharing-scope>Shareable</res-sharing-scope>
 </resource-ref>
+
+    <context-param>
+        <param-name>view.outline_template</param-name>
+        <param-value>outline.ftl.html</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.date_format</param-name>
+        <param-value>dd/MM/yyyy hh:mm:ss</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.debug</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.template_directory</param-name>
+        <param-value>templates</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.data.author</param-name>
+        <param-value>Chiara Miccheluci e Stratulat Dragos</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.data.homepage_url</param-name>
+        <param-value>index</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.encoding</param-name>
+        <param-value>ISO-8859-1</param-value>
+    </context-param>
+    <!--
+    <context-param>
+        <param-name>view.error_template</param-name>
+        <param-value>error.ftl.html</param-value>
+    </context-param>
+    -->
   
   <servlet>
     <servlet-name>CreazioneSondaggio</servlet-name>
@@ -18,15 +53,102 @@
   	<servlet-name>Login</servlet-name>
     <servlet-class>controller.Login</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>CompilazioneSondaggio</servlet-name>
+    <servlet-class>controller.CompilazioneSondaggio</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>CreazioneSondaggio</servlet-name>
-    <url-pattern>/CreazioneSondaggio</url-pattern>
+    <url-pattern>/crea</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
   	<servlet-name>Login</servlet-name>
     <url-pattern>/logon</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>CompilazioneSondaggio</servlet-name>
+    <url-pattern>/comp/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  <servlet-name>freemarker</servlet-name>
+  <servlet-class>freemarker.ext.servlet.FreemarkerServlet</servlet-class>
+
+  <init-param>
+    <param-name>TemplatePath</param-name>
+    <param-value>/</param-value>
+  </init-param>
+  <init-param>
+    <param-name>NoCache</param-name>
+    <param-value>true</param-value>
+  </init-param>
+  <init-param>
+    <param-name>ResponseCharacterEncoding</param-name>
+    <!-- Use the output_encoding setting of FreeMarker: -->
+    <param-value>fromTemplate</param-value>
+  </init-param>
+  <init-param>
+    <param-name>ExceptionOnMissingTemplate</param-name>
+    <!-- true => HTTP 500 on missing template, instead of HTTP 404. -->
+    <param-value>true</param-value>
+  </init-param>
+
+  <init-param>
+    <param-name>incompatible_improvements</param-name>
+    <param-value>2.3.27</param-value>
+  </init-param>
+  <init-param>
+    <param-name>template_exception_handler</param-name>
+    <param-value>rethrow</param-value>
+  </init-param>
+  <init-param>
+    <param-name>template_update_delay</param-name>
+    <!-- Use 0 during development! Consider what value you need otherwise. -->
+    <param-value>0 s</param-value>
+  </init-param>
+  <init-param>
+    <param-name>default_encoding</param-name>
+    <param-value>ISO-8859-1</param-value>
+  </init-param>
+  <init-param>
+    <param-name>output_encoding</param-name>
+    <param-value>ISO-8859-1</param-value>
+  </init-param>
+  <init-param>
+    <param-name>locale</param-name>
+    <!-- Influences number and date/time formatting, etc. -->
+    <param-value>en_US</param-value>
+  </init-param>
+  <init-param>
+    <param-name>number_format</param-name>
+    <param-value>0.##########</param-value>
+  </init-param>
+
+  <load-on-startup>1</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>freemarker</servlet-name>
+  <url-pattern>*.ftl</url-pattern>
+  <!-- HTML and XML auto-escaped if incompatible_improvements >= 2.3.24: -->
+  <url-pattern>*.ftlh</url-pattern>
+  <url-pattern>*.ftlx</url-pattern>
+</servlet-mapping>
+
+<security-constraint>
+  <web-resource-collection>
+    <web-resource-name>FreeMarker MVC Views</web-resource-name>
+    <url-pattern>*.ftl</url-pattern>
+    <url-pattern>*.ftlh</url-pattern>
+    <url-pattern>*.ftlx</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+    <!-- Nobody is allowed to visit these directly. -->
+  </auth-constraint>
+</security-constraint>
   
 </web-app>

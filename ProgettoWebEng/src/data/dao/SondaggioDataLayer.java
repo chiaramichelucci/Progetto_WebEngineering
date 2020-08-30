@@ -13,6 +13,7 @@ import data.dao.SondaggioDAO;
 import data.dao.SondaggioDAO_MySQL;
 import data.model.Domanda;
 import data.model.Opzione;
+import data.model.Risposta;
 import data.model.Sondaggio;
 import data.DataException;
 
@@ -40,6 +41,10 @@ public class SondaggioDataLayer extends DataLayer {
     
     public SondaggioDAO getSondaggioDAO() {
         return (SondaggioDAO) getDAO(Sondaggio.class);
+    }
+    
+    public RispostaDAO getRispostaDAO() {
+        return (RispostaDAO) getDAO(Risposta.class);
     }
     	
 }

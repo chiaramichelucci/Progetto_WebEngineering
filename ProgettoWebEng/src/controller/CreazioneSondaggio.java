@@ -13,18 +13,32 @@ import data.dao.SondaggioDataLayer;
 import data.model.Domanda;
 import data.model.Opzione;
 import data.model.Sondaggio;
+import template.TemplateResult;
+import template.Failure;
+import template.TemplateManagerExeption;
 
 
 public class CreazioneSondaggio extends SondaggioBaseController {
 
-	private void createSondaggio(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException, DataException {
+	private void action_error(HttpServletRequest req, HttpServletResponse res) {
+		if (req.getAttribute("exception") != null) {
+            (new Failure(getServletContext())).activate((Exception) req.getAttribute("exception"), req, res);
+        } else {
+            (new Failure(getServletContext())).activate((String) req.getAttribute("message"), req, res);
+        }	
+	}
 	
+	private void createSondaggio(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException, DataException, TemplateManagerExeption{
+		
 		String [] domande = req.getParameterValues("domanda");
 		String [] tipiDomande = req.getParameterValues("tipo");
 		String [] noteDomande = req.getParameterValues("nota");
 		
-		
 		//campo obbligatoria da vedere non lo inserice bene
+		
+		TemplateResult resp = new TemplateResult(getServletContext()); 
+		
+		resp.activate("crea.ftl.html", req, res);
 		
 		Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().createSondaggio();
 		if (sondaggio != null && req.getParameter("titoloS") != null && req.getParameter("modalitaS") != null) {
@@ -46,9 +60,7 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 					 ((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().storeDomanda(domanda, sondaggio);
 				 } 
 				 if(tipiDomande[i].equalsIgnoreCase("radio") || tipiDomande[i].equalsIgnoreCase("checkbox")) {
-					 	System.out.print(" dentro la if delle opzioni ");
 					 	i=i+1;
-					 	System.out.print(i);
 					 	String [] opzioni = req.getParameterValues(i+"opzione");
 					 	for(int j = 0; j<opzioni.length; j++) {
 					 		Opzione opzione = ((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().createOpzione();
@@ -62,16 +74,23 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 		 }
 	}
 
-	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
+	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException {
 		
 		try {
 			createSondaggio(req, res);
+		}catch(TemplateManagerExeption ex) {
+			req.setAttribute("exception", ex);
+            action_error(req, res);
 		}catch(IOException ex) {
 			req.setAttribute("exception", ex);
-            //action_error(, res);
+            action_error(req, res);
+		}catch(DataException ex) {
+			req.setAttribute("exception", ex);
+			action_error(req, res);
 		}
 	}
 	
+
 	public String getServletInfo() {
         return "Servlet per la creazione dei sondaggi";
 	}
