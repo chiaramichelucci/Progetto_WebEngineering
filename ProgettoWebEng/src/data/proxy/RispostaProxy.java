@@ -14,7 +14,7 @@ import data.dao.DomandaDAO;
 public class RispostaProxy extends RispostaImpl implements DataItemProxy {
 
 	protected boolean modified;
-    protected String codiceDomanda = "";
+    protected int codiceDomanda = 0;
     protected int idUtente = 0;
 
     protected DataLayer dataLayer;
@@ -23,7 +23,7 @@ public class RispostaProxy extends RispostaImpl implements DataItemProxy {
         super();
         this.dataLayer = d;
         this.modified = false;
-        this.codiceDomanda = "";
+        this.codiceDomanda = 0;
         this.idUtente = 0;
     }
 	
@@ -35,7 +35,7 @@ public class RispostaProxy extends RispostaImpl implements DataItemProxy {
 	
 	@Override
     public Domanda getDomanda() {
-        if (super.getDomanda() == null && codiceDomanda == "") {
+        if (super.getDomanda() == null && codiceDomanda == 0) {
             try {
                 super.setDomanda(((DomandaDAO) dataLayer.getDAO(Domanda.class)).getDomanda(codiceDomanda));
             } catch (DataException ex) {
@@ -50,7 +50,7 @@ public class RispostaProxy extends RispostaImpl implements DataItemProxy {
     	this.modified = true;
 	}
 	
-	public void setDomandaKey(String codice) {
+	public void setDomandaId(int codice) {
 		this.codiceDomanda = codice;
     	this.modified = true;
 	}

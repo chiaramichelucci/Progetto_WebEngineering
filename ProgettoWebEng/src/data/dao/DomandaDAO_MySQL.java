@@ -2,8 +2,8 @@ package data.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +18,8 @@ import data.DataItemProxy;
 public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 	
 	private PreparedStatement domandeBySondaggio;
-	private PreparedStatement domandaByCodice;
-    private PreparedStatement cDomande, cDomandaBySondaggio;
+	private PreparedStatement domandaById;
+    private PreparedStatement idDomanda, cDomandaBySondaggio;
     private PreparedStatement iDomanda, uDomanda, dDomanda;
     
     public DomandaDAO_MySQL (DataLayer d) {
@@ -31,9 +31,10 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
         try {
             super.init();
 
-            domandaByCodice = connection.prepareStatement("SELECT * FROM domanda WHERE codice=?");
-            cDomandaBySondaggio = connection.prepareStatement("SELECT codice AS codiceDomanda FROM domanda WHERE sondaggio=?");
-            cDomande = connection.prepareStatement("SELECT codice AS codiceDomanda FROM domanda");
+            domandaById = connection.prepareStatement("SELECT * FROM domanda WHERE id=?");
+            cDomandaBySondaggio = connection.prepareStatement("SELECT * FROM domanda WHERE sondaggio=?");
+            idDomanda = connection.prepareStatement("SELECT id AS idDomanda FROM domanda");
+            domandeBySondaggio = connection.prepareStatement("SELECT * FROM domanda WHERE id_sondaggio=?");
 
             iDomanda = connection.prepareStatement("INSERT INTO domanda (testo,nota,tipo,obbligatoria,id_sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uDomanda = connection.prepareStatement("UPDATE domanda SET testo=?,nota=?,tipo=?,obbligatoria=?, id_sondaggio=? WHERE id=?");
@@ -49,10 +50,10 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     	
         try {
 
-            domandaByCodice.close();
+            domandaById.close();
 
             cDomandaBySondaggio.close();
-            cDomande.close();
+            idDomanda.close();
 
             iDomanda.close();
             uDomanda.close();
@@ -75,7 +76,8 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
             a.setID(rs.getInt("id"));
             a.setTesto(rs.getString("testo"));
             a.setNota(rs.getString("nota"));
-            a.setObbligatoria(rs.getBoolean("obbligatorio"));
+            a.setTipo(rs.getString("tipo"));
+            a.setObbligatoria(rs.getBoolean("obbligatoria"));
         } catch (SQLException ex) {
             throw new DataException("Unable to create article object form ResultSet", ex);
         }
@@ -83,21 +85,21 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     }
     
     @Override
-    public Domanda getDomanda(String codice) throws DataException {
+    public Domanda getDomanda(int id) throws DataException {
         Domanda a = null;
-        if (dataLayer.getCache().has(Domanda.class, codice)) {
-            a = dataLayer.getCache().get(Domanda.class, codice);
+        if (dataLayer.getCache().has(Domanda.class, id)) {
+            a = dataLayer.getCache().get(Domanda.class, id);
         } else {
             try {
-                cDomandaBySondaggio.setString(1, codice);
-                try (ResultSet rs = cDomandaBySondaggio.executeQuery()) {
+                domandaById.setInt(1, id);
+                try (ResultSet rs = domandaById.executeQuery()) {
                     if (rs.next()) {
                         a = createDomanda(rs);
                         dataLayer.getCache().add(Domanda.class, a);
                     }
                 }
             } catch (SQLException ex) {
-                throw new DataException("Unable to load article by ID", ex);
+                throw new DataException("Non e' stato possibile carica la domanda in base al ID", ex);
             }
         }
         return a;
@@ -106,19 +108,34 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     @Override
     public List<Domanda> getDomande(Sondaggio sondaggio) throws DataException {
         List<Domanda> result = new ArrayList();
-
         try {
             domandeBySondaggio.setInt(1, sondaggio.getID());            
             try (ResultSet rs = domandeBySondaggio.executeQuery()) {
                 while (rs.next()) {
-                    result.add((Domanda) getDomanda(rs.getString("codice")));
+                    result.add((Domanda) getDomanda(rs.getInt("id")));
                 }
             }
         } catch (SQLException ex) {
-            throw new DataException("Unable to load articles by issue", ex);
+            throw new DataException("Non e' stato possibile carica le domande in base al ID", ex);
         }
         return result;
     }
+    
+    @Override
+	public List<Domanda> getDomandeById(int id_sondaggio) throws DataException {
+        List<Domanda> result = new ArrayList();
+        try {
+            domandeBySondaggio.setInt(1, id_sondaggio);            
+            try (ResultSet rs = domandeBySondaggio.executeQuery()) {
+                while (rs.next()) {
+                    result.add((Domanda) getDomanda(rs.getInt("id")));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataException("Non e' stato possibile carica le domande in base al ID", ex);
+        }
+        return result;
+	}
     
     public void delete(Domanda domanda) {
     	
@@ -133,7 +150,7 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 			domandeBySondaggio.setInt(1, sondaggio.getID());            
             try (ResultSet rs = domandeBySondaggio.executeQuery()) {
                 while (rs.next()) {
-                    result.add((Domanda) getDomanda(rs.getString("codice")));
+                    result.add((Domanda) getDomanda(rs.getInt("id")));
                 }
             }
         } catch (SQLException ex) {
@@ -184,7 +201,6 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 		return null;
 		
 	}
-    
     
     
 }

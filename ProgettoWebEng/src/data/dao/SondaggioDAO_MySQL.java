@@ -18,7 +18,7 @@ import data.model.Sondaggio;
 
 public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     private PreparedStatement sSondaggioByID;
-    private PreparedStatement sSondaggio, sSondaggioByIssue, sUnassignedSondaggio;
+    private PreparedStatement sSondaggio;
     private PreparedStatement iSondaggio, uSondaggio, dSondaggio;
 
     public SondaggioDAO_MySQL(DataLayer d) {
@@ -34,7 +34,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             
             sSondaggio = connection.prepareStatement("SELECT ID AS sondaggioID FROM sondaggio");
             iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo,disponibile, modalita, URL) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?,disponibile=?, modalit�=? WHERE ID=?");
+            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?,disponibile=?, modalita=? WHERE ID=?");
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
 
         } catch (SQLException ex) {
@@ -67,10 +67,9 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     private SondaggioProxy createSondaggio(ResultSet rs) throws DataException {
     	SondaggioProxy s = createSondaggio();
         try {
-            s.setKey(rs.getInt("ID"));
+            s.setID(rs.getInt("ID"));
             s.setTitolo(rs.getString("titolo"));
             s.setDisponibile(rs.getBoolean("disponibile"));
-            s.setNDomande(rs.getInt("n_domande"));
             s.setURL(rs.getString("URL"));
             s.setModalita(rs.getString("modalita"));
         } catch (SQLException ex) {
@@ -95,7 +94,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
                     }
                 }
             } catch (SQLException ex) {
-                throw new DataException("Unable to load amministratore by ID", ex);
+                throw new DataException("Unable to load sondaggio by ID", ex);
             }
         }
         return s;

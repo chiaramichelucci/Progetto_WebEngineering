@@ -14,7 +14,7 @@ public interface OpzioneDAO {
 	
 	void storeOpzione(Opzione opzione, Domanda domanda) throws DataException;
 
-	Opzione getOpzione(String codice_domanda) throws DataException;
+	Opzione getOpzione(int id_domanda) throws DataException;
 
 	List<Opzione> getOpzioni(Domanda domanda) throws DataException;
 	

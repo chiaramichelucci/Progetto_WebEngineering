@@ -90,7 +90,6 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 		}
 	}
 	
-
 	public String getServletInfo() {
         return "Servlet per la creazione dei sondaggi";
 	}

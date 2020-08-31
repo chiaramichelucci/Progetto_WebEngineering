@@ -31,7 +31,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 
             dOpzioni = connection.prepareStatement("SELECT * FROM opzione WHERE id_domanda=?");
             testoOp = connection.prepareStatement("SELECT codice_Domanda AS codiceDomanda FROM opzione WHERE codice_domanda=?");
-            testiOp = connection.prepareStatement("SELECT codice_domanda AS codiceDomanda FROM opzione WHERE codice_domanda=?");
+            testiOp = connection.prepareStatement("SELECT * FROM opzione WHERE id_domanda=?");
             
             iOpzione = connection.prepareStatement("INSERT INTO opzione (id_domanda,testo) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
             uOpzione = connection.prepareStatement("UPDATE opzione SET testo=? WHERE codice_domanda=?");
@@ -78,13 +78,13 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     }
     
     @Override
-    public Opzione getOpzione(String codice_domanda) throws DataException {
+    public Opzione getOpzione(int id) throws DataException {
         Opzione a = null;
-        if (dataLayer.getCache().has(Opzione.class, codice_domanda)) {
-            a = dataLayer.getCache().get(Opzione.class, codice_domanda);
+        if (dataLayer.getCache().has(Opzione.class, id)) {
+            a = dataLayer.getCache().get(Opzione.class, id);
         } else {
             try {
-                //dOpzioni.setInt(1, codice_domanda);
+                dOpzioni.setInt(1, id);
                 try (ResultSet rs = dOpzioni.executeQuery()) {
                     if (rs.next()) {
                         a = createOpzione(rs);
@@ -92,7 +92,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
                     }
                 }
             } catch (SQLException ex) {
-                throw new DataException("Unable to load article by ID", ex);
+                throw new DataException("Non e' stato possibile carica l'opzione in base al ID", ex);
             }
         }
         return a;
@@ -106,11 +106,11 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
             testiOp.setInt(1, domanda.getID());            
             try (ResultSet rs = testiOp.executeQuery()) {
                 while (rs.next()) {
-                    result.add((Opzione) getOpzione(rs.getString("codiceDomanda")));
+                    result.add((Opzione) getOpzione(rs.getInt("id_domanda")));
                 }
             }
         } catch (SQLException ex) {
-            throw new DataException("Unable to load articles by issue", ex);
+            throw new DataException("Non e' stato possibile carica le opzioni in base al ID", ex);
         }
         return result;
     }

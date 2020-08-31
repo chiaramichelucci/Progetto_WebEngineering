@@ -65,7 +65,7 @@ public class RispostaDAO_MySQL extends DAO implements RispostaDAO {
     private RispostaProxy creaRisposta(ResultSet rs) throws DataException {
         RispostaProxy a = creaRisposta();
         try {
-            a.setDomandaKey(rs.getString("codice_domanda"));
+            a.setDomandaId(rs.getInt("id_domanda"));
             a.setUtenteKey(rs.getInt("id_utente"));
             a.setRisposta(rs.getString("testo"));
         } catch (SQLException ex) {

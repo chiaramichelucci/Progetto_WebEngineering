@@ -1,12 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<h2 class="sondaggioTitolo">${poll.titolo}</h2>
 
-</body>
-</html>
+<form name="compilazione" id="compilazione" action="">
+	<#list questions as domande>
+		<div class="containerDomanda">
+			<h3 class="domanda">${domande.testo}</h3>
+			<#assign x = domande.tipo>
+			<input type=${x} name="risposta" id ="risposta" />
+			<#if x == "Radio">
+				<#list options as opzione>
+					<#assign y = opzione.testo>
+					<input type=y name=y id=y />
+					<label for="${opzione.idDOmanda}">${opzione.testo}</label>
+				</#list>
+			</#if>
+			<#assign x = domande.tipo>
+			<#if x == "Checkbox">
+				<#list option as opzione>
+					<#assign y = opzione.testo>
+					<input type=y name=y id=y />
+					<label for="${opzione.idDpmanda}">${opzione.testo}</label>
+				</#list>
+			</#if>
+		</div>
+	</#list>
+	<input type="submit" name="submit" id="submit" >
+</form>
