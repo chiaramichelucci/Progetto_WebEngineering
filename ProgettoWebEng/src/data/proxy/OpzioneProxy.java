@@ -25,6 +25,11 @@ public class OpzioneProxy extends OpzioneImpl implements DataItemProxy {
     
     //funzione mancante
     
+    public void setID(int id) {
+    	super.setID(id);
+        this.modified = true;
+    }
+    
     public void setKey(Integer key) {
         super.setKey(key);
         this.modified = true;
@@ -32,11 +37,14 @@ public class OpzioneProxy extends OpzioneImpl implements DataItemProxy {
     
     public void setDomanda(Domanda domanda) {
         super.setDomanda(domanda);
+        this.id_domanda = domanda.getID();
         this.modified = true;
     }
     
+    @Override
     public void setIDomanda(int id) {
-    	this.id_domanda = id;
+    	super.setIDomanda(id);
+    	this.modified = true;
     }
     
     public int getIDomanda() {

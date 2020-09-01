@@ -18,7 +18,7 @@ import data.DataItemProxy;
 public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 
 	private PreparedStatement iOpzione, uOpzione, dOpzione;
-	private PreparedStatement dOpzioni, testoOp, testiOp;
+	private PreparedStatement dOpzioni, testiOp, allOpzione;
 	
 	public OpzioneDAO_MySQL (DataLayer d) {
 		super(d);
@@ -29,9 +29,9 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
         try {
             super.init();
 
-            dOpzioni = connection.prepareStatement("SELECT * FROM opzione WHERE id_domanda=?");
-            testoOp = connection.prepareStatement("SELECT codice_Domanda AS codiceDomanda FROM opzione WHERE codice_domanda=?");
-            testiOp = connection.prepareStatement("SELECT * FROM opzione WHERE id_domanda=?");
+            dOpzioni = connection.prepareStatement("SELECT id FROM opzione WHERE id_domanda=?");
+            allOpzione = connection.prepareStatement("SELECT * FROM opzione WHERE id=?");
+            testiOp = connection.prepareStatement("SELECT testo FROM opzione WHERE id_domanda=?");
             
             iOpzione = connection.prepareStatement("INSERT INTO opzione (id_domanda,testo) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
             uOpzione = connection.prepareStatement("UPDATE opzione SET testo=? WHERE codice_domanda=?");
@@ -48,7 +48,6 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 
             dOpzioni.close();
 
-            testoOp.close();
 
             iOpzione.close();
             uOpzione.close();
@@ -69,7 +68,8 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     private OpzioneProxy createOpzione(ResultSet rs) throws DataException {
         OpzioneProxy a = createOpzione();
         try {
-            a.setIDomanda(rs.getInt("id_domanda"));
+        	a.setID(rs.getInt("id"));
+            //a.setIDomanda(rs.getInt("id_domanda"));
             a.setTesto(rs.getString("testo"));
         } catch (SQLException ex) {
             throw new DataException("Unable to create article object form ResultSet", ex);
@@ -84,8 +84,8 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
             a = dataLayer.getCache().get(Opzione.class, id);
         } else {
             try {
-                dOpzioni.setInt(1, id);
-                try (ResultSet rs = dOpzioni.executeQuery()) {
+                allOpzione.setInt(1, id);
+                try (ResultSet rs = allOpzione.executeQuery()) {
                     if (rs.next()) {
                         a = createOpzione(rs);
                         dataLayer.getCache().add(Opzione.class, a);
@@ -101,12 +101,11 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     @Override
     public List<Opzione> getOpzioni(Domanda domanda) throws DataException {
         List<Opzione> result = new ArrayList();
-
         try {
-            testiOp.setInt(1, domanda.getID());            
-            try (ResultSet rs = testiOp.executeQuery()) {
+            dOpzioni.setInt(1, domanda.getID());            
+            try (ResultSet rs = dOpzioni.executeQuery()) {
                 while (rs.next()) {
-                    result.add((Opzione) getOpzione(rs.getInt("id_domanda")));
+                    result.add((Opzione) getOpzione(rs.getInt("id")));
                 }
             }
         } catch (SQLException ex) {
@@ -117,7 +116,6 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 
 	@Override
 	public void storeOpzione(Opzione opzione, Domanda domanda) throws DataException {
-		System.out.print("Sono arrivato qui 4");
 		try {
 			if(opzione.getKey() != null && opzione.getDomanda() != null) {
 				if(opzione instanceof DataItemProxy && ! ((DataItemProxy) opzione).isModified()) {
@@ -131,8 +129,9 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 				if (iOpzione.executeUpdate() == 1) {
 					try (ResultSet keys = iOpzione.getGeneratedKeys()) {
 						if (keys.next()) {
-							String key = keys.getString("");
-							domanda.setKey(0);
+							int key = keys.getInt(1);
+							opzione.setKey(key);
+							opzione.setID(key);
 							dataLayer.getCache().add(Opzione.class, opzione);
 						}
 					}

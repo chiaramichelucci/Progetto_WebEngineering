@@ -60,8 +60,8 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 					 ((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().storeDomanda(domanda, sondaggio);
 				 } 
 				 if(tipiDomande[i].equalsIgnoreCase("radio") || tipiDomande[i].equalsIgnoreCase("checkbox")) {
-					 	i=i+1;
-					 	String [] opzioni = req.getParameterValues(i+"opzione");
+					 	int coso = i+1;
+					 	String [] opzioni = req.getParameterValues(coso+"opzione");
 					 	for(int j = 0; j<opzioni.length; j++) {
 					 		Opzione opzione = ((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().createOpzione();
 					 		if(opzioni[j] != null) {

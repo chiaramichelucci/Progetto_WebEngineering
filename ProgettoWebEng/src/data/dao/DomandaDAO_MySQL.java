@@ -161,7 +161,6 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 
 	@Override
 	public void storeDomanda(Domanda domanda, Sondaggio sondaggio) throws DataException {
-		System.out.print("Sono arrivato qui 3");
 		try {
 			if(domanda.getKey() != null && domanda.getID() > 0) {
 				if(domanda instanceof DataItemProxy && ! ((DataItemProxy) domanda).isModified()) {

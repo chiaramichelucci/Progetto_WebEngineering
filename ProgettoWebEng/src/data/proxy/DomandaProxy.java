@@ -17,7 +17,6 @@ import data.DataException;
 public class DomandaProxy extends DomandaImpl implements DataItemProxy {
 
 	protected boolean modified;
-	protected String domanda_codice;
 	protected int sondaggio_id;
 	
 	protected DataLayer dataLayer;
@@ -26,7 +25,6 @@ public class DomandaProxy extends DomandaImpl implements DataItemProxy {
 		super();
 		this.dataLayer = d;
 		this.modified = false;
-		this.domanda_codice = "";
 		this.sondaggio_id = 0;
 	}
 	

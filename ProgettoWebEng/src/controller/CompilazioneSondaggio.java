@@ -41,14 +41,16 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 		req.setAttribute("questions", domande);
 		for(int i = 0; i<domande.size(); i++) {
 			Domanda domanda = domande.get(i);
-			System.out.print(domanda.getID());
+			System.out.print(domanda.getID() + " ");
+			//req.setAttribute("question", domanda.getTesto());
+			//req.setAttribute("type", domanda.getTipo());
 			String tipo = domanda.getTipo();
-			System.out.print(tipo);
-			if (tipo == "Radio" || tipo == "Checkbox") {
-				// non entra nel if
-				System.out.print("Sono arrivato dentro if");
+			if (tipo.equals("Radio")) {
 				List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
 				req.setAttribute("options", opzioni);
+			}if (tipo.equals("Checkbox")) {
+				List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
+				req.setAttribute("checks", opzioni);
 			}
 		}
 		resp.activate("comp.ftl.html", req, res);

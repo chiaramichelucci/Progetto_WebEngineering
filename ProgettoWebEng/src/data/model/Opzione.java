@@ -12,4 +12,12 @@ public interface Opzione extends DataItem<Integer>{
 	
 	public String getTesto();
 	
+	public int getIDomanda();
+	
+	public void setIDomanda(int id);
+	
+	public int getID();
+
+	public void setID(int id);
+	
 }
