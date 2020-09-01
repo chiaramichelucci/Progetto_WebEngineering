@@ -42,8 +42,9 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 		for(int i = 0; i<domande.size(); i++) {
 			Domanda domanda = domande.get(i);
 			System.out.print(domanda.getID());
-			System.out.print(domanda.getTipo());
-			if (domanda.getTipo() == "Radio" || domanda.getTipo() == "Checkbox") {
+			String tipo = domanda.getTipo();
+			System.out.print(tipo);
+			if (tipo == "Radio" || tipo == "Checkbox") {
 				// non entra nel if
 				System.out.print("Sono arrivato dentro if");
 				List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
