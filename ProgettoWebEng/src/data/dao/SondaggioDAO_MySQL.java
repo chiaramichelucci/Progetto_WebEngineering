@@ -24,6 +24,71 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     public SondaggioDAO_MySQL(DataLayer d) {
         super(d);
     }
+    
+    //nuovo metodo Store.
+    /*
+    @Override
+    public void storeSondaggio(Sondaggio sondaggio) throws DataException {
+        try {
+            if (sondaggio.getKey() != null && sondaggio.getID() > 0) { 
+                if (sondaggio instanceof DataItemProxy && !((DataItemProxy) sondaggio).isModified()) {
+                    return;
+                }
+                uSondaggio.setString(1, sondaggio.getTitolo());
+                uSondaggio.setBoolean(2, sondaggio.getDisponibile());
+                if (sondaggio.getKey() != null) {
+                    uSondaggio.setString(3, sondaggio.getModalita());
+                } else {
+                    uSondaggio.setNull(3, java.sql.Types.INTEGER);
+                }
+                if (sondaggio.getKey() != null) {
+                    uSondaggio.setInt(4, sondaggio.getID());
+                } else {
+                    uSondaggio.setNull(4, java.sql.Types.INTEGER);
+                    uSondaggio.setNull(5, java.sql.Types.INTEGER);
+                }
+
+                long current_version = sondaggio.getVersion();
+                long next_version = current_version + 1;
+
+                if (uSondaggio.executeUpdate() == 0) {
+                    throw new OptimisticLockException(sondaggio);
+                }
+                sondaggio.setVersion(next_version);
+            } else { 
+                iSondaggio.setString(1, sondaggio.getTitolo());
+                iSondaggio.setBoolean(2, sondaggio.getDisponibile());
+                if (sondaggio.getModalita() != null) {
+                    iSondaggio.setString(3, sondaggio.getModalita());
+                } else {
+                    iSondaggio.setNull(3, java.sql.Types.INTEGER);
+                }
+                if (sondaggio.getKey() != null) {
+                    iSondaggio.setInt(4, sondaggio.getKey());
+                    iSondaggio.setString(5, sondaggio.getTitolo());
+                } else {
+                    iSondaggio.setNull(4, java.sql.Types.INTEGER);
+                    iSondaggio.setNull(5, java.sql.Types.INTEGER);
+                }
+                if (iSondaggio.executeUpdate() == 1) {
+                    try (ResultSet keys = iSondaggio.getGeneratedKeys()) {
+                        if (keys.next()) {
+                           
+                            int key = keys.getInt(1);
+                           
+                            sondaggio.setKey(key);
+                         
+                            dataLayer.getCache().add(Sondaggio.class, sondaggio);
+                        }
+                    }
+                }
+            }
+            if (sondaggio instanceof DataItemProxy) {
+                ((DataItemProxy) sondaggio).setModified(false);
+            }
+        } catch (SQLException | OptimisticLockException ex) {
+            throw new DataException("Unable to store sondaggio", ex);
+        }} */
 
     @Override
     public void init() throws DataException {

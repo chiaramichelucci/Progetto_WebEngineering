@@ -2,6 +2,7 @@ package data;
 
 import java.sql.Connection;
 
+import data.model.Domanda;
 import data.proxy.DomandaProxy;
 
 public class DAO {
@@ -28,5 +29,10 @@ public class DAO {
     public void destroy() throws DataException {
 
     }
+
+	public void storeDomanda(Domanda domanda) throws DataException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

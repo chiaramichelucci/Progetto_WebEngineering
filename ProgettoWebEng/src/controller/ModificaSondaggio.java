@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import data.DataException;
 import data.dao.SondaggioDataLayer;
 import data.model.Domanda;
+import data.model.Opzione;
 import data.model.Sondaggio;
 import template.Failure;
 import template.TemplateManagerExeption;
@@ -39,17 +40,27 @@ public abstract class ModificaSondaggio extends HttpServlet {
 			
 			Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggio(id);
 			req.setAttribute("poll", sondaggio);
+			String titolo = sondaggio.getTitolo();
+			System.out.print(titolo);
+			Boolean disponibile = sondaggio.getDisponibile();
+			System.out.print(disponibile);
+			String modalità = sondaggio.getModalita();
+			System.out.print(modalità);
+			String url = sondaggio.getUrl();
+			System.out.print(url);
 			List<Domanda> domande = (((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggio));
+			req.setAttribute("questions", domande);
 			for(int i = 0; i<domande.size(); i++) {
-				
-			      req.setTesto("testo", domande);
-			
-			req.setNota("nota", domande);
-			
-			
-			req.setObbligatoria("obbligatoria", domande);
+				Domanda domanda = domande.get(i);
+				System.out.print(domanda.getID());
+				String tipo = domanda.getTipo();
+				System.out.print(tipo);
+				if (tipo == "Radio" || tipo == "Checkbox") {
+					List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
+					req.setAttribute("options", opzioni);
+				}
 			}
-	 }
+		}
 
 		protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
 			try {
