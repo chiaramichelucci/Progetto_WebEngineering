@@ -10,6 +10,7 @@ import java.util.List;
 import data.DAO;
 import data.DataException;
 import data.DataLayer;
+import data.OptimisticLockException;
 import data.model.Domanda;
 import data.model.Sondaggio;
 import data.proxy.DomandaProxy;
@@ -25,6 +26,69 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     public DomandaDAO_MySQL (DataLayer d) {
     	super(d);
     }
+    
+    @Override
+    public void storeDomanda(Domanda domanda) throws DataException {
+        try {
+            if (domanda.getKey() != null && domanda.getID() > 0) { 
+                if (domanda instanceof DataItemProxy && !((DataItemProxy) domanda).isModified()) {
+                    return;
+                }
+                uDomanda.setString(1, domanda.getTesto());
+                uDomanda.setString(2, domanda.getNota());
+                if (domanda.getKey() != null) {
+                    uDomanda.setBoolean(3, domanda.getObbligatoria());
+                } else {
+                    uDomanda.setNull(3, java.sql.Types.INTEGER);
+                }
+                if (domanda.getKey() != null) {
+                    uDomanda.setInt(4, domanda.getID());
+                } else {
+                    uDomanda.setNull(4, java.sql.Types.INTEGER);
+                    uDomanda.setNull(5, java.sql.Types.INTEGER);
+                }
+
+                long current_version = domanda.getVersion();
+                long next_version = current_version + 1;
+
+                if (uDomanda.executeUpdate() == 0) {
+                    throw new OptimisticLockException(domanda);
+                }
+                domanda.setVersion(next_version);
+            } else { 
+                iDomanda.setString(1, domanda.getTesto());
+                iDomanda.setString(2, domanda.getNota());
+                if (domanda.getKey() != null) {
+                    iDomanda.setBoolean(3, domanda.getObbligatoria());
+                } else {
+                    iDomanda.setNull(3, java.sql.Types.INTEGER);
+                }
+                if (domanda.getKey() != null) {
+                    iDomanda.setInt(4, domanda.getKey());
+                    iDomanda.setString(5, domanda.getTesto());
+                } else {
+                    iDomanda.setNull(4, java.sql.Types.INTEGER);
+                    iDomanda.setNull(5, java.sql.Types.INTEGER);
+                }
+                if (iDomanda.executeUpdate() == 1) {
+                    try (ResultSet keys = iDomanda.getGeneratedKeys()) {
+                        if (keys.next()) {
+                           
+                            int key = keys.getInt(1);
+                           
+                            domanda.setKey(key);
+                         
+                            dataLayer.getCache().add(Domanda.class, domanda);
+                        }
+                    }
+                }
+            }
+            if (domanda instanceof DataItemProxy) {
+                ((DataItemProxy) domanda).setModified(false);
+            }
+        } catch (SQLException | OptimisticLockException ex) {
+            throw new DataException("Unable to store domanda", ex);
+        }}
     
     @Override
     public void init() throws DataException {
