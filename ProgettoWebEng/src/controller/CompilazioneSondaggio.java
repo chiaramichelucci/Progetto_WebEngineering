@@ -2,9 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,12 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import data.DataException;
 import data.dao.SondaggioDataLayer;
+import data.impl.RispostaImpl;
 import data.model.Domanda;
 import data.model.Opzione;
+import data.model.Risposta;
 import data.model.Sondaggio;
 import template.Failure;
 import template.TemplateManagerExeption;
 import template.TemplateResult;
+
+//fatto non provatto
 
 public class CompilazioneSondaggio extends SondaggioBaseController {
 
@@ -39,21 +42,39 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 		req.setAttribute("poll", sondaggio);
 		List<Domanda> domande = (((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggio));
 		req.setAttribute("questions", domande);
+		resp.activate("comp.ftl.html", req, res);
 		for(int i = 0; i<domande.size(); i++) {
 			Domanda domanda = domande.get(i);
-			System.out.print(domanda.getID() + " ");
-			//req.setAttribute("question", domanda.getTesto());
-			//req.setAttribute("type", domanda.getTipo());
 			String tipo = domanda.getTipo();
 			if (tipo.equals("Radio")) {
 				List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
 				req.setAttribute("options", opzioni);
-			}if (tipo.equals("Checkbox")) {
+				req.setAttribute("domanda", domanda);
+				resp.activate2("addMulti.ftl.html", req, res);
+			} else if (tipo.equals("Checkbox")) {
 				List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
-				req.setAttribute("checks", opzioni);
+				req.setAttribute("options", opzioni);
+				req.setAttribute("domanda", domanda);
+				resp.activate2("addMulti.ftl.html", req, res);
+			} else {
+				req.setAttribute("domanda", domanda);
+				resp.activate2("addMulti.ftl.html", req, res);
 			}
 		}
-		resp.activate("comp.ftl.html", req, res);
+		compilazioneSondaggio(req, res, sondaggio, domande);
+	}
+	
+	//da conpletare ancora da vedere cosa fare per i radio
+	private void compilazioneSondaggio(HttpServletRequest req, HttpServletResponse res, Sondaggio sondaggio, List<Domanda> domande) throws DataException { 
+		String[] risposte;
+		risposte = req.getParameterValues("risposta");
+		for(int i=0; i<risposte.length; i++) {
+			Risposta risposta = new RispostaImpl();
+			risposta.setSondaggio(sondaggio);
+			risposta.setDomanda(domande.get(i));
+			risposta.setRisposta(risposte[i]);
+			((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().storeRisposta(risposta, sondaggio, domande.get(i));
+		}
 	}
 	
 	@Override

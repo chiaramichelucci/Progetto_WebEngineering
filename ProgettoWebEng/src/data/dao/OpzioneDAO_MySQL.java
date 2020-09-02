@@ -69,7 +69,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
         OpzioneProxy a = createOpzione();
         try {
         	a.setID(rs.getInt("id"));
-            //a.setIDomanda(rs.getInt("id_domanda"));
+            a.setIDomanda(rs.getInt("id_domanda"));
             a.setTesto(rs.getString("testo"));
         } catch (SQLException ex) {
             throw new DataException("Unable to create article object form ResultSet", ex);
@@ -79,6 +79,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     
     @Override
     public Opzione getOpzione(int id) throws DataException {
+    	System.out.print(" qui:getOe ");
         Opzione a = null;
         if (dataLayer.getCache().has(Opzione.class, id)) {
             a = dataLayer.getCache().get(Opzione.class, id);
@@ -100,6 +101,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     
     @Override
     public List<Opzione> getOpzioni(Domanda domanda) throws DataException {
+    	System.out.print(" qui:getOi ");
         List<Opzione> result = new ArrayList();
         try {
             dOpzioni.setInt(1, domanda.getID());            

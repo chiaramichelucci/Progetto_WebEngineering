@@ -19,5 +19,9 @@ public interface Opzione extends DataItem<Integer>{
 	public int getID();
 
 	public void setID(int id);
+
+	int getIDomandaInt();
+
+	void setIDomandaInt(int id);
 	
 }

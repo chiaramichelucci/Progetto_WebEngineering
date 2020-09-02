@@ -28,8 +28,8 @@ public class RispostaProxy extends RispostaImpl implements DataItemProxy {
     }
 	
 	@Override
-    public void setKey(String codice) {
-        super.setKey(codice);
+    public void setKey(Integer key) {
+        super.setKey(key);
         this.modified = true;
     }
 	

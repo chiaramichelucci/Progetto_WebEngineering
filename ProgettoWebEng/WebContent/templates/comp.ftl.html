@@ -1,36 +1,9 @@
-<h2 class="sondaggioTitolo">${poll.titolo}</h2>
 
-<form name="compilazione" id="compilazione" action="">
-	<#list questions as domanda>
-		<div class="containerDomanda">
-		<h3 class="domanda">${domanda.testo}</h3>
-		<#assign x = domanda.tipo>
-		<#if x == "Text">
-			<input type="text" id="rispsota" name="rispsota" />
-		</#if>
-		<#if x == "Textarea">
-			<input type="textarea" id="rispsota" name="rispsota" />
-		</#if>
-		<#if x == "Date">
-			<input type="date" id="rispsota" name="rispsota" />
-		</#if>
-		<#if x == "Number">
-			<input type="number" id="rispsota" name="rispsota" />
-		</#if>		
-		<#if x == "Radio">
-			<#list options as opzione>
-				<input type="radio" id="risposta" name="risposta" />
-				<label for="risposta">${opzione.testo}</label><br/>
-			</#list>
-		</#if>
-		<#assign x = domanda.tipo>
-		<#if x == "Checkbox">
-			<#list checks as check>
-				<input type="checkbox" id="risposta" name="risposta" />
-				<label for="rispsota">${check.testo}</label><br/>
-			</#list>
-		</#if>	
-		</div>
-	</#list>
-	<input type="submit" name="submit" id="submit" >
+<h2 class="sondaggioTitolo">${poll.titolo}</h2>
+<#include addMulti>
+<form name="compilazione" id="compilazione" action="comp" method="POST" >	
+	
+	<input type="submit" value="Submit">
 </form>
+		
+		

@@ -9,13 +9,14 @@ import data.model.Opzione;
 public class OpzioneImpl extends DataItemImpl<Integer> implements Opzione{
 
 	private int id;
+	private int id_domanda;
 	private Domanda domanda;
 	private String testo;
-	private boolean modified;
 	
 	public OpzioneImpl() {
 		super();
 		testo = "";
+		id_domanda = 0;
 		domanda = null;
 	}
 	
@@ -38,8 +39,17 @@ public class OpzioneImpl extends DataItemImpl<Integer> implements Opzione{
 
 	@Override
 	public int getIDomanda() {
-		int id = this.domanda.getID();
 		return id;
+	}
+	
+	
+	public int getIDomandaInt() {
+		return id_domanda;
+	}
+	
+	
+	public void setIDomandaInt(int id) {
+		this.id_domanda = id;
 	}
 
 	@Override

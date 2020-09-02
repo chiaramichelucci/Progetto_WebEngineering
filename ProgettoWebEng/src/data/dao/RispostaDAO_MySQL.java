@@ -7,7 +7,11 @@ import java.sql.Statement;
 
 import data.DAO;
 import data.DataException;
+import data.DataItemProxy;
 import data.DataLayer;
+import data.model.Domanda;
+import data.model.Risposta;
+import data.model.Sondaggio;
 import data.proxy.OpzioneProxy;
 import data.proxy.RispostaProxy;
 
@@ -29,8 +33,8 @@ public class RispostaDAO_MySQL extends DAO implements RispostaDAO {
             domRisp = connection.prepareStatement("SELECT codice_domanda AS codiceDomanda FROM risposta");
             testoRisp = connection.prepareStatement("SELECT testo FROM risposta WHERE codice_domanda=?");
             
-            iRisposta = connection.prepareStatement("INSERT INTO risposta (codice_domanda,id_utente,testo) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
-            uRisposta = connection.prepareStatement("UPDATE risposta SET testo=? WHERE codice_domanda=?");
+            iRisposta = connection.prepareStatement("INSERT INTO risposta (id_domanda, id_sondaggio, id_utente, testo_risposta) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uRisposta = connection.prepareStatement("UPDATE risposta SET id_domanda=?, id_sondaggio=?, id_utente=?, testo_risposta=? WHERE id=?");
             dRisposta = connection.prepareStatement("DELETE FROM risposta WHERE codice_domanda=?");
 
         } catch (SQLException ex) {
@@ -73,5 +77,37 @@ public class RispostaDAO_MySQL extends DAO implements RispostaDAO {
         }
         return a;
     }
+    
+    public void storeRisposta(Risposta risposta, Sondaggio sondaggio, Domanda domanda) throws DataException {
+		try {
+			if(risposta.getKey() != null && risposta.getID() > 0) {
+				if(risposta instanceof DataItemProxy && ! ((DataItemProxy) risposta).isModified()) {
+					return;
+				} //update
+				uRisposta.setInt(1, domanda.getID());
+				uRisposta.setInt(2, sondaggio.getID());
+				uRisposta.setString(3, "");
+				uRisposta.setString(4, risposta.getRisposta());
+			} else { //insert
+				iRisposta.setInt(1, domanda.getID());
+				iRisposta.setInt(2, sondaggio.getID());
+				iRisposta.setString(3, "");
+				iRisposta.setString(4, risposta.getRisposta());
+				if (iRisposta.executeUpdate() == 1) {
+					try (ResultSet keys = iRisposta.getGeneratedKeys()) {
+						if (keys.next()) {
+							int key = keys.getInt(1);
+							risposta.setKey(key);
+							risposta.setID(key);
+							dataLayer.getCache().add(Risposta.class, risposta);
+						}
+					}
+				}
+			}
+		} catch (SQLException ex) {
+			throw new DataException("Non e possibilie inserire la domanda", ex);
+		}
+		
+	}
 	
 }

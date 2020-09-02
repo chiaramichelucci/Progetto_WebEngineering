@@ -70,7 +70,8 @@ public class TemplateResult {
         }
 
         default_data_model.put("compiled_on", Calendar.getInstance().getTime());
-        default_data_model.put("outline_tpl", context.getInitParameter("view.outline_template")); 
+        default_data_model.put("outline_tpl", context.getInitParameter("view.outline_template"));
+        default_data_model.put("addMulti", context.getInitParameter("view.addMulti_template"));
 
         Map init_tpl_data = new HashMap();
         default_data_model.put("defaults", init_tpl_data);
@@ -116,6 +117,24 @@ public class TemplateResult {
             throw new TemplateManagerExeption("Template error: " + e.getMessage(), e);
         }
     }
+    
+    protected void process2(String tplname, Map datamodel, Writer out) throws TemplateManagerExeption {
+        Template t;
+        Map<String, Object> localdatamodel = getDefaultDataModel();
+        if (datamodel != null) {
+            localdatamodel.putAll(datamodel);
+        }
+        String insert_name = (String) localdatamodel.get("addMulti");
+        try {
+                t = cfg.getTemplate(insert_name);
+                localdatamodel.put("addMulti", tplname);                   
+            t.process(localdatamodel, out);
+        } catch (IOException e) {
+            throw new TemplateManagerExeption("Template error: " + e.getMessage(), e);
+        } catch (TemplateException e) {
+            throw new TemplateManagerExeption("Template error: " + e.getMessage(), e);
+        }
+    }
 
     public void activate(String tplname, Map datamodel, HttpServletResponse response) throws TemplateManagerExeption {
         String contentType = (String) datamodel.get("contentType");
@@ -151,10 +170,50 @@ public class TemplateResult {
             throw new TemplateManagerExeption("Template error: " + ex.getMessage(), ex);
         }
     }
+    
+    public void activate2(String tplname, Map datamodel, HttpServletResponse response) throws TemplateManagerExeption {
+        String contentType = (String) datamodel.get("contentType");
+        if (contentType == null) {
+            contentType = "text/html";
+        }
+        response.setContentType(contentType);
+
+        switch (contentType) {
+            case "text/html":
+                cfg.setOutputFormat(HTMLOutputFormat.INSTANCE);
+                break;
+            case "text/xml":
+            case "application/xml":
+                cfg.setOutputFormat(XMLOutputFormat.INSTANCE);
+                break;
+            case "application/json":
+                cfg.setOutputFormat(JSONOutputFormat.INSTANCE);
+                break;
+            default:
+                break;
+        }
+
+        String encoding = (String) datamodel.get("encoding");
+        if (encoding == null) {
+            encoding = cfg.getOutputEncoding();
+        }
+        response.setCharacterEncoding(encoding);
+
+        try {
+            process2(tplname, datamodel, response.getWriter());
+        } catch (IOException ex) {
+            throw new TemplateManagerExeption("Template error: " + ex.getMessage(), ex);
+        }
+    }
 
     public void activate(String tplname, HttpServletRequest request, HttpServletResponse response) throws TemplateManagerExeption {
         Map datamodel = getRequestDataModel(request);
         activate(tplname, datamodel, response);
+    }
+    
+    public void activate2(String tplname, HttpServletRequest request, HttpServletResponse response) throws TemplateManagerExeption {
+        Map datamodel = getRequestDataModel(request);
+        activate2(tplname, datamodel, response);
     }
 
     public void activate(String tplname, Map datamodel, OutputStream out) throws TemplateManagerExeption {

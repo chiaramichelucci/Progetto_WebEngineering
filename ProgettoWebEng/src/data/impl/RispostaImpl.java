@@ -3,11 +3,14 @@ package data.impl;
 import data.DataItemImpl;
 import data.model.Domanda;
 import data.model.Risposta;
+import data.model.Sondaggio;
 import data.model.Utente;
 
-public class RispostaImpl extends DataItemImpl<String> implements Risposta{
+public class RispostaImpl extends DataItemImpl<Integer> implements Risposta{
 	
+	int id;
 	private Domanda domanda;
+	private Sondaggio sondaggio;
 	private Utente utente;
 	private String risposta;
 	
@@ -15,6 +18,8 @@ public class RispostaImpl extends DataItemImpl<String> implements Risposta{
 		super();
 		domanda = null;
 		utente = null;
+		sondaggio = null;
+		risposta = "";
 	}
 	
 	public Domanda getDomanda() {
@@ -39,5 +44,23 @@ public class RispostaImpl extends DataItemImpl<String> implements Risposta{
 	public String getRisposta() {
 		return risposta;
 	}
+	
+	public void setSondaggio(Sondaggio sondaggio) {
+		this.sondaggio = sondaggio;
+	}
+	
+	public Sondaggio getSondaggio() {
+		return sondaggio;
+	}
 
+	@Override
+	public int getID() {
+		return id;
+	}
+
+	@Override
+	public void setID(int id) {
+		this.id = id;
+		
+	}
 }
