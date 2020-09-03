@@ -14,11 +14,12 @@ import data.OptimisticLockException;
 import data.DataLayer;
 import data.dao.SondaggioDAO;
 import data.model.Amministratore;
+import data.model.Domanda;
 import data.model.Sondaggio;
 
 public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     private PreparedStatement sSondaggioByID;
-    private PreparedStatement sSondaggio;
+    private PreparedStatement sSondaggio, sondaggioByEmail;
     private PreparedStatement iSondaggio, uSondaggio, dSondaggio;
 
     public SondaggioDAO_MySQL(DataLayer d) {
@@ -97,9 +98,10 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 
             sSondaggioByID = connection.prepareStatement("SELECT * FROM sondaggio WHERE ID=?");
             
+            sondaggioByEmail = connection.prepareStatement("SELECT id FROM sondaggio WHERE id IN (SELECT sondaggio FROM interagisce INNER JOIN utente ON interagisce.utente = utente.id WHERE utente.email = ?)");
             sSondaggio = connection.prepareStatement("SELECT ID AS sondaggioID FROM sondaggio");
-            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo,disponibile, modalita, URL) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?,disponibile=?, modalita=? WHERE ID=?");
+            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo, testo_apertura, testo_chiusura, disponibile, modalita, URL) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?, testo_apertura=?, testo_chiusura=?, disponibile=?, modalita=? WHERE ID=?");
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
 
         } catch (SQLException ex) {
@@ -111,7 +113,8 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     public void destroy() throws DataException {
 
         try {
-
+        	
+        	sondaggioByEmail.close();
             sSondaggioByID.close();
             sSondaggio.close();
             iSondaggio.close();
@@ -145,6 +148,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 
     @Override
     public Sondaggio getSondaggio(int id_sondaggio) throws DataException {
+    	System.out.print(" getSond ");
         Sondaggio s = null;
 
         if (dataLayer.getCache().has(Sondaggio.class, id_sondaggio)) {
@@ -165,32 +169,25 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
         return s;
     }
     
-
-	@Override
-	public void save(Sondaggio sondaggio) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(Sondaggio sondaggio) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(Sondaggio sondaggio) {
-		// TODO Auto-generated method stub	
-	}
-
+    @Override
+    public List<Sondaggio> getSondaggioByResponsabile(String email) throws DataException {
+    	System.out.print(" getSondByEmail ");
+    	List<Sondaggio> result = new ArrayList();
+            try {
+            	sondaggioByEmail.setString(1, email);
+                try (ResultSet rs = sondaggioByEmail.executeQuery()) {
+                    while (rs.next()) {
+                        result.add((Sondaggio) getSondaggio(rs.getInt("id")));
+                    }
+                }
+            } catch (SQLException ex) {
+                throw new DataException("Unable to load sondaggi by email", ex);
+            }
+        return result;
+    }
+    
 	@Override
 	public List<Sondaggio> getSondaggio(Sondaggio sondaggio) throws DataException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Sondaggio> getSondaggio() throws DataException {
 		// TODO Auto-generated method stub
 		return null;
 	}

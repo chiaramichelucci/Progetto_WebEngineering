@@ -150,7 +150,6 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     
     @Override
     public Domanda getDomanda(int id) throws DataException {
-    	System.out.print(" qui:getDa ");
         Domanda a = null;
         if (dataLayer.getCache().has(Domanda.class, id)) {
             a = dataLayer.getCache().get(Domanda.class, id);
@@ -172,7 +171,6 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     
     @Override
     public List<Domanda> getDomande(Sondaggio sondaggio) throws DataException {
-    	System.out.print(" qui:getDe ");
         List<Domanda> result = new ArrayList();
         try {
             domandeBySondaggio.setInt(1, sondaggio.getID());            

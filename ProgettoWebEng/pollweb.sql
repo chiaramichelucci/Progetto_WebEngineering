@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Set 01, 2020 alle 15:35
+-- Creato il: Set 03, 2020 alle 17:22
 -- Versione del server: 10.4.8-MariaDB
 -- Versione PHP: 7.3.10
 
@@ -77,7 +77,17 @@ INSERT INTO `domanda` (`id`, `testo`, `nota`, `tipo`, `obbligatoria`, `id_sondag
 (20, 'Domanda prova radio?', 'domanda di prova per i campi checkbox', 'Radio', 0, 23),
 (21, 'funziona?', 'spero', 'Radio', 0, 26),
 (22, 'Domanda testo?', 'testo della nota text', 'Text', 0, 27),
-(23, 'Domanda radio?', 'testo della nota radio', 'Radio', 0, 27);
+(23, 'Domanda radio?', 'testo della nota radio', 'Radio', 0, 27),
+(24, 'domanda text', '', 'Text', 0, 28),
+(25, 'domanda radio', '', 'Radio', 0, 28),
+(26, 'domanda 1', 'qwe', 'Text', 0, 29),
+(27, 'domanda radio', 'asd', 'Radio', 0, 29),
+(28, 'domanda checkbox 2', 'qaz', 'Checkbox', 0, 29),
+(29, 'domanda 1', '', 'Text', 0, 30),
+(30, 'domanda 2', '', 'Radio', 0, 30),
+(31, 'domanda 3', '', 'Checkbox', 0, 30),
+(34, 'domanda 4', '', 'Radio', 0, 30),
+(35, 'domanda 5', '', 'Checkbox', 0, 30);
 
 -- --------------------------------------------------------
 
@@ -90,6 +100,14 @@ CREATE TABLE `interagisce` (
   `sondaggio` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
+--
+-- Dump dei dati per la tabella `interagisce`
+--
+
+INSERT INTO `interagisce` (`utente`, `sondaggio`) VALUES
+(2, 29),
+(2, 30);
+
 -- --------------------------------------------------------
 
 --
@@ -97,6 +115,7 @@ CREATE TABLE `interagisce` (
 --
 
 CREATE TABLE `opzione` (
+  `id` int(11) NOT NULL,
   `id_domanda` int(11) NOT NULL,
   `testo` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -105,13 +124,24 @@ CREATE TABLE `opzione` (
 -- Dump dei dati per la tabella `opzione`
 --
 
-INSERT INTO `opzione` (`id_domanda`, `testo`) VALUES
-(20, 'opzione 1'),
-(20, 'opzione 2'),
-(21, 'opzione f'),
-(21, 'opzione r'),
-(23, 'Radio 1'),
-(23, 'Radio 2');
+INSERT INTO `opzione` (`id`, `id_domanda`, `testo`) VALUES
+(1, 23, 'Radio 1'),
+(2, 23, 'Radio 2'),
+(3, 25, 'opzione radio 1'),
+(4, 25, 'opzione radio 2'),
+(5, 27, 'qwe1'),
+(6, 27, 'qwe2'),
+(7, 28, 'zxc1'),
+(8, 28, 'zxc2'),
+(9, 30, 'prova radio 1'),
+(10, 30, 'prova radio 2'),
+(11, 31, 'prova checkbox 1'),
+(12, 31, 'prova checkbox 2'),
+(13, 31, 'prova checkbox 3'),
+(14, 34, 'Radio 2 1'),
+(15, 34, 'Radio 2 2'),
+(16, 35, 'Checkbox 2 1'),
+(17, 35, 'Checkbox 2 2');
 
 -- --------------------------------------------------------
 
@@ -136,6 +166,8 @@ CREATE TABLE `risposta` (
 CREATE TABLE `sondaggio` (
   `id` int(11) NOT NULL,
   `titolo` varchar(100) NOT NULL,
+  `testo_apertura` varchar(256) DEFAULT NULL,
+  `testo_chiusura` varchar(256) DEFAULT NULL,
   `disponibile` tinyint(1) NOT NULL,
   `modalita` varchar(10) NOT NULL,
   `url` varchar(256) NOT NULL
@@ -145,19 +177,22 @@ CREATE TABLE `sondaggio` (
 -- Dump dei dati per la tabella `sondaggio`
 --
 
-INSERT INTO `sondaggio` (`id`, `titolo`, `disponibile`, `modalita`, `url`) VALUES
-(1, 'Test', 1, '', ''),
-(2, 'Test2', 1, '', ''),
-(18, 'Sondaggio Prova', 0, 'Aperto', ''),
-(19, 'Sondaggio Prova', 0, 'Aperto', ''),
-(20, 'Sondaggio Prova 1', 0, 'Aperto', ''),
-(21, 'Sondaggio Prova 1', 0, 'Aperto', ''),
-(22, 'Sondaggio Prova 1', 0, 'Aperto', ''),
-(23, 'Sondaggio Prova 1', 0, 'Aperto', ''),
-(24, 'Prova freemarker', 0, 'Aperto', ''),
-(25, 'Prova freemarker 2', 0, 'Aperto', ''),
-(26, 'Prova freemarker 3', 0, 'Privato', ''),
-(27, 'Sondaggio Prova Compilazione', 0, 'Aperto', '');
+INSERT INTO `sondaggio` (`id`, `titolo`, `testo_apertura`, `testo_chiusura`, `disponibile`, `modalita`, `url`) VALUES
+(1, 'Test', NULL, NULL, 1, '', ''),
+(2, 'Test2', NULL, NULL, 1, '', ''),
+(18, 'Sondaggio Prova', NULL, NULL, 0, 'Aperto', ''),
+(19, 'Sondaggio Prova', NULL, NULL, 0, 'Aperto', ''),
+(20, 'Sondaggio Prova 1', NULL, NULL, 0, 'Aperto', ''),
+(21, 'Sondaggio Prova 1', NULL, NULL, 0, 'Aperto', ''),
+(22, 'Sondaggio Prova 1', NULL, NULL, 0, 'Aperto', ''),
+(23, 'Sondaggio Prova 1', NULL, NULL, 0, 'Aperto', ''),
+(24, 'Prova freemarker', NULL, NULL, 0, 'Aperto', ''),
+(25, 'Prova freemarker 2', NULL, NULL, 0, 'Aperto', ''),
+(26, 'Prova freemarker 3', NULL, NULL, 0, 'Privato', ''),
+(27, 'Sondaggio Prova Compilazione', NULL, NULL, 0, 'Aperto', ''),
+(28, 'Prova Compilazione', NULL, NULL, 0, 'Aperto', ''),
+(29, 'prova inserimento', NULL, NULL, 0, 'Aperto', ''),
+(30, 'prova inserimento 2', NULL, NULL, 0, 'Aperto', '');
 
 -- --------------------------------------------------------
 
@@ -210,7 +245,8 @@ ALTER TABLE `interagisce`
 -- Indici per le tabelle `opzione`
 --
 ALTER TABLE `opzione`
-  ADD PRIMARY KEY (`id_domanda`,`testo`) USING BTREE;
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `opzione_fk_1` (`id_domanda`);
 
 --
 -- Indici per le tabelle `risposta`
@@ -247,7 +283,13 @@ ALTER TABLE `amministratore`
 -- AUTO_INCREMENT per la tabella `domanda`
 --
 ALTER TABLE `domanda`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+--
+-- AUTO_INCREMENT per la tabella `opzione`
+--
+ALTER TABLE `opzione`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT per la tabella `risposta`
@@ -259,7 +301,7 @@ ALTER TABLE `risposta`
 -- AUTO_INCREMENT per la tabella `sondaggio`
 --
 ALTER TABLE `sondaggio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT per la tabella `utente`
@@ -288,7 +330,7 @@ ALTER TABLE `interagisce`
 -- Limiti per la tabella `opzione`
 --
 ALTER TABLE `opzione`
-  ADD CONSTRAINT `opzione_fk_1` FOREIGN KEY (`id_domanda`) REFERENCES `domanda` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `opzione_fk_1` FOREIGN KEY (`id_domanda`) REFERENCES `domanda` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `risposta`

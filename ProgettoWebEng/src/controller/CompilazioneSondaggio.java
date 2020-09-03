@@ -66,14 +66,15 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 	
 	//da conpletare ancora da vedere cosa fare per i radio
 	private void compilazioneSondaggio(HttpServletRequest req, HttpServletResponse res, Sondaggio sondaggio, List<Domanda> domande) throws DataException { 
-		String[] risposte;
-		risposte = req.getParameterValues("risposta");
-		for(int i=0; i<risposte.length; i++) {
-			Risposta risposta = new RispostaImpl();
-			risposta.setSondaggio(sondaggio);
-			risposta.setDomanda(domande.get(i));
-			risposta.setRisposta(risposte[i]);
-			((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().storeRisposta(risposta, sondaggio, domande.get(i));
+		String[] risposte = req.getParameterValues("risposta");
+		if(risposte[0] != null) {
+			for(int i=0; i<risposte.length; i++) {
+				Risposta risposta = new RispostaImpl();
+				risposta.setSondaggio(sondaggio);
+				risposta.setDomanda(domande.get(i));
+				risposta.setRisposta(risposte[i]);
+				((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().storeRisposta(risposta, sondaggio, domande.get(i));
+			}
 		}
 	}
 	

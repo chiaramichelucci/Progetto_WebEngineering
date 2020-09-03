@@ -62,6 +62,11 @@
     <servlet-name>CompilazioneSondaggio</servlet-name>
     <servlet-class>controller.CompilazioneSondaggio</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>StampaSondaggio</servlet-name>
+    <servlet-class>controller.StampaSondaggi</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>CreazioneSondaggio</servlet-name>
@@ -76,6 +81,11 @@
   <servlet-mapping>
     <servlet-name>CompilazioneSondaggio</servlet-name>
     <url-pattern>/comp</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>StampaSondaggio</servlet-name>
+    <url-pattern>/sondaggi</url-pattern>
   </servlet-mapping>
   
   <servlet>

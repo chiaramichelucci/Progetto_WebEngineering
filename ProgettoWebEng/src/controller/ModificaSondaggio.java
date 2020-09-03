@@ -44,8 +44,8 @@ public abstract class ModificaSondaggio extends HttpServlet {
 			System.out.print(titolo);
 			Boolean disponibile = sondaggio.getDisponibile();
 			System.out.print(disponibile);
-			String modalità = sondaggio.getModalita();
-			System.out.print(modalità);
+			String modalita = sondaggio.getModalita();
+			System.out.print(modalita);
 			String url = sondaggio.getUrl();
 			System.out.print(url);
 			List<Domanda> domande = (((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggio));
