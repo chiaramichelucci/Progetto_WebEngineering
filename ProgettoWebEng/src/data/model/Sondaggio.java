@@ -24,4 +24,12 @@ public interface Sondaggio extends DataItem<Integer>{
 
 	String getUrl();
 
+	void setEndText(String parameter);
+
+	void setBeginText(String parameter);
+	
+	String getBeginText();
+	
+	String getEndText();
+
 }

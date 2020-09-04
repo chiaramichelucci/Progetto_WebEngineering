@@ -67,6 +67,11 @@
     <servlet-name>StampaSondaggio</servlet-name>
     <servlet-class>controller.StampaSondaggi</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>modificaSondaggio</servlet-name>
+    <servlet-class>controller.ModificaSondaggi</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>CreazioneSondaggio</servlet-name>
@@ -86,6 +91,11 @@
   <servlet-mapping>
     <servlet-name>StampaSondaggio</servlet-name>
     <url-pattern>/sondaggi</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>ModificaSondaggio</servlet-name>
+    <url-pattern>/mod</url-pattern>
   </servlet-mapping>
   
   <servlet>

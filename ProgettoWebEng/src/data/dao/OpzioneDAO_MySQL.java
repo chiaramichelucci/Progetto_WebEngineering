@@ -34,8 +34,8 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
             testiOp = connection.prepareStatement("SELECT testo FROM opzione WHERE id_domanda=?");
             
             iOpzione = connection.prepareStatement("INSERT INTO opzione (id_domanda,testo) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
-            uOpzione = connection.prepareStatement("UPDATE opzione SET testo=? WHERE codice_domanda=?");
-            dOpzione = connection.prepareStatement("DELETE FROM opzione WHERE codice_domanda=?");
+            uOpzione = connection.prepareStatement("UPDATE opzione SET testo=? WHERE id=?");
+            dOpzione = connection.prepareStatement("DELETE FROM opzione WHERE id=?");
 
         } catch (SQLException ex) {
             throw new DataException("Error initializing newspaper data layer", ex);
@@ -122,9 +122,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 			if(opzione.getKey() != null && opzione.getDomanda() != null) {
 				if(opzione instanceof DataItemProxy && ! ((DataItemProxy) opzione).isModified()) {
 					return;
-				} //update
-				uOpzione.setString(1, opzione.getTesto());
-				uOpzione.setInt(2, domanda.getID());
+				} 
 			} else { //insert
 				iOpzione.setInt(1, domanda.getID());
 				iOpzione.setNString(2, opzione.getTesto());
@@ -144,6 +142,27 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 		
 		}
 	
+	}
+
+	@Override
+	public void updateOpzione(Opzione opzione) throws DataException {
+		try {
+			uOpzione.setString(1, opzione.getTesto());
+			uOpzione.setInt(2, opzione.getID());
+			uOpzione.executeQuery();
+		}catch(SQLException ex) {
+			throw new DataException("Non e possibilie aggiornare l'opzione", ex);
+		}
+	}
+
+	@Override
+	public void deleteOpzione(Opzione opzione) throws DataException {
+		try {
+			dOpzione.setInt(1, opzione.getID());
+			dOpzione.executeQuery();
+		}catch(SQLException ex) {
+			throw new DataException("Non e possibilie cancelare l'opzione", ex);
+		}
 	}
 	
 }

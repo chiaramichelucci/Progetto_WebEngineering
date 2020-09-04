@@ -10,10 +10,10 @@
               <div class="sondaggioInfo">
                 <h3>Inserisci qui le informazioni del sondaggio</h3>
                 <input type="text" id="titoloS" name="titoloS" class ="textField" placeholder="Titolo" /><br />
-                <input type="radio" id="modalitaS" name="modalitaS" value="Privato" />
-                <label for="modalitaS">Privato</label>
-                <input type="radio" id="modalitaS" name="modalitaS" value="Aperto" />
-                <label for="modalitaS">Aperto</label>
+                <select name="modalitaS" id="modalitaS">
+                	<option value="Privato">Privato</option>
+                	<option value="Aperto">Aperto</option>
+                </select>
               </div>
               <input type="submit" id="submitButton" class="submitButton" name="submit" value="Crea Sondaggio" />
             </form>

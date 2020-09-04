@@ -9,6 +9,7 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 	private String titolo;
 	private boolean disponibile;
 	private String modalita;
+	private String beginText, endText;
 	private String url;
 	
 	public SondaggioImpl() {
@@ -16,6 +17,8 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 		setTitolo("");
 		setDisponibile(false);
 		setModalita("");
+		setBeginText("");
+		setEndText("");
 		setUrl("");
 	}
 
@@ -66,6 +69,28 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 	@Override
 	public void setID(int id) {
 		this.id = id;
+	}
+
+	@Override
+	public void setEndText(String beginText) {
+		this.beginText = beginText;
+		
+	}
+
+	@Override
+	public void setBeginText(String endText) {
+		this.endText = beginText;
+		
+	}
+
+	@Override
+	public String getBeginText() {
+		return this.beginText;
+	}
+
+	@Override
+	public String getEndText() {
+		return this.endText;
 	}
 
 	

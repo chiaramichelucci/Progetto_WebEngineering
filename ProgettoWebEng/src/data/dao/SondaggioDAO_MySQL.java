@@ -100,7 +100,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             
             sondaggioByEmail = connection.prepareStatement("SELECT id FROM sondaggio WHERE id IN (SELECT sondaggio FROM interagisce INNER JOIN utente ON interagisce.utente = utente.id WHERE utente.email = ?)");
             sSondaggio = connection.prepareStatement("SELECT ID AS sondaggioID FROM sondaggio");
-            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo, testo_apertura, testo_chiusura, disponibile, modalita, URL) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo, testo_apertura, testo_chiusura, disponibile, modalita, URL) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?, testo_apertura=?, testo_chiusura=?, disponibile=?, modalita=? WHERE ID=?");
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
 
@@ -194,17 +194,12 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 
 	@Override
 	public void storeSondaggio(Sondaggio sondaggio) throws DataException {
-		System.out.print("Sono arrivato qui 2");
 		try {
 			if(sondaggio.getKey() != null && sondaggio.getID() > 0) {//update
 				if(sondaggio instanceof DataItemProxy && ! ((DataItemProxy) sondaggio).isModified()) {
 					return;
 				}
-				uSondaggio.setString(1, sondaggio.getTitolo());
-				uSondaggio.setBoolean(2, sondaggio.getDisponibile());
-				uSondaggio.setString(3, sondaggio.getModalita());
-				//uSondaggio.setString(4, sondaggio.getUrl());
-				uSondaggio.setInt(4, sondaggio.getID());
+				
 			} else { //insert
 				iSondaggio.setString(1, sondaggio.getTitolo());
 				iSondaggio.setBoolean(2, sondaggio.getDisponibile());
@@ -216,7 +211,6 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 							int key = keys.getInt(1);
 							sondaggio.setKey(key);
 							sondaggio.setID(key);
-							System.out.print("chiave generata" + key);
 							dataLayer.getCache().add(Sondaggio.class, sondaggio);
 						}
 					}
@@ -231,5 +225,32 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             throw new DataException("Non e possibile inserire il sondaggio", ex);
          
 		}
+	}
+
+	@Override
+	public void updateSondaggio(Sondaggio sondaggio) throws DataException {
+		try {
+		uSondaggio.setString(1, sondaggio.getTitolo());
+		uSondaggio.setString(2, sondaggio.getBeginText());
+		uSondaggio.setString(3, sondaggio.getEndText());
+		uSondaggio.setBoolean(4, sondaggio.getDisponibile());
+		uSondaggio.setString(5, sondaggio.getModalita());
+		//uSondaggio.setString(6, sondaggio.getUrl());
+		uSondaggio.setInt(6, sondaggio.getID());
+		uSondaggio.executeQuery();
+		} catch (SQLException ex) {
+			throw new DataException("Non e possibile aggiornare il sondaggio", ex);
+		}
+	}
+
+	@Override
+	public void deleteSondaggio(Sondaggio sondaggio) throws DataException {
+		try {
+			dSondaggio.setInt(1, sondaggio.getID());
+			dSondaggio.executeQuery();
+			} catch (SQLException ex) {
+				throw new DataException("Non e possibile cancelare il sondaggio", ex);
+			}
+		
 	}
 }

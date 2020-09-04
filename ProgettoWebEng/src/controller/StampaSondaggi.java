@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +28,7 @@ public class StampaSondaggi extends SondaggioBaseController {
 	}
 	
 	
-	private void stampaSondaggi(HttpServletRequest req, HttpServletResponse res) throws IOException, DataException, TemplateManagerExeption {
+	private void stampaSondaggi(HttpServletRequest req, HttpServletResponse res) throws IOException, DataException, TemplateManagerExeption, ServletException {
 		
 		TemplateResult resp = new TemplateResult(getServletContext()); 
 		
@@ -36,12 +38,26 @@ public class StampaSondaggi extends SondaggioBaseController {
 		req.setAttribute("sondaggi", sondaggi);
 		resp.activate("stampaSondaggi.ftl.html", req, res);
 		
+		int sondDaModificare = Integer.parseInt(req.getParameter("daModificare"));
+		Sondaggio sondaggio = (((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggio(sondDaModificare));
+		req.setAttribute("sondaggioDaModificare", sondaggio);
+		
+	}
+	
+	private void trasmettiSondaggio(HttpServletRequest req, HttpServletResponse res) throws IOException, DataException, TemplateManagerExeption, ServletException {
+		ServletContext context = getServletContext();
+		RequestDispatcher requestDispatcher=context.getRequestDispatcher("mod");
+        requestDispatcher.forward(req, res);
 	}
 	
 	@Override
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
 		try {
-			stampaSondaggi(req, res);
+			if(req.getParameter("daModificare") != null) {
+				trasmettiSondaggio(req, res);
+			} else {
+				stampaSondaggi(req, res);
+			}
 		}catch(TemplateManagerExeption ex) {
 			req.setAttribute("exception", ex);
             action_error(req, res);

@@ -1,0 +1,31 @@
+<div class="insideContent">
+<#if domanda??>
+<div class="containerDomanda">
+	<#if options??>
+		<input type="text" id="domandaTesto" name="domandaTesto" form="modifica" value="${domanda.testo}" placeholder="${domanda.testo}"/>
+		<input type="text" id="domandaNota" name="domandaNota" form="modifica" value="${domanda.nota}" placeholder="${domanda.nota}"/>
+		<select name="domandaObb" id="domandaObb" form="modifica">
+			<option value="Obbligatoria">Obbligatoria</option>
+			<option value="Opzionale">Opzionale</option>
+		</select>	
+		<#if domanda.tipo == "Radio">
+			<#list options as opzione>
+				<input type="text" id="opzione.${domanda.id}" name="opzione.${domanda.id}" form="modifica" value="${optione.testo}" placeholder="${optione.testo}"/>
+			</#list>
+		</#if>
+		<#if domanda.tipo == "Checkbox">
+			<#list options as opzione>
+				<input type="text" id="opzione.${domanda.id}" name="opzione.${domanda.id}" form="modifica" value="${optione.testo}" placeholder="${optione.testo}"/>
+			</#list>
+		</#if>
+	<#else>
+			<input type="text" id="domandaTesto" name="domandaTesto" form="modifica" value="${domanda.testo}" placeholder="${domanda.testo}"/>
+			<input type="text" id="domandaNota" name="domandaNota" form="modifica" value="${domanda.nota}" placeholder="${domanda.nota}"/>
+			<select name="domandaObb" id="domandaObb" form="modifica">
+				<option value="Obbligatoria">Obbligatoria</option>
+				<option value="Opzionale">Opzionale</option>
+			</select>
+	</#if>
+</div>
+</#if>
+</div>

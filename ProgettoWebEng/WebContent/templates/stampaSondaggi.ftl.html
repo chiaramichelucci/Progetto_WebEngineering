@@ -1,10 +1,14 @@
 <table class="stampaSondaggi">
+<form action="sondaggi" method="POST" name="selezioneSondaggio" id="selezioneSondaggio">
 	<tr>
 		<td>Titolo Sondaggio</td>
 	</tr>
 	<#list sondaggi as sondaggio>
 		<tr>
-			<td>${sondaggio.titolo}</td>
+			<td><input type="radio" name="daModificare" id="daModificare" /></td>
+			<td><label for="daModificare">${sondaggio.titolo}</label></td>
 		</tr>
 	</#list>
+	<input type="submit" name="update" id="update" />
+</form>
 </table>

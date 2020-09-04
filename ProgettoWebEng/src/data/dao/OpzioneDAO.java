@@ -18,4 +18,8 @@ public interface OpzioneDAO {
 
 	List<Opzione> getOpzioni(Domanda domanda) throws DataException;
 	
+	void updateOpzione(Opzione opzione) throws DataException;
+	
+	void deleteOpzione(Opzione opzione) throws DataException;
+	
 }

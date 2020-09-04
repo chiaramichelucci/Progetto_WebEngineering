@@ -73,4 +73,10 @@ public class DomandaImpl extends DataItemImpl<Integer> implements Domanda{
 		return obbligatoria;
 	}
 
+	@Override
+	public void setDomanda(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

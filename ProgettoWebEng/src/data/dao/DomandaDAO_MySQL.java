@@ -28,6 +28,25 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
     }
     
     @Override
+    public void init() throws DataException {
+        try {
+            super.init();
+
+            domandaById = connection.prepareStatement("SELECT * FROM domanda WHERE id=?");
+            cDomandaBySondaggio = connection.prepareStatement("SELECT * FROM domanda WHERE sondaggio=?");
+            idDomanda = connection.prepareStatement("SELECT id AS idDomanda FROM domanda");
+            domandeBySondaggio = connection.prepareStatement("SELECT * FROM domanda WHERE id_sondaggio=?");
+
+            iDomanda = connection.prepareStatement("INSERT INTO domanda (testo,nota,tipo,obbligatoria,id_sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            uDomanda = connection.prepareStatement("UPDATE domanda SET testo=?,nota=?,tipo=?,obbligatoria=? WHERE id=?");
+            dDomanda = connection.prepareStatement("DELETE FROM domanda WHERE id=?");
+
+        } catch (SQLException ex) {
+            throw new DataException("Error initializing newspaper data layer", ex);
+        }
+    }
+    
+    @Override
     public void storeDomanda(Domanda domanda) throws DataException {
         try {
             if (domanda.getKey() != null && domanda.getID() > 0) { 
@@ -89,25 +108,6 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
         } catch (SQLException | OptimisticLockException ex) {
             throw new DataException("Unable to store domanda", ex);
         }}
-    
-    @Override
-    public void init() throws DataException {
-        try {
-            super.init();
-
-            domandaById = connection.prepareStatement("SELECT * FROM domanda WHERE id=?");
-            cDomandaBySondaggio = connection.prepareStatement("SELECT * FROM domanda WHERE sondaggio=?");
-            idDomanda = connection.prepareStatement("SELECT id AS idDomanda FROM domanda");
-            domandeBySondaggio = connection.prepareStatement("SELECT * FROM domanda WHERE id_sondaggio=?");
-
-            iDomanda = connection.prepareStatement("INSERT INTO domanda (testo,nota,tipo,obbligatoria,id_sondaggio) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uDomanda = connection.prepareStatement("UPDATE domanda SET testo=?,nota=?,tipo=?,obbligatoria=?, id_sondaggio=? WHERE id=?");
-            dDomanda = connection.prepareStatement("DELETE FROM domanda WHERE id=?");
-
-        } catch (SQLException ex) {
-            throw new DataException("Error initializing newspaper data layer", ex);
-        }
-    }
     
     @Override
     public void destroy() throws DataException {
@@ -229,14 +229,9 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 			if(domanda.getKey() != null && domanda.getID() > 0) {
 				if(domanda instanceof DataItemProxy && ! ((DataItemProxy) domanda).isModified()) {
 					return;
-				} //update
-				uDomanda.setString(1, domanda.getTesto());
-				uDomanda.setString(2, domanda.getNota());
-				uDomanda.setString(3, domanda.getTipo());
-				uDomanda.setBoolean(4, domanda.getObbligatoria());
-				uDomanda.setInt(5, sondaggio.getID());
-				uDomanda.setInt(6, domanda.getID());
-			} else { //insert
+				}
+				
+			} else { 
 				iDomanda.setString(1, domanda.getTesto());
 				iDomanda.setString(2, domanda.getNota());
 				iDomanda.setString(3, domanda.getTipo());
@@ -263,6 +258,31 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 	public Sondaggio getSondagio(int idSondaggio) throws DataException {
 		return null;
 		
+	}
+
+	@Override
+	public void updateDomanda(Domanda domanda) throws DataException{
+		try {
+			uDomanda.setString(1, domanda.getTesto());
+			uDomanda.setString(2, domanda.getNota());
+			uDomanda.setString(3, domanda.getTipo());
+			uDomanda.setBoolean(4, domanda.getObbligatoria());
+			uDomanda.setInt(5, domanda.getID());
+			uDomanda.executeQuery();
+		}catch(SQLException ex) {
+			throw new DataException("Non e possibile aggiornare la domanda", ex);
+		}
+		
+	}
+
+	@Override
+	public void deleteDomanda(Domanda domanda) throws DataException {
+		try {
+			dDomanda.setInt(1, domanda.getID());
+			dDomanda.executeQuery();
+		}catch(SQLException ex) {
+			throw new DataException("Non e possibile cancelare la domanda", ex);
+		}
 	}
     
     

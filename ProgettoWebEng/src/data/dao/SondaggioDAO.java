@@ -11,5 +11,7 @@ public interface SondaggioDAO {
     List<Sondaggio> getSondaggio(Sondaggio sondaggio) throws DataException;
     void storeSondaggio(Sondaggio sondaggio) throws DataException;
     List<Sondaggio> getSondaggioByResponsabile (String email) throws DataException;
+    void updateSondaggio(Sondaggio sondaggio) throws DataException;
+    void deleteSondaggio(Sondaggio sondaggio) throws DataException;
 
 }
