@@ -27,5 +27,7 @@ public interface Domanda extends DataItem<Integer>{
 	String getTipo();
 
 	void setTipo(String tipo);
+
+	void setDomanda(String string);
     
 }
