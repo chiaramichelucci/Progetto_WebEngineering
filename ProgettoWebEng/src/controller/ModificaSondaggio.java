@@ -12,8 +12,11 @@ import javax.sql.DataSource;
 
 import data.DataException;
 import data.dao.SondaggioDataLayer;
+import data.impl.DomandaImpl;
+import data.impl.RispostaImpl;
 import data.model.Domanda;
 import data.model.Opzione;
+import data.model.Risposta;
 import data.model.Sondaggio;
 import template.Failure;
 import template.TemplateManagerExeption;
@@ -61,6 +64,17 @@ public abstract class ModificaSondaggio extends HttpServlet {
 				}
 			}
 		}
+	 
+	 private void modificaSondaggio (HttpServletRequest req, HttpServletResponse res, Sondaggio sondaggio, List<Domanda> domande) throws DataException {
+		 String[] dom;
+			dom = req.getParameterValues("domanda");
+			for(int i=0; i<dom.length; i++) {
+				Domanda domanda = new DomandaImpl();
+				domanda.setDomanda(dom[i]);
+				((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().storeDomanda(domanda, dom.get(i));
+			}
+	 }
+	 
 
 		protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
 			try {
