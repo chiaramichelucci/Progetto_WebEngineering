@@ -16,11 +16,11 @@ import data.dao.AmministratoreDAO;
 import data.model.Amministratore;
 import data.model.Domanda;
 import data.model.Sondaggio;
+import data.model.Utente;
 
 public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
-    private PreparedStatement sAmministratoreByID;
-    private PreparedStatement sAmministratore, sAmministratoreByIssue, sUnassignedAmministratore;
-    private PreparedStatement iAmministratore, uAmministratore, dAmministratore;
+    private PreparedStatement getAdmin, checkAdmin;
+
 
     public AmministratoreDAO_MySQL(DataLayer d) {
         super(d);
@@ -31,12 +31,9 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
         try {
             super.init();
 
-            sAmministratoreByID = connection.prepareStatement("SELECT * FROM amministratore WHERE ID=?");
+            getAdmin = connection.prepareStatement("SELECT * FROM amministratore WHERE ID=?");
+            checkAdmin = connection.prepareStatement("SELECT * FROM amministratore WHERE email=? AND password=?");
            
-            sAmministratore = connection.prepareStatement("SELECT ID AS amministratoreID FROM amministratore");
-            iAmministratore = connection.prepareStatement("INSERT INTO amministratore (ID, email, password) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            uAmministratore = connection.prepareStatement("UPDATE amministratore SET ID=?,email=?,password=? WHERE ID=? ");
-            dAmministratore = connection.prepareStatement("DELETE FROM amministratore WHERE ID=?");
 
         } catch (SQLException ex) {
             throw new DataException("Error initializing newspaper data layer", ex);
@@ -48,11 +45,8 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
 
         try {
 
-            sAmministratoreByID.close();
-            sAmministratore.close();
-            iAmministratore.close();
-            uAmministratore.close();
-            dAmministratore.close();
+            getAdmin.close();
+            checkAdmin.close();
 
         } catch (SQLException ex) {
             //
@@ -86,8 +80,8 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
             a = dataLayer.getCache().get(Amministratore.class, id_amministratore);
         } else {
             try {
-                sAmministratoreByID.setInt(1, id_amministratore);
-                try (ResultSet rs = sAmministratoreByID.executeQuery()) {
+                getAdmin.setInt(1, id_amministratore);
+                try (ResultSet rs = getAdmin.executeQuery()) {
                     if (rs.next()) {
                         a = createAmministratore(rs);
                         dataLayer.getCache().add(Amministratore.class, a);
@@ -105,41 +99,20 @@ public class AmministratoreDAO_MySQL extends DAO implements AmministratoreDAO {
     }
 
 	@Override
-	public List<Amministratore> getAmministratore(Amministratore amministratore) throws DataException {
-		// TODO Auto-generated method stub
-		return null;
+	public Amministratore checkAdmin(String email, String password) throws DataException {
+		Amministratore admin = null;
+		try {
+			checkAdmin.setString(1, email);
+			checkAdmin.setString(2, password);
+			ResultSet rs = checkAdmin.executeQuery();
+			if(rs.next()) {
+				admin = createAmministratore(rs);
+				dataLayer.getCache().add(Amministratore.class, admin);
+			}
+		return admin;
+		} catch (SQLException ex) {
+			throw new DataException("Il check utente non e andata a buon fine", ex);
+		}
 	}
-
-	@Override
-	public List<Amministratore> getAmministratore() throws DataException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void storeAmministratore(Amministratore amministratore) throws DataException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void save(Amministratore amministratore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(Amministratore amministratore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(Amministratore amministratore) {
-		// TODO Auto-generated method stub
-		
-	}
-    
-    
-    
+       
 }

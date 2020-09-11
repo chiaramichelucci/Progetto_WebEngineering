@@ -7,35 +7,72 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import data.DataException;
+import security.SecurityLayer;
 import data.dao.AmministratoreDAO;
+import data.dao.SondaggioDataLayer;
 import data.dao.UtenteDAO;
+import data.model.Amministratore;
+import data.model.Utente;
+import freemarker.template.TemplateException;
+import template.Failure;
+import template.TemplateManagerExeption;
 
 
-public class Login extends HttpServlet {  
+public class Login extends SondaggioBaseController {  
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)  
-        throws ServletException, IOException {  
-  
-    response.setContentType("text/html");  
-    PrintWriter out = response.getWriter();  
-          
-    String n=request.getParameter("email");  
-    String p=request.getParameter("password");  
-          
-    if(AmministratoreDAO.validate(n, p)){  
-        RequestDispatcher rd=request.getRequestDispatcher("amministratore.html");  
-        rd.forward(request,response);  
-    }  
-    else if(UtenteDAO.validate(n, p)){  
-        RequestDispatcher rd=request.getRequestDispatcher("index.html");  
-        rd.forward(request,response);  
+	private void action_error(HttpServletRequest req, HttpServletResponse res) {
+		if (req.getAttribute("exception") != null) {
+            (new Failure(getServletContext())).activate((Exception) req.getAttribute("exception"), req, res);
+        } else {
+            (new Failure(getServletContext())).activate((String) req.getAttribute("message"), req, res);
+        }	
+	}
+	
+	public void login(HttpServletRequest req, HttpServletResponse res)  throws ServletException, IOException, TemplateManagerExeption, DataException {  
+     
+		String email = req.getParameter("email");
+		String password = req.getParameter("password");
+		Amministratore admin = ((SondaggioDataLayer)req.getAttribute("datalayer")).getAmministratoreDAO().checkAdmin(email, password);
+		Utente utente = ((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().checkUtente(email, password);
+		
+		if(admin != null) {
+			HttpSession ses = SecurityLayer.checkSession(req);
+			if(ses == null){
+				SecurityLayer.createSession(req, admin.getEmail(), 1, "administratore");
+			}
+			RequestDispatcher dispatcher = req.getRequestDispatcher("home");  //home e da definire
+            dispatcher.forward(req, res);
+		} else {
+			req.setAttribute("message", "Email/Password non valide");
+			action_error(req, res);
+		}
+		
+		if(utente != null) {
+			HttpSession ses = SecurityLayer.checkSession(req);
+			if(ses == null){
+				SecurityLayer.createSession(req, utente.getEmail(), utente.getID(), utente.getTipo());
+			}
+			RequestDispatcher dispatcher = req.getRequestDispatcher("home");  //home e da definire
+            dispatcher.forward(req, res);
+		} else {
+			req.setAttribute("message", "Email/Password non valide");
+			action_error(req, res);
+		}
     }
-    else{  
-        out.print("Sorry username or password error");  
-        RequestDispatcher rd=request.getRequestDispatcher("login.html");  
-        rd.include(request,response);  
-    }  
-          
-    out.close();  
-    }  
+
+	@Override
+	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException{
+		try {
+			login(req, res);
+		}catch (IOException ex) {
+			req.setAttribute("exception", ex);
+            action_error(req, res);
+		} catch (TemplateManagerExeption ex) {
+			req.setAttribute("exception", ex);
+            action_error(req, res);
+		}
+	} 
 }

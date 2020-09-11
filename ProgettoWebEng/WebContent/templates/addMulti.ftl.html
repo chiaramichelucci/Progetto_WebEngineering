@@ -1,7 +1,11 @@
 
 <#if domanda??>
 <div class="containerDomanda">
-	<h3 class="domanda">${domanda.testo}</h3>
+	<div class="tooltip">
+		<h3>${domanda.testo}</h3>
+  		<span class="tooltiptext tooltip-right">${domanda.nota}</span>
+	</div>
+	<br />
 	<#assign x=indiceDomanda >
 	<#if options??>	
 		<#if domanda.tipo == "Radio">

@@ -5,14 +5,12 @@ import data.model.Amministratore;
 
 public class AmministratoreImpl extends DataItemImpl<Integer> implements Amministratore{
 	 
-	public static int id;
-	protected static String email;
-	protected static String password;
+	private int id;
+	private String email;
+	private String password;
 	
-	public AmministratoreImpl(int id, String email, String password) {
-		this.setId(id);
-		this.setEmail(email);
-		this.setPassword(password);
+	public AmministratoreImpl() {
+		this.email = "";
 	}
 
 	public int getId() {
@@ -23,7 +21,7 @@ public class AmministratoreImpl extends DataItemImpl<Integer> implements Amminis
 		this.id = id;
 	}
 
-	public static String getEmail() {
+	public String getEmail() {
 		return email;
 	}
 
@@ -31,7 +29,7 @@ public class AmministratoreImpl extends DataItemImpl<Integer> implements Amminis
 		this.email = email;
 	}
 	
-	public static String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 

@@ -18,7 +18,7 @@ public class SecurityLayer {
            return null;
        }
 
-       if (s.getAttribute("userid") == null) {
+       if (s.getAttribute("id") == null) {
            check = false;
        } else if ((s.getAttribute("ip") == null) || !((String) s.getAttribute("ip")).equals(r.getRemoteHost())) {
            check = false;
@@ -49,12 +49,13 @@ public class SecurityLayer {
        }
    }
 
-   public static HttpSession createSession(HttpServletRequest request, String username, int userid) {
+   public static HttpSession createSession(HttpServletRequest request, String email, int userid, String tipo) {
        HttpSession s = request.getSession(true);
-       s.setAttribute("username", username);
+       s.setAttribute("email", email);
+       s.setAttribute("tipo", tipo);
        s.setAttribute("ip", request.getRemoteHost());
        s.setAttribute("inizio-sessione", Calendar.getInstance());
-       s.setAttribute("userid", userid);
+       s.setAttribute("id", userid);
        return s;
    }
 

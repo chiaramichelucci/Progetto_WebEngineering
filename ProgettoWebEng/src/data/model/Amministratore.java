@@ -5,5 +5,6 @@ import data.DataItem;
 public interface Amministratore extends DataItem<Integer> {
 
 	Integer getKey();
+	String getEmail();
 
 }

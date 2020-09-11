@@ -36,6 +36,8 @@ public class StampaSondaggi extends SondaggioBaseController {
 		
 		List<Sondaggio> sondaggi = (((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggioByResponsabile(email));
 		req.setAttribute("sondaggi", sondaggi);
+		req.setAttribute("add_multi", false);
+		req.setAttribute("use_outline", true);
 		resp.activate("stampaSondaggi.ftl.html", req, res);
 		
 		int sondDaModificare = Integer.parseInt(req.getParameter("daModificare"));

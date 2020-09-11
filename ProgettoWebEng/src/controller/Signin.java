@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +32,7 @@ public class Signin extends SondaggioBaseController{
         }	
 	}
 	
-	public void signin(HttpServletRequest req, HttpServletResponse res) throws TemplateException, IOException, TemplateManagerExeption {
+	public void signin(HttpServletRequest req, HttpServletResponse res) throws IOException, TemplateManagerExeption, DataException, ServletException {
 		
 		TemplateResult resp = new TemplateResult(getServletContext()); 
 		req.setAttribute("add_multi", false);
@@ -47,15 +48,17 @@ public class Signin extends SondaggioBaseController{
 		utente.setEmail(req.getParameter("email"));
 		utente.setNome(req.getParameter("nome"));
 		utente.setCognome(req.getParameter("cognome"));
+		
+		((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().storeUtente(utente);
+		
+		RequestDispatcher rd=req.getRequestDispatcher("login");  
+        rd.forward(req, res);
 	}
 	
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException{
 		try {
 			signin(req, res);
 		}catch (IOException ex) {
-			req.setAttribute("exception", ex);
-            action_error(req, res);
-		}catch (TemplateException ex) {
 			req.setAttribute("exception", ex);
             action_error(req, res);
 		} catch (TemplateManagerExeption ex) {

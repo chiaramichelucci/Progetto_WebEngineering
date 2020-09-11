@@ -2,17 +2,21 @@ package controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import data.DataException;
 import data.dao.SondaggioDataLayer;
 import data.model.Domanda;
 import data.model.Opzione;
 import data.model.Sondaggio;
+import data.model.Utente;
+import security.SecurityLayer;
 import template.TemplateResult;
 import template.Failure;
 import template.TemplateManagerExeption;
@@ -74,6 +78,24 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 			 }
 		 }
 	}
+	
+	protected boolean checkUtente(HttpServletRequest req, HttpServletResponse res) throws DataException, ServletException, IOException, TemplateManagerExeption {
+		
+		boolean permesso = false;
+		HttpSession ses = SecurityLayer.checkSession(req);
+		if(ses != null) {
+			if(ses.getAttribute("tipo").equals("responsabile") || ses.getAttribute("tipo").equals("amministratore")) {
+				permesso = true;
+			} else {
+				permesso = false;
+			}
+		} else {
+			RequestDispatcher rd=req.getRequestDispatcher("login");  
+	        rd.forward(req, res);
+		}
+		return permesso;
+	
+}
 
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException {
 		

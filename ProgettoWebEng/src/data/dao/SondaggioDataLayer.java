@@ -11,6 +11,7 @@ import data.dao.OpzioneDAO;
 import data.dao.OpzioneDAO_MySQL;
 import data.dao.SondaggioDAO;
 import data.dao.SondaggioDAO_MySQL;
+import data.model.Amministratore;
 import data.model.Domanda;
 import data.model.Opzione;
 import data.model.Risposta;
@@ -29,6 +30,9 @@ public class SondaggioDataLayer extends DataLayer {
     	registerDAO(Sondaggio.class, new SondaggioDAO_MySQL(this));
         registerDAO(Domanda.class, new DomandaDAO_MySQL(this));
         registerDAO(Opzione.class, new OpzioneDAO_MySQL(this));
+        registerDAO(Risposta.class, new RispostaDAO_MySQL(this));
+        registerDAO(Utente.class, new UtenteDAO_MySQL(this));
+        registerDAO(Amministratore.class, new AmministratoreDAO_MySQL(this));
     }
 
     //helpers    
@@ -47,5 +51,7 @@ public class SondaggioDataLayer extends DataLayer {
     public UtenteDAO getUtenteDAO() {
         return (UtenteDAO) getDAO(Utente.class);
     }
-    	
+    public AmministratoreDAO getAmministratoreDAO() {
+        return (AmministratoreDAO) getDAO(Amministratore.class);
+    }	
 }

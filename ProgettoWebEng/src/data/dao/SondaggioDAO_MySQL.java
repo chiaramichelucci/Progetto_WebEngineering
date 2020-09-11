@@ -16,12 +16,13 @@ import data.dao.SondaggioDAO;
 import data.model.Amministratore;
 import data.model.Domanda;
 import data.model.Sondaggio;
+import data.model.Utente;
 
 public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     private PreparedStatement sSondaggioByID;
     private PreparedStatement sSondaggio, sondaggioByEmail;
     private PreparedStatement iSondaggio, uSondaggio, dSondaggio;
-    private PreparedStatement urlSondaggio, respSondaggio;
+    private PreparedStatement urlSondaggio, respSondaggio, checkPermesso;
 
     public SondaggioDAO_MySQL(DataLayer d) {
         super(d);
@@ -106,6 +107,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
             urlSondaggio = connection.prepareStatement("UPDATE sondaggio SET url=? WHERE id=?");
             respSondaggio = connection.prepareStatement("INSERT INTO  () VALUE (?,?)");
+            checkPermesso = connection.prepareStatement("SELECT tipo FROM interagisce WHERE sondaggio=? AND utente=?");
 
         } catch (SQLException ex) {
             throw new DataException("Error initializing newspaper data layer", ex);
@@ -123,6 +125,9 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             iSondaggio.close();
             uSondaggio.close();
             dSondaggio.close();
+            urlSondaggio.close();
+            checkPermesso.close();
+            respSondaggio.close();
 
         } catch (SQLException ex) {
             //
@@ -260,5 +265,25 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 				throw new DataException("Non e possibile cancelare il sondaggio", ex);
 			}
 		
+	}
+
+	@Override
+	public boolean checkPermesso(Sondaggio sondaggio,Utente utente) throws DataException {
+		boolean permesso = false;
+		try {
+			checkPermesso.setInt(1, sondaggio.getID());
+			checkPermesso.setInt(2, utente.getID());
+			ResultSet rs = checkPermesso.executeQuery();
+			if(rs.next()) {
+				if(rs.getString("tipo").equalsIgnoreCase("partecipante")) {
+					permesso=true;;
+				} else {
+					permesso=false;
+				}
+			}
+			return permesso;
+		} catch (SQLException ex) {
+			throw new DataException("Non e possibile ottenere il tipo", ex);
+		}
 	}
 }

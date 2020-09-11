@@ -13,11 +13,12 @@ import data.DataException;
 import data.DataLayer;
 import data.dao.UtenteDAO;
 import data.model.Amministratore;
+import data.model.Domanda;
 import data.model.Utente;
 
 public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
     private PreparedStatement sUtenteByID;
-    private PreparedStatement sUtente;
+    private PreparedStatement sUtente, checkUtente;
     private PreparedStatement iUtente, uUtente, dUtente;
 
     public UtenteDAO_MySQL(DataLayer d) {
@@ -32,9 +33,10 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 
             sUtenteByID = connection.prepareStatement("SELECT * FROM utente WHERE ID=?");
             sUtente = connection.prepareStatement("SELECT ID AS utenteID FROM utente");
-            iUtente = connection.prepareStatement("INSERT INTO utente (ID,nome, cognome, email, password, tipo) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            iUtente = connection.prepareStatement("INSERT INTO utente (nome, cognome, email, password, tipo) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uUtente = connection.prepareStatement("UPDATE utente SET ID=?,nome=?,cognome=?, email=?, password=?, tipo=? WHERE ID=? and email=?");
             dUtente = connection.prepareStatement("DELETE FROM utente WHERE ID=?");
+            checkUtente = connection.prepareStatement("SELECT * FROM utente WHERE email=? AND password=?");
 
         } catch (SQLException ex) {
             throw new DataException("Error initializing newspaper data layer", ex);
@@ -47,6 +49,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
         try {
 
             sUtenteByID.close();
+            checkUtente.close();
             sUtente.close();
             iUtente.close();
             uUtente.close();
@@ -117,15 +120,53 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 	}
 
 	@Override
-	public List<Utente> getUnassignedUtente() throws DataException {
-		// TODO Auto-generated method stub
-		return null;
+	public Utente checkUtente(String email, String password) throws DataException {
+		Utente utente = null;
+		try {
+			checkUtente.setString(1, email);
+			checkUtente.setString(2, password);
+			ResultSet rs = checkUtente.executeQuery();
+			if(rs.next()) {
+				utente = createUtente(rs);
+				dataLayer.getCache().add(Utente.class, utente);
+			}
+		return utente;
+		} catch (SQLException ex) {
+			throw new DataException("Il check utente non e andata a buon fine", ex);
+		}
+		
 	}
-
+	
+	
 	@Override
 	public void storeUtente(Utente utente) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			if(utente.getKey() != null && utente.getID() > 0) {
+				if(utente instanceof DataItemProxy && ! ((DataItemProxy) utente).isModified()) {
+					return;
+				}
+				
+			} else { 
+				iUtente.setString(1, utente.getNome());
+				iUtente.setString(2, utente.getCognome());
+				iUtente.setString(3, utente.getEmail());
+				iUtente.setString(4, utente.getPassword());
+				iUtente.setString(5, "generico");
+				if (iUtente.executeUpdate() == 1) {
+					try (ResultSet keys = iUtente.getGeneratedKeys()) {
+						if (keys.next()) {
+							int key = keys.getInt(1);
+							utente.setKey(key);
+							utente.setID(key);
+							dataLayer.getCache().add(Utente.class, utente);
+						}
+					}
+				}
+			}
+		} catch (SQLException ex) {
+			throw new DataException("La registrazione non e andata a buon fine", ex);
 		
+		}
 	}
 
 	@Override
@@ -145,5 +186,5 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }
