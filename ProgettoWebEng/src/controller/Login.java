@@ -12,7 +12,8 @@ import data.dao.UtenteDAO;
 
 
 public class Login extends HttpServlet {  
-public void doPost(HttpServletRequest request, HttpServletResponse response)  
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)  
         throws ServletException, IOException {  
   
     response.setContentType("text/html");  

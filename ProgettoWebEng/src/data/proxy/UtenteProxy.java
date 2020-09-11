@@ -5,17 +5,11 @@ import data.DataLayer;
 import data.impl.UtenteImpl;
 
 public class UtenteProxy extends UtenteImpl implements DataItemProxy {
-
-	public UtenteProxy(int id, String nome, String cognome, String email, String password, String tipo) {
-		super(id, nome, cognome, email, password, tipo);
-		// TODO Auto-generated constructor stub
-	}
-
 	
 	protected DataLayer dataLayer;
 	
 	public UtenteProxy(DataLayer d) {
-		super(id, nome, cognome, email, password, tipo);
+		super();
 		this.dataLayer = d;
 	}
 	

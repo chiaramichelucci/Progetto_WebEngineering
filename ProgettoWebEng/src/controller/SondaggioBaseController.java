@@ -20,11 +20,7 @@ public abstract class SondaggioBaseController extends HttpServlet {
 	    protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, DataException;
 
 	    private void processBaseRequest(HttpServletRequest request, HttpServletResponse response) {
-	        //WARNING: never declare DB-related objects including references to Connection and Statement (as our data layer)
-	        //as class variables of a servlet. Since servlet instances are reused, concurrent requests may conflict on such
-	        //variables leading to unexpected results. To always have different connections and statements on a per-request
-	        //(i.e., per-thread) basis, declare them in the doGet, doPost etc. (or in methods called by them) and 
-	        //(possibly) pass such variables through the request.
+
 	        try (SondaggioDataLayer datalayer = new SondaggioDataLayer(ds)) {
 	            datalayer.init();
 	            request.setAttribute("datalayer", datalayer);

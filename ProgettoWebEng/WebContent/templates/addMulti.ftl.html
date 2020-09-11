@@ -1,23 +1,23 @@
-<div class="insideContent">
+
 <#if domanda??>
 <div class="containerDomanda">
 	<h3 class="domanda">${domanda.testo}</h3>
+	<#assign x=indiceDomanda >
 	<#if options??>	
 		<#if domanda.tipo == "Radio">
 			<#list options as opzione>
-				<input type="Radio" id="risposta" name="rispsota" form="compilazione"/>
-				<label for="risposta">${opzione.testo}</label><br />
+				<input type="Radio" id="${x}.domanda" name="${x}.domanda" form="compilazione"/>
+				<label for="${x}.domanda">${opzione.testo}</label><br />
 			</#list>
 		</#if>
 		<#if domanda.tipo == "Checkbox">
 			<#list options as opzione>
-				<input type="Checkbox" id="risposta" name="rispsota" form="compilazione"/>
-				<label for="risposta">${opzione.testo}</label><br />
+				<input type="Checkbox" id="${x}.domanda" name="${x}.domanda" form="compilazione"/>
+				<label for="${x}.domanda">${opzione.testo}</label><br />
 			</#list>
 		</#if>
 	<#else>
-			<input type="${domanda.tipo}" id="risposta" name="risposta" form="compilazione"/>
+			<input type="${domanda.tipo}" id="${x}.domanda" name="${x}.domanda" form="compilazione"/>
 	</#if>
 </div>
 </#if>
-</div>

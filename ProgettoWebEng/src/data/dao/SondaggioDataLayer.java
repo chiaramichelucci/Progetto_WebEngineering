@@ -15,6 +15,7 @@ import data.model.Domanda;
 import data.model.Opzione;
 import data.model.Risposta;
 import data.model.Sondaggio;
+import data.model.Utente;
 import data.DataException;
 
 public class SondaggioDataLayer extends DataLayer {
@@ -34,17 +35,17 @@ public class SondaggioDataLayer extends DataLayer {
     public DomandaDAO getDomandaDAO() {
         return (DomandaDAO) getDAO(Domanda.class);
     }
-
     public OpzioneDAO getOpzioneDAO() {
         return (OpzioneDAO) getDAO(Opzione.class);
-    }
-    
+    }   
     public SondaggioDAO getSondaggioDAO() {
         return (SondaggioDAO) getDAO(Sondaggio.class);
-    }
-    
+    }    
     public RispostaDAO getRispostaDAO() {
         return (RispostaDAO) getDAO(Risposta.class);
+    }    
+    public UtenteDAO getUtenteDAO() {
+        return (UtenteDAO) getDAO(Utente.class);
     }
     	
 }

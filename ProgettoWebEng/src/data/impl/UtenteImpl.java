@@ -4,26 +4,26 @@ import data.DataItemImpl;
 import data.model.Utente;
 
 public class UtenteImpl extends DataItemImpl<Integer> implements Utente {
-	protected static int id;
-	protected static String nome;
-	protected static String cognome;
-	protected static String email;
-	protected static String password;
-	protected static String tipo;
-	public UtenteImpl(int id, String nome, String cognome, String email, String password, String tipo) {;
-	setId(id);
-	setNome(nome);
-	setCognome(cognome);
-	setEmail(email);
-	setPassword(password);	
-	setTipo(tipo);	
+	
+	private int id;
+	private String nome;
+	private String cognome;
+	private String email;
+	private String password;
+	private String tipo;
+	
+	public UtenteImpl() {;
+		this.cognome= "";
+		this.nome= "";
+		this.email= "";
+		this.password= "";
 	}
 	
-	public int getId() {
+	public int getID() {
 	return id;
 	}
 	
-	public void setId(int id) {
+	public void setID(int id) {
 		this.id=id;
 	}
 	
