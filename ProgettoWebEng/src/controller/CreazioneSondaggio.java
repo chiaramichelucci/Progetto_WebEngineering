@@ -37,7 +37,8 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 		//campo obbligatoria da vedere non lo inserice bene
 		
 		TemplateResult resp = new TemplateResult(getServletContext()); 
-		
+		req.setAttribute("add_multi", false);
+		req.setAttribute("use_outline", true);
 		resp.activate("crea.ftl.html", req, res);
 		
 		Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().createSondaggio();

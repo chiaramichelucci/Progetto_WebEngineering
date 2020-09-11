@@ -41,7 +41,8 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 		Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggio(id);
 		req.setAttribute("poll", sondaggio);
 		List<Domanda> domande = (((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggio));
-		req.setAttribute("questions", domande);
+		req.setAttribute("add_multi", false);
+		req.setAttribute("use_outline", true);
 		resp.activate("comp.ftl.html", req, res);
 		for(int i = 0; i<domande.size(); i++) {
 			Domanda domanda = domande.get(i);
@@ -49,39 +50,58 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 			if (tipo.equals("Radio")) {
 				List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
 				req.setAttribute("options", opzioni);
+				req.setAttribute("indiceDomanda", i);
 				req.setAttribute("domanda", domanda);
-				resp.activate2("addMulti.ftl.html", req, res);
+				req.setAttribute("add_multi", true);
+				req.setAttribute("use_outline", false);
+				resp.activate("addMulti.ftl.html", req, res);
 			} else if (tipo.equals("Checkbox")) {
 				List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
 				req.setAttribute("options", opzioni);
+				req.setAttribute("indiceDomanda", i);
 				req.setAttribute("domanda", domanda);
-				resp.activate2("addMulti.ftl.html", req, res);
+				req.setAttribute("add_multi", true);
+				req.setAttribute("use_outline", false);
+				resp.activate("addMulti.ftl.html", req, res);
 			} else {
+				req.setAttribute("indiceDomanda", i);
 				req.setAttribute("domanda", domanda);
-				resp.activate2("addMulti.ftl.html", req, res);
+				req.setAttribute("add_multi", false);
+				req.setAttribute("use_outline", false);
+				resp.activate("addMulti.ftl.html", req, res);
 			}
 		}
-		compilazioneSondaggio(req, res, sondaggio, domande);
+		if(req.getParameter("submit") != null) {
+			compilazioneSondaggio(req, res, sondaggio, domande);
+		}
+		
 	}
 	
-	//da conpletare ancora da vedere cosa fare per i radio
+	
 	private void compilazioneSondaggio(HttpServletRequest req, HttpServletResponse res, Sondaggio sondaggio, List<Domanda> domande) throws DataException { 
-		String[] risposte = req.getParameterValues("risposta");
-		if(risposte[0] != null) {
-			for(int i=0; i<risposte.length; i++) {
-				Risposta risposta = new RispostaImpl();
-				risposta.setSondaggio(sondaggio);
-				risposta.setDomanda(domande.get(i));
-				risposta.setRisposta(risposte[i]);
-				((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().storeRisposta(risposta, sondaggio, domande.get(i));
-			}
+		List<String> risposte = new ArrayList<String>();
+		int j=0;
+		while (req.getParameter(j+".domanda") != null) {
+			risposte.add(req.getParameter(j+".domanda"));
+		}
+		for(int i=0; i<risposte.size(); i++) {
+			Risposta risposta = new RispostaImpl();
+			risposta.setSondaggio(sondaggio);
+			risposta.setDomanda(domande.get(i));
+			risposta.setRisposta(risposte.get(i)); 
+			((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().storeRisposta(risposta, sondaggio, domande.get(i));
+			
 		}
 	}
 	
 	@Override
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
 		try {
-			stampaSondaggio(req, res);
+			if(req.getParameter("updateSubmit") != null) {
+				
+			} else {
+				stampaSondaggio(req, res);
+			}
 		}catch(TemplateManagerExeption ex) {
 			req.setAttribute("exception", ex);
             action_error(req, res);

@@ -60,9 +60,9 @@ public abstract class ModificaSondaggio extends HttpServlet {
 				if (tipo.equals("Radio") || tipo.equals("Checbox")) {
 					List<Opzione> opzioni = (((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domanda));
 					req.setAttribute("options", opzioni);
-					resp.activate2("addMultiMod.ftl.html", req, res);
+					resp.activate("addMultiMod.ftl.html", req, res);
 				} else {
-					resp.activate2("addMultiMod.ftl.html", req, res);
+					resp.activate("addMultiMod.ftl.html", req, res);
 				}
 			}
 		}

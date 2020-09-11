@@ -59,6 +59,11 @@
   </servlet>
   
   <servlet>
+  	<servlet-name>Signin</servlet-name>
+    <servlet-class>controller.Signin</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>CompilazioneSondaggio</servlet-name>
     <servlet-class>controller.CompilazioneSondaggio</servlet-class>
   </servlet>
@@ -69,7 +74,7 @@
   </servlet>
   
   <servlet>
-    <servlet-name>modificaSondaggio</servlet-name>
+    <servlet-name>ModificaSondaggio</servlet-name>
     <servlet-class>controller.ModificaSondaggi</servlet-class>
   </servlet>
 
@@ -80,7 +85,12 @@
   
   <servlet-mapping>
   	<servlet-name>Login</servlet-name>
-    <url-pattern>/logon</url-pattern>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Signin</servlet-name>
+    <url-pattern>/signin</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

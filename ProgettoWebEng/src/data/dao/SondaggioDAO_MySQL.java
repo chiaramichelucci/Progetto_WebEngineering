@@ -21,6 +21,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     private PreparedStatement sSondaggioByID;
     private PreparedStatement sSondaggio, sondaggioByEmail;
     private PreparedStatement iSondaggio, uSondaggio, dSondaggio;
+    private PreparedStatement urlSondaggio, respSondaggio;
 
     public SondaggioDAO_MySQL(DataLayer d) {
         super(d);
@@ -103,6 +104,8 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo, testo_apertura, testo_chiusura, disponibile, modalita, URL) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?, testo_apertura=?, testo_chiusura=?, disponibile=?, modalita=? WHERE ID=?");
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
+            urlSondaggio = connection.prepareStatement("UPDATE sondaggio SET url=? WHERE id=?");
+            respSondaggio = connection.prepareStatement("INSERT INTO  () VALUE (?,?)");
 
         } catch (SQLException ex) {
             throw new DataException("Error initializing newspaper data layer", ex);
@@ -215,6 +218,11 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 						}
 					}
 				}
+				urlSondaggio.setString(1, "http://localhost:8080/ProgettoWebEng/comp?id=" + sondaggio.getID());
+				urlSondaggio.executeQuery();
+				respSondaggio.setNString(1, "");
+				respSondaggio.setNString(2, "");
+				respSondaggio.executeQuery();
 			}
 			
 			if (sondaggio instanceof DataItemProxy) {
