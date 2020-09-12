@@ -77,6 +77,16 @@
     <servlet-name>ModificaSondaggio</servlet-name>
     <servlet-class>controller.ModificaSondaggi</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>StampaUtenti</servlet-name>
+    <servlet-class>controller.StampaUtenti</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>Homepage</servlet-name>
+    <servlet-class>controller.HomepageUtente</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>CreazioneSondaggio</servlet-name>
@@ -106,6 +116,16 @@
   <servlet-mapping>
     <servlet-name>ModificaSondaggio</servlet-name>
     <url-pattern>/mod</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>StampaUtenti</servlet-name>
+    <url-pattern>/utenti</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>Homepage</servlet-name>
+    <url-pattern>/home</url-pattern>
   </servlet-mapping>
   
   <servlet>

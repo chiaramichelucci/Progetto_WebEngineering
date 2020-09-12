@@ -17,7 +17,7 @@ import data.model.Domanda;
 import data.model.Utente;
 
 public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
-    private PreparedStatement sUtenteByID;
+    private PreparedStatement sUtenteByID, getUtenti, pruomoviUtente;
     private PreparedStatement sUtente, checkUtente;
     private PreparedStatement iUtente, uUtente, dUtente;
 
@@ -32,6 +32,8 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
             super.init();
 
             sUtenteByID = connection.prepareStatement("SELECT * FROM utente WHERE ID=?");
+            pruomoviUtente = connection.prepareStatement("ALTER TABLE utente SET tipo = ? WHEre id = ?");
+            getUtenti = connection.prepareStatement("Select * FROM utente");
             sUtente = connection.prepareStatement("SELECT ID AS utenteID FROM utente");
             iUtente = connection.prepareStatement("INSERT INTO utente (nome, cognome, email, password, tipo) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uUtente = connection.prepareStatement("UPDATE utente SET ID=?,nome=?,cognome=?, email=?, password=?, tipo=? WHERE ID=? and email=?");
@@ -50,6 +52,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 
             sUtenteByID.close();
             checkUtente.close();
+            getUtenti.close();
             sUtente.close();
             iUtente.close();
             uUtente.close();
@@ -103,10 +106,6 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
         return u;
     }
 
-    public void delete1 (Utente utente) {
-    	
-    }
-
 	@Override
 	public List<Utente> getUtente(Utente utente) throws DataException {
 		// TODO Auto-generated method stub
@@ -114,9 +113,18 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 	}
 
 	@Override
-	public List<Utente> getUtente() throws DataException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Utente> getUtenti() throws DataException {
+		List<Utente> result = new ArrayList();
+        try {           
+            try (ResultSet rs = getUtenti.executeQuery()) {
+                while (rs.next()) {
+                    result.add((Utente) getUtente(rs.getInt("id")));
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataException("Non e' stato possibile carica gli utenti", ex);
+        }
+        return result;
 	}
 
 	@Override
@@ -134,7 +142,6 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 		} catch (SQLException ex) {
 			throw new DataException("Il check utente non e andata a buon fine", ex);
 		}
-		
 	}
 	
 	
@@ -170,21 +177,14 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 	}
 
 	@Override
-	public void save(Utente utente) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(Utente utente) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(Utente utente) {
-		// TODO Auto-generated method stub
-		
+	public void pruomoviUtente(int id) throws DataException {
+		try {
+			checkUtente.setInt(1, id);
+			checkUtente.executeQuery();
+			
+		} catch (SQLException ex) {
+			throw new DataException("Il check utente non e andata a buon fine", ex);
+		}
 	}
 
 }

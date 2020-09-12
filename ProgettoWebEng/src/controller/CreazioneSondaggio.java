@@ -77,6 +77,9 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 				   }
 			 }
 		 }
+		req.setAttribute("risultato", "Sondaggio creato con successo");
+		RequestDispatcher rd=req.getRequestDispatcher("risultato");  
+        rd.forward(req, res);
 	}
 	
 	protected boolean checkUtente(HttpServletRequest req, HttpServletResponse res) throws DataException, ServletException, IOException, TemplateManagerExeption {
@@ -94,13 +97,20 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 	        rd.forward(req, res);
 		}
 		return permesso;
-	
-}
+	}
 
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException {
 		
 		try {
-			createSondaggio(req, res);
+			if(checkUtente(req, res)) {
+				createSondaggio(req, res);
+			} else {
+				TemplateResult resp = new TemplateResult(getServletContext()); 
+				req.setAttribute("add_multi", false);
+				req.setAttribute("use_outline", true);
+				req.setAttribute("risultato", "Non hai permesso");
+				resp.activate("risultato.ftl.html", req, res);
+			}
 		}catch(TemplateManagerExeption ex) {
 			req.setAttribute("exception", ex);
             action_error(req, res);
