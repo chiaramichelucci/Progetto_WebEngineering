@@ -20,7 +20,7 @@ import data.model.Utente;
 
 public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
     private PreparedStatement sSondaggioByID;
-    private PreparedStatement sSondaggio, sondaggioByEmail;
+    private PreparedStatement sSondaggio, sondaggioByEmail, sondaggioByTitolo;
     private PreparedStatement iSondaggio, uSondaggio, dSondaggio;
     private PreparedStatement urlSondaggio, respSondaggio, checkPermesso;
 
@@ -102,6 +102,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             
             sondaggioByEmail = connection.prepareStatement("SELECT id FROM sondaggio WHERE id IN (SELECT sondaggio FROM interagisce INNER JOIN utente ON interagisce.utente = utente.id WHERE utente.email = ?)");
             sSondaggio = connection.prepareStatement("SELECT ID AS sondaggioID FROM sondaggio");
+            sondaggioByTitolo = connection.prepareStatement("SELECT * FROM sondaggio WHERE titolo=?");
             iSondaggio = connection.prepareStatement("INSERT INTO sondaggio (titolo, testo_apertura, testo_chiusura, disponibile, modalita, URL) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             uSondaggio = connection.prepareStatement("UPDATE sondaggio SET titolo=?, testo_apertura=?, testo_chiusura=?, disponibile=?, modalita=? WHERE ID=?");
             dSondaggio = connection.prepareStatement("DELETE FROM sondaggio WHERE ID=?");
@@ -121,6 +122,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
         	
         	sondaggioByEmail.close();
             sSondaggioByID.close();
+            sondaggioByTitolo.close();
             sSondaggio.close();
             iSondaggio.close();
             uSondaggio.close();
@@ -147,6 +149,8 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
             s.setTitolo(rs.getString("titolo"));
             s.setDisponibile(rs.getBoolean("disponibile"));
             s.setURL(rs.getString("URL"));
+            s.setBeginText(rs.getString("testo_apertura"));
+            s.setBeginText(rs.getString("testo_chiusura"));
             s.setModalita(rs.getString("modalita"));
         } catch (SQLException ex) {
             throw new DataException("Unable to create sondaggio object form ResultSet", ex);
@@ -285,5 +289,23 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 		} catch (SQLException ex) {
 			throw new DataException("Non e possibile ottenere il tipo", ex);
 		}
+	}
+
+	@Override
+	public Sondaggio getSondaggioByTitolo(String titolo) throws DataException {
+		Sondaggio s = null;
+
+            try {
+                sondaggioByTitolo.setString(1, titolo);
+                try (ResultSet rs = sondaggioByTitolo.executeQuery()) {
+                    if (rs.next()) {
+                        s = createSondaggio(rs);
+                        dataLayer.getCache().add(Sondaggio.class, s);
+                    }
+                }
+            } catch (SQLException ex) {
+                throw new DataException("Unable to load sondaggio by titolo", ex);
+            }
+        return s;
 	}
 }

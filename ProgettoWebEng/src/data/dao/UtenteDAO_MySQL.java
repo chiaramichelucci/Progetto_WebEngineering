@@ -32,7 +32,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
             super.init();
 
             sUtenteByID = connection.prepareStatement("SELECT * FROM utente WHERE ID=?");
-            pruomoviUtente = connection.prepareStatement("ALTER TABLE utente SET tipo = ? WHEre id = ?");
+            pruomoviUtente = connection.prepareStatement("UPDATE utente SET tipo = ? WHERE email = ?");
             getUtenti = connection.prepareStatement("Select * FROM utente");
             sUtente = connection.prepareStatement("SELECT ID AS utenteID FROM utente");
             iUtente = connection.prepareStatement("INSERT INTO utente (nome, cognome, email, password, tipo) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -177,13 +177,14 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 	}
 
 	@Override
-	public void pruomoviUtente(int id) throws DataException {
+	public void pruomoviUtente(String email) throws DataException {
 		try {
-			checkUtente.setInt(1, id);
-			checkUtente.executeQuery();
+			pruomoviUtente.setString(1, "responsabile");
+			pruomoviUtente.setString(2, email);
+			pruomoviUtente.executeUpdate();
 			
 		} catch (SQLException ex) {
-			throw new DataException("Il check utente non e andata a buon fine", ex);
+			throw new DataException("La pruomozione dell'utente non e andata a buon fine", ex);
 		}
 	}
 

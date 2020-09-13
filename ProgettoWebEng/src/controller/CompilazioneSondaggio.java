@@ -41,7 +41,6 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 		
 		req.setAttribute("poll", sondaggio);
 		List<Domanda> domande = (((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggio));
-		req.setAttribute("add_multi", false);
 		req.setAttribute("use_outline", true);
 		if(req.getParameter("submit") != null) {
 			compilazioneSondaggio(req, res, sondaggio, domande);
@@ -58,7 +57,7 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 				req.setAttribute("options", opzioni);
 				req.setAttribute("indiceDomanda", i);
 				req.setAttribute("domanda", domanda);
-				req.setAttribute("add_multi", true);
+				req.setAttribute("useMulti", "add_multi");
 				req.setAttribute("use_outline", false);
 				resp.activate("addMulti.ftl.html", req, res);
 			} else if (tipo.equals("Checkbox")) {
@@ -66,13 +65,12 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 				req.setAttribute("options", opzioni);
 				req.setAttribute("indiceDomanda", i);
 				req.setAttribute("domanda", domanda);
-				req.setAttribute("add_multi", true);
+				req.setAttribute("useMulti", "add_multi");
 				req.setAttribute("use_outline", false);
 				resp.activate("addMulti.ftl.html", req, res);
 			} else {
 				req.setAttribute("indiceDomanda", i);
 				req.setAttribute("domanda", domanda);
-				req.setAttribute("add_multi", false);
 				req.setAttribute("use_outline", false);
 				resp.activate("addMulti.ftl.html", req, res);
 			}

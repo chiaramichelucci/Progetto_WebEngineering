@@ -5,7 +5,7 @@
 	</tr>
 	<#list sondaggi as sondaggio>
 		<tr>
-			<td><input type="radio" name="daModificare" id="daModificare" /></td>
+			<td><input type="radio" name="daModificare" id="daModificare" value="${sondaggio.titolo}"/></td>
 			<td><label for="daModificare">${sondaggio.titolo}</label></td>
 		</tr>
 	</#list>

@@ -78,7 +78,7 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 			 }
 		 }
 		req.setAttribute("risultato", "Sondaggio creato con successo");
-		RequestDispatcher rd=req.getRequestDispatcher("risultato");  
+		RequestDispatcher rd=req.getRequestDispatcher("result");  
         rd.forward(req, res);
 	}
 	

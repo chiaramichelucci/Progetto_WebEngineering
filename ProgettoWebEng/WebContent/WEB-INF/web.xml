@@ -14,8 +14,24 @@
         <param-value>outline.ftl.html</param-value>
     </context-param>
     <context-param>
+        <param-name>view.outlineP_template</param-name>
+        <param-value>outlineUser.ftl.html</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.outlineR_template</param-name>
+        <param-value>outlineResp.ftl.html</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.outlineA_template</param-name>
+        <param-value>outlineAdmin.ftl.html</param-value>
+    </context-param>
+    <context-param>
         <param-name>view.addMulti_template</param-name>
         <param-value>addMulti.ftl.html</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.addMultiMod_template</param-name>
+        <param-value>addMultiMod.ftl.html</param-value>
     </context-param>
     <context-param>
         <param-name>view.date_format</param-name>
@@ -64,6 +80,11 @@
   </servlet>
   
   <servlet>
+  	<servlet-name>Logout</servlet-name>
+    <servlet-class>controller.Logout</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>CompilazioneSondaggio</servlet-name>
     <servlet-class>controller.CompilazioneSondaggio</servlet-class>
   </servlet>
@@ -75,7 +96,7 @@
   
   <servlet>
     <servlet-name>ModificaSondaggio</servlet-name>
-    <servlet-class>controller.ModificaSondaggi</servlet-class>
+    <servlet-class>controller.ModificaSondaggio</servlet-class>
   </servlet>
   
   <servlet>
@@ -86,6 +107,11 @@
   <servlet>
     <servlet-name>Homepage</servlet-name>
     <servlet-class>controller.HomepageUtente</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>Risultato</servlet-name>
+    <servlet-class>controller.Risultato</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -101,6 +127,11 @@
   <servlet-mapping>
   	<servlet-name>Signin</servlet-name>
     <url-pattern>/signin</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
@@ -126,6 +157,11 @@
   <servlet-mapping>
     <servlet-name>Homepage</servlet-name>
     <url-pattern>/home</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>Risultato</servlet-name>
+    <url-pattern>/result</url-pattern>
   </servlet-mapping>
   
   <servlet>

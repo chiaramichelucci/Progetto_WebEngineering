@@ -31,10 +31,11 @@ public class StampaUtenti extends SondaggioBaseController {
 		TemplateResult resp = new TemplateResult(getServletContext()); 
 		
 		if(req.getParameter("daPruomovere") != null) {
-			int utenteDaPruomovere = Integer.parseInt(req.getParameter("daPruomovere"));
+			System.out.print(" output: " + req.getParameter("daPruomovere"));
+			String utenteDaPruomovere = req.getParameter("daPruomovere");
 			((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().pruomoviUtente(utenteDaPruomovere);
 			req.setAttribute("risultato", "Utente pruomovato con successo");
-			RequestDispatcher rd=req.getRequestDispatcher("risultato");  
+			RequestDispatcher rd=req.getRequestDispatcher("result");  
 	        rd.forward(req, res);
 		}
 		
@@ -56,8 +57,7 @@ public class StampaUtenti extends SondaggioBaseController {
 				permesso = false;
 			}
 		} else {
-			RequestDispatcher rd=req.getRequestDispatcher("login");  
-	        rd.forward(req, res);
+			res.sendRedirect("login.jsp");;
 		}
 		return permesso;
 	}

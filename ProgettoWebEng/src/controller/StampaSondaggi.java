@@ -37,21 +37,26 @@ public class StampaSondaggi extends SondaggioBaseController {
 		HttpSession ses = req.getSession();
 		String email = (String) ses.getAttribute("email");
 		
+		if (req.getParameter("daModificare") != null){
+			System.out.print( "coso: " + req.getParameter("daModificare"));
+			String sondDaModificare = req.getParameter("daModificare");
+			Sondaggio sondaggio = (((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggioByTitolo(sondDaModificare));
+			req.setAttribute("sondaggioDaModificare", sondaggio);
+			trasmettiSondaggio(req, res);
+		}
+		
 		List<Sondaggio> sondaggi = (((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggioByResponsabile(email));
 		req.setAttribute("sondaggi", sondaggi);
 		req.setAttribute("add_multi", false);
 		req.setAttribute("use_outline", true);
 		resp.activate("stampaSondaggi.ftl.html", req, res);
 		
-		int sondDaModificare = Integer.parseInt(req.getParameter("daModificare"));
-		Sondaggio sondaggio = (((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggio(sondDaModificare));
-		req.setAttribute("sondaggioDaModificare", sondaggio);
-		
 	}
 	
 	private void trasmettiSondaggio(HttpServletRequest req, HttpServletResponse res) throws IOException, DataException, TemplateManagerExeption, ServletException {
 		ServletContext context = getServletContext();
-		RequestDispatcher requestDispatcher=context.getRequestDispatcher("mod");
+		System.out.print(req.getAttribute("sondaggioDaModificare"));
+		RequestDispatcher requestDispatcher=context.getRequestDispatcher("/mod");
         requestDispatcher.forward(req, res);
 	}
 	
@@ -75,11 +80,7 @@ public class StampaSondaggi extends SondaggioBaseController {
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
 		try {
 			if(checkUtente(req, res)) {
-				if(req.getParameter("daModificare") != null) {
-					trasmettiSondaggio(req, res);
-				} else {
-					stampaSondaggi(req, res);
-				}
+				stampaSondaggi(req, res);
 			}
 		}catch(TemplateManagerExeption ex) {
 			req.setAttribute("exception", ex);

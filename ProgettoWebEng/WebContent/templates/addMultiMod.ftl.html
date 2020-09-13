@@ -2,30 +2,30 @@
 <#if domanda??>
 <div class="containerDomanda">
 	<#if options??>
-		<input type="text" id="domandaTesto" name="domandaTesto" form="modifica" value="${domanda.testo}" placeholder="${domanda.testo}"/>
-		<input type="text" id="domandaNota" name="domandaNota" form="modifica" value="${domanda.nota}" placeholder="${domanda.nota}"/>
+		<input type="text" id="domandaTesto" name="domandaTesto" form="modifica" value="${domanda.testo}" placeholder="${domanda.testo}"/><br />
+		<input type="text" id="domandaNota" name="domandaNota" form="modifica" value="${domanda.nota}" placeholder="${domanda.nota}"/><br />
 		<select name="domandaObb" id="domandaObb" form="modifica">
 			<option value="Obbligatoria">Obbligatoria</option>
 			<option value="Opzionale">Opzionale</option>
-		</select>	
+		</select><br />
 		<#if domanda.tipo == "Radio">
 			<#list options as opzione>
-				<input type="text" id="opzione.${domanda.id}" name="opzione.${domanda.id}" form="modifica" value="${optione.testo}" placeholder="${optione.testo}"/>
+				<input type="text" id="opzione.${domanda.ID}" name="opzione.${domanda.ID}" form="modifica" value="${opzione.testo}" placeholder="${opzione.testo}"/><br />
 			</#list>
 		</#if>
 		<#if domanda.tipo == "Checkbox">
 			<#list options as opzione>
-				<input type="text" id="opzione.${domanda.id}" name="opzione.${domanda.id}" form="modifica" value="${optione.testo}" placeholder="${optione.testo}"/>
+				<input type="text" id="opzione.${domanda.ID}" name="opzione.${domanda.ID}" form="modifica" value="${opzione.testo}" placeholder="${opzione.testo}"/><br />
 			</#list>
 		</#if>
 	<#else>
-			<input type="text" id="domandaTesto" name="domandaTesto" form="modifica" value="${domanda.testo}" placeholder="${domanda.testo}"/>
-			<input type="text" id="domandaNota" name="domandaNota" form="modifica" value="${domanda.nota}" placeholder="${domanda.nota}"/>
+			<input type="text" id="domandaTesto" name="domandaTesto" form="modifica" value="${domanda.testo}" placeholder="${domanda.testo}"/><br />
+			<input type="text" id="domandaNota" name="domandaNota" form="modifica" value="${domanda.nota}" placeholder="${domanda.nota}"/><br />
 			<select name="domandaObb" id="domandaObb" form="modifica">
 				<option value="Obbligatoria">Obbligatoria</option>
 				<option value="Opzionale">Opzionale</option>
-			</select>
+			</select><br /><br /><br />
 	</#if>
-</div>
+</div><br /><br />
 </#if>
 </div>

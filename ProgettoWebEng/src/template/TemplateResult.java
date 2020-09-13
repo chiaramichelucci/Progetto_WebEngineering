@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class TemplateResult {
 
@@ -61,17 +62,31 @@ public class TemplateResult {
         cfg.setObjectWrapper(owb.build());
     }
 
-    protected Map getDefaultDataModel() {
+    protected Map getDefaultDataModel(String tipoUtente) {
     	
         Map default_data_model = new HashMap();
 
         if (filler != null) {
             filler.fillDataModel(default_data_model);
         }
-
+        
         default_data_model.put("compiled_on", Calendar.getInstance().getTime());
-        default_data_model.put("outline_tpl", context.getInitParameter("view.outline_template"));
+        
+        if(tipoUtente != null) {
+        	switch(tipoUtente) {
+        	case "amministratore": default_data_model.put("outline_tpl", context.getInitParameter("view.outlineA_template"));
+        	break;
+        	case "responsabile": default_data_model.put("outline_tpl", context.getInitParameter("view.outlineR_template"));
+        	break;
+        	case "partecipante": default_data_model.put("outline_tpl", context.getInitParameter("view.outlineP_template"));
+        	break;
+        	} 
+        } else {
+        	default_data_model.put("outline_tpl", context.getInitParameter("view.outline_template"));
+        }
+         
         default_data_model.put("addMulti", context.getInitParameter("view.addMulti_template"));
+        default_data_model.put("addMultiMod", context.getInitParameter("view.addMultiMod_template"));
 
         Map init_tpl_data = new HashMap();
         default_data_model.put("defaults", init_tpl_data);
@@ -102,17 +117,15 @@ public class TemplateResult {
     	//boolean add_multi = (boolean) req.getAttribute("add_multi");
     	
         Template t;
-
-        Map<String, Object> localdatamodel = getDefaultDataModel();
+        
+        Map<String, Object> localdatamodel = getDefaultDataModel((String) datamodel.get("tipoUtente"));
         
         if (datamodel != null) {
             localdatamodel.putAll(datamodel);
         }
               
         boolean use_outline = (boolean) localdatamodel.get("use_outline");
-        boolean add_multi = (boolean) localdatamodel.get("add_multi");
-        
-        System.out.print(use_outline + " " + add_multi);
+        String useMulti = (String) localdatamodel.get("useMulti");
         
         String outline_name = (String) localdatamodel.get("outline_tpl");
         try {
@@ -122,12 +135,17 @@ public class TemplateResult {
 	            t = cfg.getTemplate(outline_name);
 	            localdatamodel.put("content_tpl", tplname);
 	        }
-	        if (add_multi == true) {
-	        	String addMulti = (String) localdatamodel.get("addMulti");
-	        	t = cfg.getTemplate(addMulti);
-	            localdatamodel.put("addMulti", tplname);              
-	        } 
-
+        	if(useMulti != null) {
+        		if (useMulti == "add_multi") {
+    	        	String addMulti = (String) localdatamodel.get("addMulti");
+    	        	t = cfg.getTemplate(addMulti);
+    	            localdatamodel.put("addMulti", tplname);              
+    	        } else { 
+    	        	String addMulti = (String) localdatamodel.get("addMultiMod");
+    	        	t = cfg.getTemplate(addMulti);
+    	            localdatamodel.put("addMultiMod", tplname);
+    	        }
+        	}
             t.process(localdatamodel, out);
         } catch (IOException e) {
             throw new TemplateManagerExeption("Template error: " + e.getMessage(), e);
@@ -175,9 +193,18 @@ public class TemplateResult {
 
     public void activate(String tplname, HttpServletRequest request, HttpServletResponse response) throws TemplateManagerExeption {
         Map datamodel = getRequestDataModel(request);
-        boolean add_multi = (boolean) request.getAttribute("add_multi");
+        HttpSession ses = request.getSession();    
+        String useMulti = (String) request.getAttribute("useMulti");
         boolean use_outline = (boolean) request.getAttribute("use_outline");
-        datamodel.put("add_multi", add_multi);
+        if(ses != null) {
+        	String tipo = (String) ses.getAttribute("tipo");
+        	datamodel.put("tipoUtente", tipo);
+        } else {
+        	datamodel.put("tipoUtente", null);
+        }
+        if(useMulti != null) {
+        	datamodel.put("useMulti", useMulti);
+        }
         datamodel.put("use_outline", use_outline);
         activate(tplname, datamodel, response);
     }

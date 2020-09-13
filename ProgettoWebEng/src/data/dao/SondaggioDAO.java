@@ -15,5 +15,6 @@ public interface SondaggioDAO {
     void updateSondaggio(Sondaggio sondaggio) throws DataException;
     void deleteSondaggio(Sondaggio sondaggio) throws DataException;
     boolean checkPermesso(Sondaggio sondaggio, Utente utente) throws DataException;
+    Sondaggio getSondaggioByTitolo(String titolo) throws DataException;
 
 }

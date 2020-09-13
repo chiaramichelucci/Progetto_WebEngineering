@@ -10,11 +10,11 @@
 			<td>${user.nome}</td>
 			<td>${user.cognome}</td>
 			<td>
-				<input type="radio" name="daModificare" id="daModificare" />
-				<label for="daModificare">${user.email}</label>
+				<input type="radio" name="daPruomovere" id="daPruomovere" value="${user.email}"/>
+				<label for="daPromuovere">${user.email}</label>
 			</td>
 		</tr>
 	</#list>
-	<input type="submit" name="daPruomovere" id="daPruomovere" />
+	<input type="submit" name="submit" id="submit" />
 </form>
 </table>

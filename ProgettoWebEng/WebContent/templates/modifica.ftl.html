@@ -1,10 +1,16 @@
 <h2>Modifica sondaggio</h2>
 
-<#include addMultiMod>
+<#if poll.beginText??>	
+	<#assign x="">
+</#if>
+<#if poll.endText??>	
+	<#assign y="">
+</#if>
+
 <form name="modifica" id="modifica" action="" method="POST" >
 	<input tipe="text" name="sondaggioText" id="sondaggio" placeHolder="${poll.titolo}" value="${poll.titolo}" form=modifica />	
-	<input tipe="textarea" name="sondaggioBegin" id="sondaggio" placeHolder="${poll.testo_aperture}" value="${poll.testo_aperture}" form=modifica />	
-	<input tipe="textarea" name="sondaggioEnd" id="sondaggio" placeHolder="${poll.testo_chiusura}" value="${poll.testo_chiusura}" form=modifica />	
+	<input tipe="textarea" name="sondaggioBegin" id="sondaggio" placeHolder="${poll.beginText}" value="${poll.beginText}" form=modifica />	
+	<input tipe="textarea" name="sondaggioEnd" id="sondaggio" placeHolder="${poll.endText}" value="${poll.endText}" form=modifica />	
 	<select name="modalitaSondaggio" id="modifica" form="modifica">
 		<option value="privato">Privato</option>
 		<option value="Aperto">Aperto</option>
@@ -13,6 +19,6 @@
 		<option value="Chiuso">Chiuso</option>
 		<option value="Disponibile">Disponibile</option>
 	</select>
-	
+		<#include addMultiMod>
 	<input type="submit" name="updateSubmit" id="updateSubmit" value="Submit">
 </form>
