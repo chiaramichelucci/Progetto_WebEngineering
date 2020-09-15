@@ -268,7 +268,7 @@ public class DomandaDAO_MySQL extends DAO implements DomandaDAO {
 			uDomanda.setString(3, domanda.getTipo());
 			uDomanda.setBoolean(4, domanda.getObbligatoria());
 			uDomanda.setInt(5, domanda.getID());
-			uDomanda.executeQuery();
+			uDomanda.executeUpdate();
 		}catch(SQLException ex) {
 			throw new DataException("Non e possibile aggiornare la domanda", ex);
 		}

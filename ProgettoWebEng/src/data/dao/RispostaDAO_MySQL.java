@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import data.DAO;
 import data.DataException;
@@ -78,7 +79,9 @@ public class RispostaDAO_MySQL extends DAO implements RispostaDAO {
         return a;
     }
     
-    public void storeRisposta(Risposta risposta, Sondaggio sondaggio, Domanda domanda) throws DataException {
+    public void storeRisposta(Risposta risposta) throws DataException {
+    	Domanda domanda = risposta.getDomanda();
+    	Sondaggio sondaggio = risposta.getSondaggio();
 		try {
 			if(risposta.getKey() != null && risposta.getID() > 0) {
 				if(risposta instanceof DataItemProxy && ! ((DataItemProxy) risposta).isModified()) {
@@ -86,12 +89,12 @@ public class RispostaDAO_MySQL extends DAO implements RispostaDAO {
 				} //update
 				uRisposta.setInt(1, domanda.getID());
 				uRisposta.setInt(2, sondaggio.getID());
-				uRisposta.setString(3, "");
+				uRisposta.setNull(3, Types.INTEGER);
 				uRisposta.setString(4, risposta.getRisposta());
 			} else { //insert
 				iRisposta.setInt(1, domanda.getID());
 				iRisposta.setInt(2, sondaggio.getID());
-				iRisposta.setString(3, "");
+				iRisposta.setNull(3, Types.INTEGER);
 				iRisposta.setString(4, risposta.getRisposta());
 				if (iRisposta.executeUpdate() == 1) {
 					try (ResultSet keys = iRisposta.getGeneratedKeys()) {
@@ -105,7 +108,7 @@ public class RispostaDAO_MySQL extends DAO implements RispostaDAO {
 				}
 			}
 		} catch (SQLException ex) {
-			throw new DataException("Non e possibilie inserire la domanda", ex);
+			throw new DataException("Non e possibilie inserire la risposta", ex);
 		}
 		
 	}

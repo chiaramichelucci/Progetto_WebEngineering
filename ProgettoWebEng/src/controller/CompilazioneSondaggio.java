@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -42,10 +43,6 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 		req.setAttribute("poll", sondaggio);
 		List<Domanda> domande = (((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggio));
 		req.setAttribute("use_outline", true);
-		if(req.getParameter("submit") != null) {
-			compilazioneSondaggio(req, res, sondaggio, domande);
-			resp.activate("home.ftl.html", req, res);
-		}
 		resp.activate("comp.ftl.html", req, res);
 		for(int i = 0; i<domande.size(); i++) {
 			Domanda domanda = domande.get(i);
@@ -79,19 +76,30 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 	}
 	
 	
-	private void compilazioneSondaggio(HttpServletRequest req, HttpServletResponse res, Sondaggio sondaggio, List<Domanda> domande) throws DataException { 
-		List<String> risposte = new ArrayList<String>();
-		int j=0;
-		while (req.getParameter(j+".domanda") != null) {
-			risposte.add(req.getParameter(j+".domanda"));
-		}
-		for(int i=0; i<risposte.size(); i++) {
-			Risposta risposta = new RispostaImpl();
-			risposta.setSondaggio(sondaggio);
-			risposta.setDomanda(domande.get(i));
-			risposta.setRisposta(risposte.get(i)); 
-			((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().storeRisposta(risposta, sondaggio, domande.get(i));
-			
+	private void compilazioneSondaggio(HttpServletRequest req, HttpServletResponse res) throws DataException { 
+		int id_sond = Integer.parseInt(req.getParameter("idSond"));
+		Sondaggio sondaggio = (((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggio(id_sond));
+		List<Domanda> domande = (((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggio));
+		
+		for(int i=0; i<domande.size(); i++) {
+			Domanda domanda = domande.get(i);
+			if(domanda.getTipo().equalsIgnoreCase("checkbox")) {
+				String [] testiRisp = req.getParameterValues(i+".domanda");
+				for(int j=0; j<testiRisp.length; j++) {
+					Risposta risposta = (((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().creaRisposta());
+					risposta.setDomanda(domanda);
+					risposta.setSondaggio(sondaggio);
+					risposta.setRisposta(testiRisp[j]);
+					((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().storeRisposta(risposta);
+				}
+			} else {
+				String testoRisp = req.getParameter(i+".domanda");
+				Risposta risposta = (((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().creaRisposta());
+				risposta.setDomanda(domanda);
+				risposta.setSondaggio(sondaggio);
+				risposta.setRisposta(testoRisp);
+				((SondaggioDataLayer)req.getAttribute("datalayer")).getRispostaDAO().storeRisposta(risposta);
+			}
 		}
 	}
 	
@@ -104,8 +112,7 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 				Utente utente = ((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().getUtente(utenteId);
 				permesso = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().checkPermesso(sondaggio, utente);
 			} else {
-				RequestDispatcher rd=req.getRequestDispatcher("login");  
-		        rd.forward(req, res);
+				res.sendRedirect("login");
 			}
 			return permesso;
 		
@@ -114,19 +121,26 @@ public class CompilazioneSondaggio extends SondaggioBaseController {
 	@Override
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
 		try {
-			
-			int id = Integer.parseInt(req.getParameter("id"));
-			Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggio(id);
-			if(sondaggio.getModalita().equalsIgnoreCase("privato")) {
-				boolean permesso = checkUtente(req, res, sondaggio);
-				if(permesso) {
-					stampaSondaggio(req, res, sondaggio);
+			if (req.getParameter("id") != null) {
+				int id = Integer.parseInt(req.getParameter("id"));
+				Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggio(id);
+				if(sondaggio.getModalita().equalsIgnoreCase("privato")) {
+					boolean permesso = checkUtente(req, res, sondaggio);
+					if(permesso) {
+						stampaSondaggio(req, res, sondaggio);
+					} else {
+						res.sendRedirect("/login.jsp");
+					}
 				} else {
-					RequestDispatcher rd=req.getRequestDispatcher("login");  
-			        rd.forward(req, res);
+					stampaSondaggio(req, res, sondaggio);
 				}
 			} else {
-				stampaSondaggio(req, res, sondaggio);
+				if(req.getParameter("submitComp") != null) {
+					compilazioneSondaggio(req, res);
+					req.setAttribute("risultato", "Compilazione completata");
+					RequestDispatcher rd=req.getRequestDispatcher("result");  
+			        rd.forward(req, res);
+				}
 			}
 		}catch(TemplateManagerExeption ex) {
 			req.setAttribute("exception", ex);

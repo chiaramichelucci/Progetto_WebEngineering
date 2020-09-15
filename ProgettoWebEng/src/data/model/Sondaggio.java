@@ -23,6 +23,8 @@ public interface Sondaggio extends DataItem<Integer>{
 	void setModalita(String modalita);
 
 	String getUrl();
+	
+	void setUrl(String url);
 
 	void setEndText(String parameter);
 

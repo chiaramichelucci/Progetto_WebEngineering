@@ -10,13 +10,13 @@
 	<#if options??>	
 		<#if domanda.tipo == "Radio">
 			<#list options as opzione>
-				<input type="Radio" id="${x}.domanda" name="${x}.domanda" form="compilazione"/>
+				<input type="Radio" id="${x}.domanda" name="${x}.domanda" form="compilazione" value="${opzione.testo}"/>
 				<label for="${x}.domanda">${opzione.testo}</label><br />
 			</#list>
 		</#if>
 		<#if domanda.tipo == "Checkbox">
 			<#list options as opzione>
-				<input type="Checkbox" id="${x}.domanda" name="${x}.domanda" form="compilazione"/>
+				<input type="Checkbox" id="${x}.domanda" name="${x}.domanda" form="compilazione" value="${opzione.testo}"/>
 				<label for="${x}.domanda">${opzione.testo}</label><br />
 			</#list>
 		</#if>

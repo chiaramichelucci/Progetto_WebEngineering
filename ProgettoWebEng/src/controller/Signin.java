@@ -34,25 +34,21 @@ public class Signin extends SondaggioBaseController{
 	
 	public void signin(HttpServletRequest req, HttpServletResponse res) throws IOException, TemplateManagerExeption, DataException, ServletException {
 		
-		TemplateResult resp = new TemplateResult(getServletContext()); 
-		req.setAttribute("add_multi", false);
-		req.setAttribute("use_outline", false);
-		resp.activate("signin.ftl.html", req, res);
-		
 		Utente utente =  ((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().createUtente();
-		if (req.getParameter("password") == req.getParameter("passwordCheck")) {
-			utente.setPassword("password");
-		} else {
-			//messagio di errore
-		}
-		utente.setEmail(req.getParameter("email"));
 		utente.setNome(req.getParameter("nome"));
 		utente.setCognome(req.getParameter("cognome"));
+		utente.setEmail(req.getParameter("email"));
+		if (req.getParameter("password").equals(req.getParameter("passwordCheck"))) {
+			utente.setPassword("password");
+		} else {
+			req.setAttribute("risultato", "Password no coincidono");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("risultato");  //home e da definire
+            dispatcher.forward(req, res);
+		}
 		
 		((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().storeUtente(utente);
 		
-		RequestDispatcher rd=req.getRequestDispatcher("login");  
-        rd.forward(req, res);
+		res.sendRedirect("login.jsp");
 	}
 	
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException{

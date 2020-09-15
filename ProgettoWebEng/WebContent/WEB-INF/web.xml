@@ -110,6 +110,11 @@
   </servlet>
   
   <servlet>
+    <servlet-name>Invito</servlet-name>
+    <servlet-class>controller.InvitaPartecipante</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>Risultato</servlet-name>
     <servlet-class>controller.Risultato</servlet-class>
   </servlet>
@@ -157,6 +162,11 @@
   <servlet-mapping>
     <servlet-name>Homepage</servlet-name>
     <url-pattern>/home</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>Invito</servlet-name>
+    <url-pattern>/invita</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

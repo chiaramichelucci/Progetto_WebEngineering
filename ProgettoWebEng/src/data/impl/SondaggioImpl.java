@@ -92,6 +92,4 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 	public String getEndText() {
 		return this.endText;
 	}
-
-	
 }

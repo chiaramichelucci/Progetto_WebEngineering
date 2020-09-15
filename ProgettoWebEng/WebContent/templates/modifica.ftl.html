@@ -7,10 +7,11 @@
 	<#assign y="">
 </#if>
 
-<form name="modifica" id="modifica" action="" method="POST" >
-	<input tipe="text" name="sondaggioText" id="sondaggio" placeHolder="${poll.titolo}" value="${poll.titolo}" form=modifica />	
-	<input tipe="textarea" name="sondaggioBegin" id="sondaggio" placeHolder="${poll.beginText}" value="${poll.beginText}" form=modifica />	
-	<input tipe="textarea" name="sondaggioEnd" id="sondaggio" placeHolder="${poll.endText}" value="${poll.endText}" form=modifica />	
+<form name="modifica" id="modifica" action="mod" method="POST" >
+	<input tipe="text" readonly name="sondaggioID" id="sondaggio" placeHolder="${poll.ID}" value="${poll.ID}" form="modifica" />	
+	<input tipe="text" name="sondaggioText" id="sondaggio" placeHolder="${poll.titolo}" value="${poll.titolo}" form="modifica" />	
+	<input tipe="textarea" name="sondaggioBegin" id="sondaggio" placeHolder="${poll.beginText}" value="${poll.beginText}" form="modifica" />	
+	<input tipe="textarea" name="sondaggioEnd" id="sondaggio" placeHolder="${poll.endText}" value="${poll.endText}" form="modifica" />	
 	<select name="modalitaSondaggio" id="modifica" form="modifica">
 		<option value="privato">Privato</option>
 		<option value="Aperto">Aperto</option>

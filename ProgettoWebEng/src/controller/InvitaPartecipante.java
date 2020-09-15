@@ -11,13 +11,14 @@ import javax.servlet.http.HttpSession;
 
 import data.DataException;
 import data.dao.SondaggioDataLayer;
+import data.model.Sondaggio;
 import data.model.Utente;
 import security.SecurityLayer;
 import template.Failure;
 import template.TemplateManagerExeption;
 import template.TemplateResult;
 
-public class StampaUtenti extends SondaggioBaseController {
+public class InvitaPartecipante extends SondaggioBaseController {
 
 	private void action_error(HttpServletRequest req, HttpServletResponse res) {
 		if (req.getAttribute("exception") != null) {
@@ -26,24 +27,31 @@ public class StampaUtenti extends SondaggioBaseController {
             (new Failure(getServletContext())).activate((String) req.getAttribute("message"), req, res);
         }	
 	}
-		
-	private void stampaUtenti(HttpServletRequest req, HttpServletResponse res) throws DataException, TemplateManagerExeption, ServletException, IOException {
+	
+	private void invitaUtente(HttpServletRequest req, HttpServletResponse res) throws DataException, TemplateManagerExeption, ServletException, IOException {
 		TemplateResult resp = new TemplateResult(getServletContext()); 
 		
-		if(req.getParameter("daPruomovere") != null) {
-			System.out.print(" output: " + req.getParameter("daPruomovere"));
-			String utenteDaPruomovere = req.getParameter("daPruomovere");
-			((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().pruomoviUtente(utenteDaPruomovere);
+		if(req.getParameter("invita") != null) {
+			String utenteDaInvitare = req.getParameter("utenteInvito");
+			Utente utente = ((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().getUtenteByEmail(utenteDaInvitare);
+			String sondaggioInvito = req.getParameter("sondaggioInvito");
+			Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggioByTitolo(sondaggioInvito);
+			((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().invitaUtente(utente, sondaggio);
 			req.setAttribute("risultato", "Utente pruomovato con successo");
 			RequestDispatcher rd=req.getRequestDispatcher("result");  
 	        rd.forward(req, res);
 		}
 		
+		HttpSession ses = req.getSession();
+		String email = (String) ses.getAttribute("email");
+		
 		List<Utente> utenti = (((SondaggioDataLayer)req.getAttribute("datalayer")).getUtenteDAO().getUtenti());
-		req.setAttribute("users", utenti);
+		List<Sondaggio> sondaggi = (((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggioByResponsabile(email));
+		req.setAttribute("sondaggi", sondaggi);
+		req.setAttribute("utenti", utenti);
 		req.setAttribute("add_multi", false);
 		req.setAttribute("use_outline", true);
-		resp.activate("stampaUtenti.ftl.html", req, res);
+		resp.activate("invita.ftl.html", req, res);
 		
 	}
 	
@@ -51,7 +59,7 @@ public class StampaUtenti extends SondaggioBaseController {
 		boolean permesso = false;
 		HttpSession ses = SecurityLayer.checkSession(req);
 		if(ses != null) {
-			if(ses.getAttribute("tipo").equals("amministratore")) {
+			if(ses.getAttribute("tipo").equals("amministratore") || ses.getAttribute("tipo").equals("responsabile")) {
 				permesso = true;
 			} else {
 				permesso = false;
@@ -66,7 +74,7 @@ public class StampaUtenti extends SondaggioBaseController {
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
 		try {
 			if(checkUtente(req, res)) {
-				stampaUtenti(req, res);
+				invitaUtente(req, res);
 			} else {
 				res.sendRedirect("denied.jsp");
 			}
@@ -84,7 +92,7 @@ public class StampaUtenti extends SondaggioBaseController {
 	}
 	
 	public String getServletInfo() {
-        return "Servlet per la stampa degli utenti";
+        return "Servlet per l'invito di un partecipante";
 	}
 
 }

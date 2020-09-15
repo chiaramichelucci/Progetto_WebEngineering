@@ -1,9 +1,16 @@
 
 <h2 class="sondaggioTitolo">${poll.titolo}</h2>
+<#if poll.beginText??>
+	<h3>${poll.beginText}</h3>
+</#if>
 <form name="compilazione" id="compilazione" action="comp" method="POST" >	
+	<input type="hidden" id="${poll.ID}" name ="idSond" value ="${poll.ID}" />
 	
 	<#include addMulti>
-	<input type="submit" value="Submit" >
+	<input type="submit" name ="submitComp" id="submitComp" value="Submit" >
 </form>
+<#if poll.endText??>
+	<h3>${poll.endText}</h3>
+</#if>
 		
 		

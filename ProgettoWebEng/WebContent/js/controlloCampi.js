@@ -44,7 +44,7 @@ function datireg() {
        return false;
     }
     else {
-      document.reg.action = "partecipante.html"; 
+      document.reg.action = "signin"; 
       document.reg.submit();
    }
 }

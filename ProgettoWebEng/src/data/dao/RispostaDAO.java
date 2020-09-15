@@ -10,6 +10,6 @@ public interface RispostaDAO {
 
 	Risposta creaRisposta();
 
-	void storeRisposta(Risposta risposta, Sondaggio sondaggio, Domanda domanda) throws DataException;
+	void storeRisposta(Risposta risposta) throws DataException;
 
 }

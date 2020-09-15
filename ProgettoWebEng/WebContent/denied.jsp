@@ -19,18 +19,11 @@
 <body>
     <div class="sidenav">
       <img src="img/Logo2.png" />
-      <a href="home">Home</a>
-      <a href="utenti">Aggiungi Responsabile</a>
-      <a href="crea">Crea Sondaggio</a>
-      <a href="mod">Modifica Sondaggio</a>
-      <a href="sondaggi">Sondaggi disponibili</a>
-      <a href="stampa">I miei Sondaggi</a>
-      <a href="invita">Invita partecipante</a>
-      <a href="logout">LogOut</a>
+      <a href="login.jsp">Login</a>
+      <a href="signin.jsp">Signin</a>
     </div>
 
     <div class="content"> 
-      <#include content_tpl>
+      <h3>Non hai permesso</h3>
     </div>
   </body>
-</html>

@@ -46,9 +46,9 @@ public class Login extends SondaggioBaseController {
 				SecurityLayer.createSession(req, admin.getEmail(), 1, "amministratore");
 			}
 			req.setAttribute("email", email);
-			//RequestDispatcher dispatcher = req.getRequestDispatcher("home");  //home e da definire
-            //dispatcher.forward(req, res);
-			res.sendRedirect("home");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("home");  //home e da definire
+            dispatcher.forward(req, res);
+			//res.sendRedirect("home");
 		} else {
 			if(utente != null) {
 				HttpSession ses = SecurityLayer.checkSession(req);
@@ -56,16 +56,16 @@ public class Login extends SondaggioBaseController {
 					SecurityLayer.createSession(req, utente.getEmail(), utente.getID(), utente.getTipo());
 				}
 				req.setAttribute("email", email);
-				//RequestDispatcher dispatcher = req.getRequestDispatcher("home");  //home e da definire
-	            //dispatcher.forward(req, res);
-				res.sendRedirect("home");
+				RequestDispatcher dispatcher = req.getRequestDispatcher("home");  //home e da definire
+	            dispatcher.forward(req, res);
+				//res.sendRedirect("home");
 			} else {
 				//req.setAttribute("message", "Email/Password non valide");
 				//action_error(req, res);
 				req.setAttribute("risposta", "Email/Password non valide");
-				//RequestDispatcher dispatcher = req.getRequestDispatcher("result");  //home e da definire
-	            //dispatcher.forward(req, res);
-				res.sendRedirect("home");
+				RequestDispatcher dispatcher = req.getRequestDispatcher("result");  //home e da definire
+	            dispatcher.forward(req, res);
+				//res.sendRedirect("home");
 			}
 		}	
     }

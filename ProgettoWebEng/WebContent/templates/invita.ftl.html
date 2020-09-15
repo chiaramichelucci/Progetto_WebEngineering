@@ -1,0 +1,33 @@
+<form action="invita" method="POST" name="invitaSondaggio" id="invitaSondaggio">
+	<table class="stampaSondaggi">
+		<tr>
+			<td>Titolo Sondaggio</td>
+		</tr>
+		<#list sondaggi as sondaggio>
+			<tr>
+				<td>
+					<input type="radio" name="sondaggioInvito" id="sondaggioInvito" value="${sondaggio.titolo}"/>
+					<label for="daModificare">${sondaggio.titolo}</label>
+				</td>
+			</tr>
+		</#list>
+	</table>
+	<table class="stampaUtenti">
+		<tr>
+			<td>Nome Cognome</td>
+			<td>Email</td>
+		</tr>
+		<#list utenti as utente>
+			<tr>
+				<td>
+					${utente.nome} ${utente.cognome}
+				</td>
+				<td>
+					<input type="radio" name="utenteInvito" id="utenteInvito" value="${utente.email}"/>
+					<label for="utenteInvito">${utente.email}</label>
+				</td>
+			</tr>
+		</#list>
+		<input type="submit" name="invita" id="invita" value="invita"/>
+	</table>
+</form>

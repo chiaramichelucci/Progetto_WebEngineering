@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Set 03, 2020 alle 17:22
+-- Creato il: Set 14, 2020 alle 14:50
 -- Versione del server: 10.4.8-MariaDB
 -- Versione PHP: 7.3.10
 
@@ -83,11 +83,11 @@ INSERT INTO `domanda` (`id`, `testo`, `nota`, `tipo`, `obbligatoria`, `id_sondag
 (26, 'domanda 1', 'qwe', 'Text', 0, 29),
 (27, 'domanda radio', 'asd', 'Radio', 0, 29),
 (28, 'domanda checkbox 2', 'qaz', 'Checkbox', 0, 29),
-(29, 'domanda 1', '', 'Text', 0, 30),
-(30, 'domanda 2', '', 'Radio', 0, 30),
-(31, 'domanda 3', '', 'Checkbox', 0, 30),
-(34, 'domanda 4', '', 'Radio', 0, 30),
-(35, 'domanda 5', '', 'Checkbox', 0, 30);
+(29, 'domanda 1', 'nota 1', 'Text', 0, 30),
+(30, 'domanda 2', 'nota 2', 'Radio', 0, 30),
+(31, 'domanda 3', 'nota 3', 'Checkbox', 0, 30),
+(34, 'domanda 4', 'nota 4', 'Radio', 0, 30),
+(35, 'domanda 5', 'nota 5', 'Checkbox', 0, 30);
 
 -- --------------------------------------------------------
 
@@ -97,6 +97,7 @@ INSERT INTO `domanda` (`id`, `testo`, `nota`, `tipo`, `obbligatoria`, `id_sondag
 
 CREATE TABLE `interagisce` (
   `utente` int(11) NOT NULL,
+  `tipo` enum('partecipante','responsabile') DEFAULT NULL,
   `sondaggio` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
@@ -104,9 +105,9 @@ CREATE TABLE `interagisce` (
 -- Dump dei dati per la tabella `interagisce`
 --
 
-INSERT INTO `interagisce` (`utente`, `sondaggio`) VALUES
-(2, 29),
-(2, 30);
+INSERT INTO `interagisce` (`utente`, `tipo`, `sondaggio`) VALUES
+(2, NULL, 29),
+(2, NULL, 30);
 
 -- --------------------------------------------------------
 
@@ -181,11 +182,11 @@ INSERT INTO `sondaggio` (`id`, `titolo`, `testo_apertura`, `testo_chiusura`, `di
 (1, 'Test', NULL, NULL, 1, '', ''),
 (2, 'Test2', NULL, NULL, 1, '', ''),
 (18, 'Sondaggio Prova', NULL, NULL, 0, 'Aperto', ''),
-(19, 'Sondaggio Prova', NULL, NULL, 0, 'Aperto', ''),
+(19, 'Sondaggio Prova 0', NULL, NULL, 0, 'Aperto', ''),
 (20, 'Sondaggio Prova 1', NULL, NULL, 0, 'Aperto', ''),
-(21, 'Sondaggio Prova 1', NULL, NULL, 0, 'Aperto', ''),
-(22, 'Sondaggio Prova 1', NULL, NULL, 0, 'Aperto', ''),
-(23, 'Sondaggio Prova 1', NULL, NULL, 0, 'Aperto', ''),
+(21, 'Sondaggio Prova 12', NULL, NULL, 0, 'Aperto', ''),
+(22, 'Sondaggio Prova 13', NULL, NULL, 0, 'Aperto', ''),
+(23, 'Sondaggio Prova 14', NULL, NULL, 0, 'Aperto', ''),
 (24, 'Prova freemarker', NULL, NULL, 0, 'Aperto', ''),
 (25, 'Prova freemarker 2', NULL, NULL, 0, 'Aperto', ''),
 (26, 'Prova freemarker 3', NULL, NULL, 0, 'Privato', ''),
@@ -215,7 +216,8 @@ CREATE TABLE `utente` (
 
 INSERT INTO `utente` (`id`, `cognome`, `nome`, `email`, `password`, `tipo`) VALUES
 (1, 'michelucci', 'chiara', 'chiara@pollweb.it', 'chiara', 'responsabile'),
-(2, 'stratulat', 'dragos', 'dragos@pollweb.it', 'dragos', 'responsabile');
+(2, 'stratulat', 'dragos', 'dragos@pollweb.it', 'dragos', 'responsabile'),
+(3, 'Marco', 'Polo', 'marco.polo@generico.it', 'marcopolo', 'partecipante');
 
 --
 -- Indici per le tabelle scaricate
@@ -261,7 +263,8 @@ ALTER TABLE `risposta`
 -- Indici per le tabelle `sondaggio`
 --
 ALTER TABLE `sondaggio`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `titolo_unico` (`titolo`);
 
 --
 -- Indici per le tabelle `utente`
@@ -307,7 +310,7 @@ ALTER TABLE `sondaggio`
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Limiti per le tabelle scaricate

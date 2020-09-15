@@ -34,22 +34,22 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 	
 	private void createSondaggio(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException, DataException, TemplateManagerExeption{
 		
+		checkUtente(req, res);
+		
 		String [] domande = req.getParameterValues("domanda");
 		String [] tipiDomande = req.getParameterValues("tipo");
 		String [] noteDomande = req.getParameterValues("nota");
 		
-		//campo obbligatoria da vedere non lo inserice bene
-		
-		TemplateResult resp = new TemplateResult(getServletContext()); 
-		req.setAttribute("add_multi", false);
-		req.setAttribute("use_outline", true);
-		resp.activate("crea.ftl.html", req, res);
+		HttpSession ses = req.getSession();
+		int id_utente = (int) ses.getAttribute("id");
 		
 		Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().createSondaggio();
 		if (sondaggio != null && req.getParameter("titoloS") != null && req.getParameter("modalitaS") != null) {
 			 sondaggio.setTitolo(req.getParameter("titoloS"));
 			 sondaggio.setModalita(req.getParameter("modalitaS"));
-			 ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().storeSondaggio(sondaggio);
+			 sondaggio.setBeginText(req.getParameter("beginText"));
+			 sondaggio.setEndText(req.getParameter("endText"));
+			 ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().storeSondaggio(sondaggio, id_utente);
 			 for (int i = 0; i<domande.length; i++) {
 				 Domanda domanda = ((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().createDomanda();
 				 if(domanda != null && domande[i] != null && tipiDomande[i] != null && noteDomande[i] != null) {
@@ -78,6 +78,7 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 			 }
 		 }
 		req.setAttribute("risultato", "Sondaggio creato con successo");
+		req.setAttribute("url", "http://localhost:8080/ProgettoWebEng/comp?id="+sondaggio.getID());
 		RequestDispatcher rd=req.getRequestDispatcher("result");  
         rd.forward(req, res);
 	}
@@ -93,8 +94,9 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 				permesso = false;
 			}
 		} else {
-			RequestDispatcher rd=req.getRequestDispatcher("login");  
-	        rd.forward(req, res);
+			//RequestDispatcher rd=req.getRequestDispatcher("login");  
+	        //rd.forward(req, res);
+	        res.sendRedirect("denied.jsp");
 		}
 		return permesso;
 	}
@@ -102,14 +104,12 @@ public class CreazioneSondaggio extends SondaggioBaseController {
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException {
 		
 		try {
-			if(checkUtente(req, res)) {
+			if(req.getParameter("creaSondaggio") != null) {
 				createSondaggio(req, res);
 			} else {
 				TemplateResult resp = new TemplateResult(getServletContext()); 
-				req.setAttribute("add_multi", false);
 				req.setAttribute("use_outline", true);
-				req.setAttribute("risultato", "Non hai permesso");
-				resp.activate("risultato.ftl.html", req, res);
+				resp.activate("crea.ftl.html", req, res);
 			}
 		}catch(TemplateManagerExeption ex) {
 			req.setAttribute("exception", ex);

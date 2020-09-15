@@ -28,18 +28,17 @@ public class ModificaSondaggio extends SondaggioBaseController {
         }	
 	}
  
- public void visualizzaSondaggio (HttpServletRequest req, HttpServletResponse res) throws IOException, DataException, TemplateManagerExeption {
+public void visualizzaSondaggio (HttpServletRequest req, HttpServletResponse res) throws IOException, DataException, TemplateManagerExeption {
 		
 		TemplateResult resp = new TemplateResult(getServletContext()); 
-
+		
 		Sondaggio sondaggio = (Sondaggio) req.getAttribute("sondaggioDaModificare");
+		System.out.print(" sondID: " + sondaggio.getID());
 		req.setAttribute("poll", sondaggio);
 		List<Domanda> domande = (((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggio));
 		req.setAttribute("domande", domande);
 		req.setAttribute("add_multi", false);
 		req.setAttribute("use_outline", true);
-		System.out.print(" beginText: " + sondaggio.getBeginText());
-		System.out.print(" endText: " + sondaggio.getEndText());
 		resp.activate("modifica.ftl.html", req, res);
 		for(int i = 0; i<domande.size(); i++) {
 			Domanda domanda = domande.get(i);
@@ -57,19 +56,20 @@ public class ModificaSondaggio extends SondaggioBaseController {
 				resp.activate("addMultiMod.ftl.html", req, res);
 			}
 		}
-	}
- 
- public void modificaSondaggio (HttpServletRequest req, HttpServletResponse res) throws DataException {
+}
+	
+ public void modificaSondaggio (HttpServletRequest req, HttpServletResponse res) throws DataException, TemplateManagerExeption {
 	 
 	 //da vedere i nomi dei parametri nei view
 	 String [] domandeTesti = req.getParameterValues("domandaTesto");
 	 String [] obbDomande = req.getParameterValues("domandaObb");
 	 String [] noteDomande = req.getParameterValues("domandaNota");
 	 
-	 if(req.getParameter("sondaggioText") != null && req.getParameter("modalitaSondaggio") != null && req.getParameter("dispSondaggio") != null) {
+	 //if(req.getParameter("sondaggioText") != null && req.getParameter("modalitaSondaggio") != null && req.getParameter("dispSondaggio") != null) {
 		 //Sondaggio sondaggio = (((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().createSondaggio());
-		 Sondaggio sondaggioDummy = (Sondaggio) req.getAttribute("sondaggioDaModificare");
+		 Sondaggio sondaggioDummy = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().createSondaggio();
 		 //sondaggio.setID(sondaggioDummy.getID());
+		 sondaggioDummy.setID(Integer.parseInt(req.getParameter("sondaggioID")));
 		 sondaggioDummy.setTitolo(req.getParameter("sondaggioText"));
 		 sondaggioDummy.setBeginText(req.getParameter("sondaggioBegin"));
 		 sondaggioDummy.setEndText(req.getParameter("sondaggioEnd"));
@@ -80,8 +80,7 @@ public class ModificaSondaggio extends SondaggioBaseController {
 			 sondaggioDummy.setDisponibile(true);
 		 }
 		 ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().updateSondaggio(sondaggioDummy);
-		 List<Domanda> domande = new ArrayList<Domanda>();
-		 domande.addAll((Collection<? extends Domanda>) req.getAttribute("domande"));
+		 List<Domanda> domande = ((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().getDomande(sondaggioDummy);
 		 for(int i=0; i<domandeTesti.length; i++) {
 			 Domanda domandaDummy = domande.get(i);
 			 domandaDummy.setTesto(domandeTesti[i]);
@@ -93,7 +92,7 @@ public class ModificaSondaggio extends SondaggioBaseController {
 			 }
 			 ((SondaggioDataLayer)req.getAttribute("datalayer")).getDomandaDAO().updateDomanda(domandaDummy);
 			 if (domandaDummy.getTipo().equalsIgnoreCase("radio") || domandaDummy.getTipo().equalsIgnoreCase("checkbox")) {
-				 String [] opzioniTesti = req.getParameterValues("opzioni");  //da vedere il name dei view
+				 String [] opzioniTesti = req.getParameterValues("opzione."+domandaDummy.getID());
 				 List<Opzione> opzioni = new ArrayList<Opzione>();
 				 opzioni =  ((SondaggioDataLayer)req.getAttribute("datalayer")).getOpzioneDAO().getOpzioni(domandaDummy);
 				 for (int j=0; j<opzioni.size(); j++) {
@@ -113,7 +112,10 @@ public class ModificaSondaggio extends SondaggioBaseController {
 		 if(sondaggioDummy.getTitolo() == null || sondaggioDummy.getTitolo().equalsIgnoreCase("")) {
 			 ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().deleteSondaggio(sondaggioDummy);
 		 }
-	 }
+		 TemplateResult resp = new TemplateResult(getServletContext());
+		 req.setAttribute("risultato", "Modifica completa");
+		 resp.activate("risultato.ftl.html", req, res);
+	 //}
  }
  
 
@@ -122,7 +124,7 @@ public class ModificaSondaggio extends SondaggioBaseController {
 			if(req.getParameter("updateSubmit") != null) {
 				modificaSondaggio(req, res);
 			} else {
-				visualizzaSondaggio(req, res);
+				visualizzaSondaggio(req, res);	
 			}
 		}catch(TemplateManagerExeption ex) {
 			req.setAttribute("exception", ex);

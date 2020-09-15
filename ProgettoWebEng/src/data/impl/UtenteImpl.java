@@ -17,6 +17,7 @@ public class UtenteImpl extends DataItemImpl<Integer> implements Utente {
 		this.nome= "";
 		this.email= "";
 		this.password= "";
+		this.tipo="";
 	}
 	
 	public int getID() {
@@ -32,7 +33,7 @@ public class UtenteImpl extends DataItemImpl<Integer> implements Utente {
 	}
 		
 	public void setNome(String nome) {
-		this.cognome=nome;
+		this.nome=nome;
 	}
 	
 	public String getCognome() {

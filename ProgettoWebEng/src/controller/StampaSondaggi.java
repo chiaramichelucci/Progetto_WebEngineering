@@ -81,6 +81,8 @@ public class StampaSondaggi extends SondaggioBaseController {
 		try {
 			if(checkUtente(req, res)) {
 				stampaSondaggi(req, res);
+			} else {
+				res.sendRedirect("denied.jsp");
 			}
 		}catch(TemplateManagerExeption ex) {
 			req.setAttribute("exception", ex);

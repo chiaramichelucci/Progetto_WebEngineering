@@ -79,7 +79,6 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     
     @Override
     public Opzione getOpzione(int id) throws DataException {
-    	System.out.print(" qui:getOe ");
         Opzione a = null;
         if (dataLayer.getCache().has(Opzione.class, id)) {
             a = dataLayer.getCache().get(Opzione.class, id);
@@ -101,7 +100,6 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
     
     @Override
     public List<Opzione> getOpzioni(Domanda domanda) throws DataException {
-    	System.out.print(" qui:getOi ");
         List<Opzione> result = new ArrayList();
         try {
             dOpzioni.setInt(1, domanda.getID());            
@@ -149,7 +147,7 @@ public class OpzioneDAO_MySQL extends DAO implements OpzioneDAO {
 		try {
 			uOpzione.setString(1, opzione.getTesto());
 			uOpzione.setInt(2, opzione.getID());
-			uOpzione.executeQuery();
+			uOpzione.executeUpdate();
 		}catch(SQLException ex) {
 			throw new DataException("Non e possibilie aggiornare l'opzione", ex);
 		}
