@@ -79,7 +79,7 @@ public class SondaggioImpl extends DataItemImpl<Integer> implements Sondaggio{
 
 	@Override
 	public void setBeginText(String endText) {
-		this.endText = beginText;
+		this.endText = endText;
 		
 	}
 
