@@ -55,10 +55,10 @@ public class Login extends SondaggioBaseController {
 				if(ses == null){
 					SecurityLayer.createSession(req, utente.getEmail(), utente.getID(), utente.getTipo());
 				}
-				req.setAttribute("email", email);
-				RequestDispatcher dispatcher = req.getRequestDispatcher("home");  //home e da definire
-	            dispatcher.forward(req, res);
-				//res.sendRedirect("home");
+				//req.setAttribute("email", email);
+				//RequestDispatcher dispatcher = req.getRequestDispatcher("home");  //home e da definire
+	            //dispatcher.forward(req, res);
+				res.sendRedirect("home");
 			} else {
 				//req.setAttribute("message", "Email/Password non valide");
 				//action_error(req, res);

@@ -155,7 +155,7 @@ public class UtenteDAO_MySQL extends DAO implements UtenteDAO {
 				iUtente.setString(2, utente.getCognome());
 				iUtente.setString(3, utente.getEmail());
 				iUtente.setString(4, utente.getPassword());
-				iUtente.setString(5, "generico");
+				iUtente.setString(5, "partecipante");
 				if (iUtente.executeUpdate() == 1) {
 					try (ResultSet keys = iUtente.getGeneratedKeys()) {
 						if (keys.next()) {

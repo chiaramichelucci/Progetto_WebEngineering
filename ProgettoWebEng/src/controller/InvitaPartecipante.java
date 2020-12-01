@@ -37,7 +37,7 @@ public class InvitaPartecipante extends SondaggioBaseController {
 			String sondaggioInvito = req.getParameter("sondaggioInvito");
 			Sondaggio sondaggio = ((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().getSondaggioByTitolo(sondaggioInvito);
 			((SondaggioDataLayer)req.getAttribute("datalayer")).getSondaggioDAO().invitaUtente(utente, sondaggio);
-			req.setAttribute("risultato", "Utente pruomovato con successo");
+			req.setAttribute("risultato", "Utente invitato con successo");
 			RequestDispatcher rd=req.getRequestDispatcher("result");  
 	        rd.forward(req, res);
 		}

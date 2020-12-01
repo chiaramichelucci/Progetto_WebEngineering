@@ -264,7 +264,7 @@ public class SondaggioDAO_MySQL extends DAO implements SondaggioDAO {
 			invitaUtente.setInt(1, utente.getID());
 			invitaUtente.setString(2, "partecipante");
 			invitaUtente.setInt(3, sondaggio.getID());
-			invitaUtente.executeQuery();
+			invitaUtente.executeUpdate();
 		}catch(SQLException ex) {
 			throw new DataException("Non e stato possibile invitare l'utente al sondaggio", ex);
 		}

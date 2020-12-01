@@ -23,7 +23,6 @@ public class HomepageUtente extends SondaggioBaseController {
 	@Override
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, DataException {
 		TemplateResult resp = new TemplateResult(getServletContext()); 
-		req.setAttribute("add_multi", false);
 		req.setAttribute("use_outline", true);
 		HttpSession ses = req.getSession();
 		System.out.print(ses.getAttribute("email"));

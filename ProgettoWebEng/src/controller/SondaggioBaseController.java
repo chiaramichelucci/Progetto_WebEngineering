@@ -26,9 +26,7 @@ public abstract class SondaggioBaseController extends HttpServlet {
 	            request.setAttribute("datalayer", datalayer);
 	            processRequest(request, response);
 	        } catch (Exception ex) {
-	            ex.printStackTrace(); //for debugging only
-	            //(new FailureResult(getServletContext())).activate(
-	                    //(ex.getMessage() != null || ex.getCause() == null) ? ex.getMessage() : ex.getCause().getMessage(), request, response);
+	            ex.printStackTrace(); 
 	        }
 	    }
 

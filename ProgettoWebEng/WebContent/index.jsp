@@ -1,5 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <title>Homepage PollWEB</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="css/log.css"> 
+    </head>
+    <body>
+    	<div class="login-page">
+ 	       <img src="img/Logo2.png" /> <br><br> 
+ 	    </div>
+            <p align="center"><b><i>Benvenuti nel Sito PollWeb dedicato ai sondaggi.<br><br>
+                Qui potrai partecipare alla compilazione di sondaggi 
+                ma, successivamente, potrai avere la possibilità di crearne dei personali.</i></b></p><br>
+                <div class="form">
+                Esegui l'accesso!
+                <button onClick="window.location.href='http://localhost:8080/ProgettoWebEng/login.jsp';">Accedi</button><br><br>
+                Registrati al sito! Cosa stai aspettando?
+                <button onClick="window.location.href='http://localhost:8080/ProgettoWebEng/signin.jsp';">Registrati</button>
+            
+            <p align="center">
+                <img src="img/spunta.gif"/></p>
+            </div>
+    </body>
+</html>
+<!-- <!DOCTYPE html>
+<html lang="en">
   <head>
     <title>PollWEB</title>
     <meta charset="utf-8">
@@ -31,3 +57,4 @@
     </div>
   </body>
 </html>
+ -->
